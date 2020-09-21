@@ -1,111 +1,51 @@
 package net.weesftw.view;
 
 import java.awt.Container;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+
+import net.weesftw.frame.Label;
+import net.weesftw.frame.Panel;
+import net.weesftw.frame.TextField;
 
 public class Company extends JInternalFrame
 {
 	private static final long serialVersionUID = 1L;
 	
-	private JTextField cnpj, name, owner, zipCode;
+	private TextField cnpj, name, owner, zipCode;
 	
 	public Company()
 	{
 		super("Company");
 		
+		Panel p = new Panel("New Company");
+		Label img = new Label();
 		Container c = getContentPane();
-
-		c.add(main());
+		
+		img.loadImage("E:/weesftw.png", 120, 120);
+		
+		p.setComponent(img);
+		
+		p.setComponent(new Label("CNPJ: "));
+		p.setComponent(cnpj = new TextField(), 1, 0, 120);
+		
+		p.setComponent(new Label("Name: "), 0, 1);
+		p.setComponent(name = new TextField(), 1, 1, 120);
+		
+		p.setComponent(new Label("CPF: "), 0, 2);
+		p.setComponent(owner = new TextField(), 1, 2, 120);
+		
+		p.setComponent(new Label("Zip Code: "), 0, 3);
+		p.setComponent(zipCode = new TextField(), 1, 3, 120);
+		
+		c.add(p);
 		
 		pack();
 		setIconifiable(true);
 		setLayout(new GridBagLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-	}
-	
-	private JPanel main()
-	{
-		GridBagConstraints gbc = new GridBagConstraints();
-		JPanel p = new JPanel(new GridBagLayout());
-		JButton submit = new JButton("Submit");
-		
-		p.setBorder(BorderFactory.createTitledBorder("New Company"));
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		
-		p.add(component(), gbc);
-		
-		gbc.ipadx = 60;
-		gbc.gridy++;
-		gbc.insets = new Insets(15, 15, 5, 15);
-		
-		p.add(submit, gbc);
-		
-		return p;
-	}
-	
-	
-	private JPanel component()
-	{
-		GridBagConstraints gbc = new GridBagConstraints();
-		JPanel p = new JPanel(new GridBagLayout());
-		
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(4, 4, 4, 4);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		
-		p.add(new JLabel("CNPJ: "), gbc);
-		
-		gbc.ipadx = 120;
-		gbc.gridx++;
-		
-		p.add(cnpj = new JTextField(), gbc);
-		
-		gbc.ipadx = 0;
-		gbc.gridx = 0;
-		gbc.gridy++;
-		
-		p.add(new JLabel("Name: "), gbc);
-		
-		gbc.ipadx = 120;
-		gbc.gridx++;
-		
-		p.add(name = new JTextField(), gbc);
-		
-		gbc.ipadx = 0;
-		gbc.gridx = 0;
-		gbc.gridy++;
-		
-		p.add(new JLabel("Owner: "), gbc);
-		
-		gbc.ipadx = 120;
-		gbc.gridx++;
-		
-		p.add(owner = new JTextField(), gbc);
-		
-		gbc.ipadx = 0;
-		gbc.gridx = 0;
-		gbc.gridy++;
-		
-		p.add(new JLabel("Zip Code: "), gbc);
-		
-		gbc.ipadx = 120;
-		gbc.gridx++;
-		
-		p.add(zipCode = new JTextField(), gbc);
-		
-		return p;
 	}
 }
