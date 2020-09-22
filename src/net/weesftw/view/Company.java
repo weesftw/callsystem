@@ -30,7 +30,7 @@ public class Company extends JInternalFrame
 		
 		Container c = getContentPane();
 		
-		img.loadImage("/callsystem/src/icon.png", 120, 120);
+		img.loadImage(120, 120);
 		
 		p1.setComponent(img);
 		
