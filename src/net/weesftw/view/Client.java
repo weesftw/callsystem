@@ -7,12 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.URL;
 
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 
-import net.weesftw.Control;
 import net.weesftw.constraint.Country;
 import net.weesftw.model.Button;
 import net.weesftw.model.ComboBox;

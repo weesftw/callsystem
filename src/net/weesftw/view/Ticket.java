@@ -2,6 +2,7 @@ package net.weesftw.view;
 
 import java.awt.Container;
 import java.awt.GridBagLayout;
+import java.awt.Panel;
 
 import javax.swing.JInternalFrame;
 
@@ -11,12 +12,16 @@ public class Ticket extends JInternalFrame
 	
 	public Ticket()
 	{
-		super("Company");
+		super("Company", false, true, false, true);
+		
+		Panel p = new Panel();
 		
 		Container c = getContentPane();
 		
+		
+		c.add(p);
+		
 		pack();
-		setIconifiable(true);
 		setLayout(new GridBagLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);

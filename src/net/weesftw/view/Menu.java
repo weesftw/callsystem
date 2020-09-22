@@ -51,6 +51,7 @@ public final class Menu extends JMenuBar
 		file.add(add);
 		add.add(client);
 		add.add(company);
+		add.add(ticket);
 
 		add(file);
 		add(edit);
