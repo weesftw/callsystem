@@ -1,4 +1,4 @@
-package net.weesftw.frame;
+package net.weesftw.model;
 
 import java.awt.Image;
 
@@ -21,6 +21,6 @@ public class Label extends JLabel
 	
 	public void loadImage(String url, int width, int height)
 	{		
-		setIcon(new ImageIcon(new ImageIcon("E:/weesftw.png").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH)));
+		setIcon(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH)));
 	}
 }

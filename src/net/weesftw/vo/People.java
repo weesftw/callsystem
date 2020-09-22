@@ -1,4 +1,4 @@
-package net.weesftw.model;
+package net.weesftw.vo;
 
 public class People 
 {

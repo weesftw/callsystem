@@ -1,4 +1,4 @@
-package net.weesftw.frame;
+package net.weesftw.model;
 
 import javax.swing.JTextField;
 

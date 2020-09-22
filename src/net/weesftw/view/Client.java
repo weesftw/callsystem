@@ -1,239 +1,119 @@
 package net.weesftw.view;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
 
-import javax.swing.BorderFactory;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-import net.weesftw.constraint.Department;
+import net.weesftw.constraint.Country;
+import net.weesftw.model.Button;
+import net.weesftw.model.ComboBox;
+import net.weesftw.model.Label;
+import net.weesftw.model.Panel;
+import net.weesftw.model.TextField;
 
 public class Client extends JInternalFrame
 {
 	private static final long serialVersionUID = 1L;
 	
-	private JComboBox<Department> department = new JComboBox<>(Department.values());
-	private JTextField firstName, lastName, zipCode, email, phone, cpf;
-	private JComboBox<String> country = new JComboBox<String>();
-	private JLabel img;
+	private FileInputStream i;
 	
 	public Client()
 	{
-		super("Client");
+		super("Client", false, true, false, true);
+		
+		Button submit = new Button("Submit");
+		Button choose = new Button("Choose");
+		ComboBox<Country> country = new ComboBox<>(Country.values(), 30, 21);
+		Label img = new Label();
+		Panel p1 = new Panel("Photo");
+		Panel p2 = new Panel("New Client");
+		TextField cpf = new TextField();
+		TextField firstName = new TextField();
+		TextField lastName = new TextField();
+		TextField phoneNumber = new TextField();
+		TextField email = new TextField();
+		TextField zipCode = new TextField();
+		TextField date = new TextField();
 		
 		Container c = getContentPane();
-
-		c.add(main());
 		
-		pack();
-		setIconifiable(true);
-		setLayout(new GridBagLayout());
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
-	}
-	
-	private JPanel main()
-	{
-		GridBagConstraints gbc = new GridBagConstraints();
-		JPanel p = new JPanel(new GridBagLayout());
-		JButton choose = new JButton("Choose");
-		JButton submit = new JButton("Submit");
+		img.loadImage("/callsystem/src/icon.png", 120, 120);
 		
-		p.setBorder(BorderFactory.createTitledBorder("New Client"));
+		p1.setComponent(img);
 		
-		gbc.insets = new Insets(4, 4, 4, 4);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		
-		p.add(photo(), gbc);
-		
-		gbc.gridx++;
-		
-		p.add(component(), gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy++;
-		gbc.insets = new Insets(4, 4, 4, 4);
-		
-		p.add(choose, gbc);
+		p1.setComponent(choose, 0, 1);
 		choose.addActionListener(new ActionListener() 
 		{	
 			@Override
 			public void actionPerformed(ActionEvent e) 
-			{
-				JFileChooser jfc = new JFileChooser();
-				int r = jfc.showOpenDialog(null);
-				
-				if(r == JFileChooser.APPROVE_OPTION)
-				{
-					File f = jfc.getSelectedFile();
-					
-					img.setIcon(new ImageIcon(new ImageIcon(f.getPath()).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH)));
-					p.revalidate();
-					p.repaint();
-				}
-			}
-		});
-		
-		gbc.gridx++;
-		gbc.ipadx = 120;
-		
-		p.add(submit, gbc);
-		
-		return p;
-	}
-	
-	private JPanel photo()
-	{
-		JPanel p = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		
-		gbc.insets = new Insets(15, 15, 5, 15);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		
-		p.add(img = new JLabel(), gbc);
-		img.setIcon(new ImageIcon(new ImageIcon("img/icon.png").getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH)));
-		
-		return p;
-	}
-	
-	private JPanel component()
-	{
-		GridBagConstraints gbc = new GridBagConstraints();
-		JPanel p = new JPanel(new GridBagLayout());
-		
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.insets = new Insets(4, 4, 4, 4);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		
-		p.add(new JLabel("CPF: "), gbc);
-		
-		gbc.ipadx = 120;
-		gbc.gridx++;
-		
-		p.add(cpf = new JTextField(), gbc);
-		cpf.addActionListener(new ActionListener() 
-		{	
-			@Override
-			public void actionPerformed(ActionEvent e) 
 			{				
-				if(cpf.getText().equalsIgnoreCase("a"))
-				{
-					cpf.setText("");
-					JOptionPane.showMessageDialog(null, "CPF already exists in database.");
-				}
-			}
-		});
-		
-		cpf.addKeyListener(new KeyAdapter() 
-		{
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				if(cpf.getText().length() >= 11)
-				{
-					e.consume();
-				}
-			}
-		});
-		
-		gbc.ipadx = 0;
-		gbc.gridx++;
-		
-		p.add(new JLabel("Zip Code: "), gbc);
-		
-		gbc.ipadx = 120;
-		gbc.gridx++;
-		
-		p.add(zipCode = new JTextField(), gbc);
-		
-		gbc.ipadx = 0;
-		gbc.gridx = 0;
-		gbc.gridy++;
-		
-		p.add(new JLabel("Department: "), gbc);
-		
-		gbc.ipadx = 52;
-		gbc.gridx++;
-		
-		p.add(department = new JComboBox<Department>(), gbc);
-		department.setBackground(Color.WHITE);
-		department.setPreferredSize(new Dimension(73, 27));
-		
-		gbc.ipadx = 0;
-		gbc.gridx++;
-		
-		p.add(new JLabel("Country: "), gbc);
-		
-		gbc.ipadx = 52;
-		gbc.gridx++;
+				JFileChooser f = new JFileChooser();
 				
-		p.add(country = new JComboBox<String>(), gbc);
-		country.setBackground(Color.WHITE);
-		country.setPreferredSize(new Dimension(73, 27));
+				if(f.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+				{
+					try 
+					{
+						i = new FileInputStream(f.getSelectedFile());
+						
+						System.out.println(i);
+					} 
+					catch (FileNotFoundException ex) 
+					{
+						ex.printStackTrace();
+					}
+					
+					img.loadImage(f.getSelectedFile().getPath(), 120, 120);
+				}
+			}
+		});
 		
-		gbc.ipadx = 0;
-		gbc.gridx = 0;
-		gbc.gridy++;
+		p2.setComponent(new Label("Zip Code: "));
+		p2.setComponent(zipCode, 1, 0, 120);
 		
-		p.add(new JLabel("First Name: "), gbc);
+		p2.setComponent(new Label("Country: "), 2, 0);
+		p2.setComponent(country, 3, 0, 120);
 		
-		gbc.ipadx = 120;
-		gbc.gridx++;
+		p2.setComponent(new Label("CPF: "), 0, 1);
+		p2.setComponent(cpf, 1, 1, 120);
 		
-		p.add(firstName = new JTextField(), gbc);
+		p2.setComponent(new Label("First Name: "), 2, 1);
+		p2.setComponent(firstName, 3, 1, 120);
 		
-		gbc.ipadx = 0;
-		gbc.gridx++;
+		p2.setComponent(new Label("Last Name: "), 0, 2);
+		p2.setComponent(lastName, 1, 2, 120);
 		
-		p.add(new JLabel("Last Name: "), gbc);
+		p2.setComponent(new Label("Phone Number: "), 2, 2);
+		p2.setComponent(phoneNumber, 3, 2, 120);
 		
-		gbc.ipadx = 120;
-		gbc.gridx++;
+		p2.setComponent(new Label("E-mail: "), 0, 3);
+		p2.setComponent(email, 1, 3, 120);
 		
-		p.add(lastName = new JTextField(), gbc);
+		p2.setComponent(new Label("Date Birth: "), 2, 3);
+		p2.setComponent(date, 3, 3, 120);
 		
-		gbc.ipadx = 0;
-		gbc.gridx = 0;
-		gbc.gridy++;
+		p2.setComponent(submit, 3, 4);
 		
-		p.add(new JLabel("Phone: "), gbc);
+		c.add(p1, BorderLayout.WEST);
+		c.add(p2, BorderLayout.EAST);
 		
-		gbc.ipadx = 120;
-		gbc.gridx++;
-		
-		p.add(phone = new JTextField(), gbc);
-		
-		gbc.ipadx = 0;
-		gbc.gridx++;
-		
-		p.add(new JLabel("Email: "), gbc);
-		
-		gbc.ipadx = 120;
-		gbc.gridx++;
-		
-		p.add(email = new JTextField(), gbc);
-		
-		return p;
+		pack();
+		setLayout(new GridBagLayout());
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setVisible(true);
 	}
 }

@@ -1,6 +1,5 @@
-package net.weesftw.frame;
+package net.weesftw.model;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,8 +7,6 @@ import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.TitledBorder;
 
 public class Panel extends JPanel
 {
@@ -24,6 +21,7 @@ public class Panel extends JPanel
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(4, 4, 4, 4);
 		gbc.anchor = GridBagConstraints.EAST;
+		gbc.fill = GridBagConstraints.BOTH;
 		
 		setLayout(new GridBagLayout());
 	}
@@ -33,6 +31,7 @@ public class Panel extends JPanel
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		
 		add(c, gbc);
 	}
@@ -42,6 +41,7 @@ public class Panel extends JPanel
 		gbc.gridx = x;
 		gbc.gridy = y;
 		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		
 		add(c, gbc);
 	}
@@ -54,4 +54,15 @@ public class Panel extends JPanel
 		
 		add(c, gbc);
 	}
+	
+	public void setComponent(Component c, int x, int y, int ipadx, int ipady)
+	{
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.ipadx = ipadx;
+		gbc.ipady = ipady;
+		
+		add(c, gbc);
+	}
+	
 }
