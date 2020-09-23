@@ -33,10 +33,10 @@ public class Ticket extends JInternalFrame
 		JCheckBox priority = new JCheckBox("Priority");
 		TextField client = new TextField();
 		TextField title = new TextField();
-		JTextPane description = new JTextPane();
+		TextArea description = new TextArea(1, 1);
 		JScrollPane s = new JScrollPane(description);
 		
-//		description.setLineWrap(true);
+		description.setLineWrap(true);
 //		description.setWrapStyleWord(true);
 		
 		s.setViewportView(description);
