@@ -1,6 +1,7 @@
 package net.weesftw.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -32,8 +33,8 @@ public class Client extends JInternalFrame
 		Button choose = new Button("Choose");
 		ComboBox<Country> country = new ComboBox<>(Country.values(), 30, 21);
 		Label img = new Label();
-		Panel p1 = new Panel("Photo");
-		Panel p2 = new Panel("New Client");
+		Panel p1 = new Panel("Photo", 4, 4, 4, 4);
+		Panel p2 = new Panel("New Client", 4, 4, 4, 4);
 		TextField cpf = new TextField();
 		TextField firstName = new TextField();
 		TextField lastName = new TextField();
@@ -79,6 +80,7 @@ public class Client extends JInternalFrame
 		
 		p2.setComponent(new Label("Country: "), 2, 0);
 		p2.setComponent(country, 3, 0, 120);
+		country.setBackground(Color.WHITE);
 		
 		p2.setComponent(new Label("CPF: "), 0, 1);
 		p2.setComponent(cpf, 1, 1, 120);

@@ -7,19 +7,25 @@ import net.weesftw.constraint.Status;
 public class Ticket 
 {
 	private int id;
-	private String tittle, author, description, company;
 	private Timestamp time;
 	private Status status;
+	private String title, description;
+	private People client;
+	private Company company;
+	private boolean priority;
+	private User user;
 	
-	public Ticket(int id, String tittle, String author, String company, String description, Timestamp time, Status status) 
+	public Ticket(int id, String title, People client, Company company, String description, Timestamp time, User user, boolean priority, Status status) 
 	{
 		this.id = id;
-		this.tittle = tittle;
-		this.author = author;
+		this.title = title;
+		this.client = client;
 		this.company = company;
 		this.description = description;
 		this.time = time;
 		this.status = status;
+		this.user = user;
+		this.priority = priority;
 	}
 
 	public int getId() 
@@ -27,17 +33,17 @@ public class Ticket
 		return id;
 	}
 
-	public String getTittle() 
+	public String getTitle() 
 	{
-		return tittle;
+		return title;
 	}
 
-	public String getAuthor() 
+	public People getAuthor() 
 	{
-		return author;
+		return client;
 	}
 	
-	public String getCompany()
+	public Company getCompany()
 	{
 		return company;
 	}
@@ -50,6 +56,16 @@ public class Ticket
 	public Timestamp getTime() 
 	{
 		return time;
+	}
+	
+	public User getUser() 
+	{
+		return user;
+	}
+	
+	public boolean getPriority()
+	{
+		return priority;
 	}
 
 	public Status getStatus() 

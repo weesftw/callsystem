@@ -21,8 +21,8 @@ public class Company extends JInternalFrame
 		
 		Button btn = new Button("Submit");
 		Label img = new Label();
-		Panel p1 = new Panel("Details");
-		Panel p2 = new Panel("New Company");
+		Panel p1 = new Panel("Details", 4, 4, 4, 4);
+		Panel p2 = new Panel("New Company", 4, 4, 4, 4);
 		TextField cnpj = new TextField();
 		TextField name = new TextField();
 		TextField owner = new TextField();

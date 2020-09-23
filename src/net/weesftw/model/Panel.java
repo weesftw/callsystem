@@ -14,10 +14,20 @@ public class Panel extends JPanel
 	
 	private GridBagConstraints gbc;
 	
-	public Panel(String args)
+	public Panel(String args, int top, int left, int botton, int right)
 	{
 		setBorder(BorderFactory.createTitledBorder(args));
 		
+		gbc = new GridBagConstraints();
+		gbc.insets = new Insets(top, left, botton, right);
+		gbc.anchor = GridBagConstraints.EAST;
+		gbc.fill = GridBagConstraints.BOTH;
+		
+		setLayout(new GridBagLayout());
+	}
+	
+	public Panel()
+	{		
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(4, 4, 4, 4);
 		gbc.anchor = GridBagConstraints.EAST;
@@ -32,6 +42,7 @@ public class Panel extends JPanel
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
+		gbc.gridwidth = 1;
 		
 		add(c, gbc);
 	}
@@ -42,6 +53,7 @@ public class Panel extends JPanel
 		gbc.gridy = y;
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
+		gbc.gridwidth = 1;
 		
 		add(c, gbc);
 	}
@@ -51,6 +63,7 @@ public class Panel extends JPanel
 		gbc.gridx = x;
 		gbc.gridy = y;
 		gbc.ipadx = ipadx;
+		gbc.gridwidth = 1;
 		
 		add(c, gbc);
 	}
@@ -61,8 +74,19 @@ public class Panel extends JPanel
 		gbc.gridy = y;
 		gbc.ipadx = ipadx;
 		gbc.ipady = ipady;
+		gbc.gridwidth = 1;
 		
 		add(c, gbc);
 	}
 	
+	public void setComponent(Component c, int x, int y, int ipadx, int ipady, int gridwidth)
+	{
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.ipadx = ipadx;
+		gbc.ipady = ipady;
+		gbc.gridwidth = gridwidth;
+		
+		add(c, gbc);
+	}
 }
