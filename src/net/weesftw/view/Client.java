@@ -35,13 +35,13 @@ public class Client extends JInternalFrame
 		Label img = new Label();
 		Panel p1 = new Panel("Photo", 4, 4, 4, 4);
 		Panel p2 = new Panel("New Client", 4, 4, 4, 4);
-		TextField cpf = new TextField();
-		TextField firstName = new TextField();
-		TextField lastName = new TextField();
-		TextField phoneNumber = new TextField();
-		TextField email = new TextField();
-		TextField zipCode = new TextField();
-		TextField date = new TextField();
+		TextField cpf = new TextField(15);
+		TextField firstName = new TextField(15);
+		TextField lastName = new TextField(15);
+		TextField phoneNumber = new TextField(15);
+		TextField email = new TextField(15);
+		TextField zipCode = new TextField(15);
+		TextField date = new TextField(15);
 		
 		Container c = getContentPane();
 		
@@ -76,29 +76,29 @@ public class Client extends JInternalFrame
 		});
 		
 		p2.setComponent(new Label("Zip Code: "));
-		p2.setComponent(zipCode, 1, 0, 120);
+		p2.setComponent(zipCode, 1, 0);
 		
 		p2.setComponent(new Label("Country: "), 2, 0);
-		p2.setComponent(country, 3, 0, 120);
+		p2.setComponent(country, 3, 0);
 		country.setBackground(Color.WHITE);
 		
 		p2.setComponent(new Label("CPF: "), 0, 1);
-		p2.setComponent(cpf, 1, 1, 120);
+		p2.setComponent(cpf, 1, 1);
 		
 		p2.setComponent(new Label("First Name: "), 2, 1);
-		p2.setComponent(firstName, 3, 1, 120);
+		p2.setComponent(firstName, 3, 1);
 		
 		p2.setComponent(new Label("Last Name: "), 0, 2);
-		p2.setComponent(lastName, 1, 2, 120);
+		p2.setComponent(lastName, 1, 2);
 		
 		p2.setComponent(new Label("Phone Number: "), 2, 2);
-		p2.setComponent(phoneNumber, 3, 2, 120);
+		p2.setComponent(phoneNumber, 3, 2);
 		
 		p2.setComponent(new Label("E-mail: "), 0, 3);
-		p2.setComponent(email, 1, 3, 120);
+		p2.setComponent(email, 1, 3);
 		
 		p2.setComponent(new Label("Date Birth: "), 2, 3);
-		p2.setComponent(date, 3, 3, 120);
+		p2.setComponent(date, 3, 3);
 		
 		p2.setComponent(submit, 3, 4);
 		
@@ -106,7 +106,6 @@ public class Client extends JInternalFrame
 		c.add(p2, BorderLayout.EAST);
 		
 		pack();
-		setLayout(new GridBagLayout());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}

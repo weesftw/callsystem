@@ -18,14 +18,13 @@ public final class Main extends JFrame
 		Container c = getContentPane();
 		
 		//setContentPane(new JLabel(new ImageIcon("img/background.jpg")));
+		c.add(desk);
+		
 		setResizable(false);
 		setSize(1024, 768);
 		setJMenuBar(new Menu());
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		c.add(desk);
-		
 		setVisible(true);
 	}
 }

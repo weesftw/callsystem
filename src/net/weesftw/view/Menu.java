@@ -45,6 +45,16 @@ public final class Menu extends JMenuBar
 			}
 		});
 		
+		JMenuItem user = new JMenuItem("User");
+		user.addActionListener(new ActionListener() 
+		{	
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				Main.desk.add(new User());
+			}
+		});
+		
 		JMenu edit = new JMenu("Edit");
 		JMenu info = new JMenu("Info");
 		
@@ -52,6 +62,7 @@ public final class Menu extends JMenuBar
 		add.add(client);
 		add.add(company);
 		add.add(ticket);
+		add.add(user);
 
 		add(file);
 		add(edit);

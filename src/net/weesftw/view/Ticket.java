@@ -31,8 +31,8 @@ public class Ticket extends JInternalFrame
 		Button submit = new Button("Submit");
 		ComboBox<Status> company = new ComboBox<>(Status.values(), 30, 21);
 		JCheckBox priority = new JCheckBox("Priority");
-		TextField client = new TextField();
-		TextField title = new TextField();
+		TextField client = new TextField(15);
+		TextField title = new TextField(15);
 		TextArea description = new TextArea(1, 1);
 		JScrollPane s = new JScrollPane(description);
 		
@@ -46,7 +46,7 @@ public class Ticket extends JInternalFrame
 		Container c = getContentPane();
 		
 		p.setComponent(new Label("CPF: "), 0, 0);
-		p.setComponent(client, 0, 1, 120);
+		p.setComponent(client, 0, 1);
 		
 		p.setComponent(new Label("Company: "), 1, 0);
 		
@@ -54,12 +54,12 @@ public class Ticket extends JInternalFrame
 		p.setComponent(company, 1, 1, 120);
 		
 		p.setComponent(new Label("Title: "), 0, 2);
-		p.setComponent(title, 0, 3, 140);
+		p.setComponent(title, 0, 3);
 		
 		p.setComponent(new Label("Product: "), 1, 2);
 		
 		//ComboBox de produtos da company
-		p.setComponent(new TextField(), 1, 3, 120);
+		p.setComponent(new TextField(15), 1, 3);
 		
 		p.setComponent(new Label("Description: "), 0, 4);
 		p.setComponent(s, 0, 5, 200, 150, 2);
@@ -71,7 +71,6 @@ public class Ticket extends JInternalFrame
 		c.add(p);
 		
 		pack();
-		setLayout(new GridBagLayout());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
