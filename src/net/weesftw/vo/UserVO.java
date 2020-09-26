@@ -1,18 +1,14 @@
 package net.weesftw.vo;
 
-import net.weesftw.constraint.Department;
-
-public class User 
+public class UserVO 
 {
 	private String cpf, username, passwd;
-	private Department privilege;
 	
-	public User(String cpf, String username, String passwd, Department privilege)
+	public UserVO(String cpf, String username, String passwd)
 	{
 		this.cpf = cpf;
 		this.username = username;
 		this.passwd = passwd;
-		this.privilege = privilege;
 	}
 	
 	public String getCpf()
@@ -28,10 +24,5 @@ public class User
 	public String getPasswd()
 	{
 		return passwd;
-	}
-	
-	public Department getDepartment()
-	{
-		return privilege;
 	}
 }

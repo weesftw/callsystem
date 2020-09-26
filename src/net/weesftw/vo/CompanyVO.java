@@ -1,6 +1,6 @@
 package net.weesftw.vo;
 
-public class Company 
+public class CompanyVO 
 {
 
 }

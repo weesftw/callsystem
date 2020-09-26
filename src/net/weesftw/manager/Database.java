@@ -9,8 +9,8 @@ public final class Database implements AutoCloseable
 	public Connection con;
 	
 	public Database() throws SQLException
-	{
-		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/callSystem?useTimezone=true&serverTimezone=UTC", "root", "");
+	{		
+		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/callsystem?useTimezone=true&serverTimezone=UTC", "root", "");
 	}
 
 	@Override

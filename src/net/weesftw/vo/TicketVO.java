@@ -4,18 +4,18 @@ import java.sql.Timestamp;
 
 import net.weesftw.constraint.Status;
 
-public class Ticket 
+public class TicketVO 
 {
 	private int id;
 	private Timestamp time;
 	private Status status;
 	private String title, description;
-	private People client;
-	private Company company;
+	private PeopleVO client;
+	private CompanyVO company;
 	private boolean priority;
-	private User user;
+	private UserVO user;
 	
-	public Ticket(int id, String title, People client, Company company, String description, Timestamp time, User user, boolean priority, Status status) 
+	public TicketVO(int id, String title, PeopleVO client, CompanyVO company, String description, Timestamp time, UserVO user, boolean priority, Status status) 
 	{
 		this.id = id;
 		this.title = title;
@@ -38,12 +38,12 @@ public class Ticket
 		return title;
 	}
 
-	public People getAuthor() 
+	public PeopleVO getAuthor() 
 	{
 		return client;
 	}
 	
-	public Company getCompany()
+	public CompanyVO getCompany()
 	{
 		return company;
 	}
@@ -58,7 +58,7 @@ public class Ticket
 		return time;
 	}
 	
-	public User getUser() 
+	public UserVO getUser() 
 	{
 		return user;
 	}

@@ -2,32 +2,29 @@ package net.weesftw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
+import javax.swing.WindowConstants;
 
 import net.weesftw.constraint.Country;
 import net.weesftw.model.Button;
 import net.weesftw.model.ComboBox;
+import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
 import net.weesftw.model.TextField;
 
-public class Client extends JInternalFrame
-{
-	private static final long serialVersionUID = 1L;
-	
+public class Client extends UI<InternalFrame>
+{	
 	private FileInputStream i;
 	
 	public Client()
 	{
-		super("Client", false, true, false, true);
+		super(new InternalFrame("Client", false, true, false, true));
 		
 		Button submit = new Button("Submit");
 		Button choose = new Button("Choose");
@@ -42,8 +39,6 @@ public class Client extends JInternalFrame
 		TextField email = new TextField(15);
 		TextField zipCode = new TextField(15);
 		TextField date = new TextField(15);
-		
-		Container c = getContentPane();
 		
 		img.loadImage(120, 120);
 		
@@ -102,11 +97,11 @@ public class Client extends JInternalFrame
 		
 		p2.setComponent(submit, 3, 4);
 		
-		c.add(p1, BorderLayout.WEST);
-		c.add(p2, BorderLayout.EAST);
+		ui.add(p1, BorderLayout.WEST);
+		ui.add(p2, BorderLayout.EAST);
 		
-		pack();
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setVisible(true);
+		ui.pack();
+		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		ui.setVisible(true);
 	}
 }

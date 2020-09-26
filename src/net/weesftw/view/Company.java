@@ -1,23 +1,20 @@
 package net.weesftw.view;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.GridBagLayout;
 
-import javax.swing.JInternalFrame;
+import javax.swing.WindowConstants;
 
 import net.weesftw.model.Button;
+import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
 import net.weesftw.model.TextField;
 
-public class Company extends JInternalFrame
-{
-	private static final long serialVersionUID = 1L;
-	
+public class Company extends UI<InternalFrame>
+{	
 	public Company()
 	{
-		super("Company", false, true, false, true);
+		super(new InternalFrame("Company", false, true, false, true));
 		
 		Button btn = new Button("Submit");
 		Label img = new Label();
@@ -27,8 +24,6 @@ public class Company extends JInternalFrame
 		TextField name = new TextField(15);
 		TextField owner = new TextField(15);
 		TextField zipCode = new TextField(15);
-		
-		Container c = getContentPane();
 		
 		img.loadImage(120, 120);
 		
@@ -48,12 +43,12 @@ public class Company extends JInternalFrame
 		
 		p2.setComponent(btn, 1, 4);
 		
-		c.add(p1, BorderLayout.WEST);
-		c.add(p2, BorderLayout.EAST);
+		ui.add(p1, BorderLayout.WEST);
+		ui.add(p2, BorderLayout.EAST);
 		
-		pack();
-		setIconifiable(true);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setVisible(true);
+		ui.pack();
+		ui.setIconifiable(true);
+		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		ui.setVisible(true);
 	}
 }

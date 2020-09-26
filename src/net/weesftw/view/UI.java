@@ -1,13 +1,31 @@
 package net.weesftw.view;
 
-import java.awt.Container;
+import net.weesftw.model.DesktopPane;
 
-public abstract class UI 
+public abstract class UI<T>
 {
-	protected Container c;
+	protected T ui;
+	protected DesktopPane d;
 	
-	public UI(Container c)
+	public UI(T ui)
 	{
-		this.c = c;
+		this.ui = ui;
+	}
+	
+	public UI(T ui, boolean value)
+	{
+		this.ui = ui;
+		
+		d = value ? new DesktopPane() : null;
+	}
+	
+	public T getUI()
+	{		
+		return ui;
+	}
+	
+	public DesktopPane getDesktop()
+	{
+		return d;
 	}
 }

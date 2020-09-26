@@ -1,32 +1,26 @@
 package net.weesftw.view;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
-import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
-import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.text.StyledDocument;
+import javax.swing.WindowConstants;
 
 import net.weesftw.constraint.Status;
 import net.weesftw.model.Button;
 import net.weesftw.model.ComboBox;
+import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
 import net.weesftw.model.TextArea;
 import net.weesftw.model.TextField;
 
-public class Ticket extends JInternalFrame
-{
-	private static final long serialVersionUID = 1L;
-	
+public class Ticket extends UI<InternalFrame>
+{	
 	public Ticket()
 	{
-		super("Ticket", false, true, false, true);
+		super(new InternalFrame("Ticket", false, true, false, true));
 		
 		Button submit = new Button("Submit");
 		ComboBox<Status> company = new ComboBox<>(Status.values(), 30, 21);
@@ -42,8 +36,6 @@ public class Ticket extends JInternalFrame
 		s.setViewportView(description);
 		
 		Panel p = new Panel("New Ticket", 4, 4, 2, 4);
-		
-		Container c = getContentPane();
 		
 		p.setComponent(new Label("CPF: "), 0, 0);
 		p.setComponent(client, 0, 1);
@@ -68,10 +60,10 @@ public class Ticket extends JInternalFrame
 		p.setComponent(priority, 0, 6);
 		p.setComponent(submit, 1, 6);
 		
-		c.add(p);
+		ui.add(p);
 		
-		pack();
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setVisible(true);
+		ui.pack();
+		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		ui.setVisible(true);
 	}
 }

@@ -2,29 +2,39 @@ package net.weesftw.view;
 
 import java.awt.Container;
 
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
-public final class Main extends JFrame
+import net.weesftw.model.DesktopPane;
+import net.weesftw.model.Frame;
+import net.weesftw.model.Label;
+import net.weesftw.model.Panel;
+
+public final class Main extends UI<Frame>
 {
-	private static final long serialVersionUID = 1L;
-	
-	static JDesktopPane desk = new JDesktopPane();
+	public static DesktopPane d;
 	
 	public Main()
 	{
-		super("Call System | Open your ticket.");
+		super(new Frame("Call System | Open your ticket."), true);
 		
-		Container c = getContentPane();
+		Container c = ui.getContentPane();
 		
-		//setContentPane(new JLabel(new ImageIcon("img/background.jpg")));
-		c.add(desk);
+		Panel p1 = new Panel("Informations", 4, 4, 4, 4);
+		Label img = new Label();
 		
-		setResizable(false);
-		setSize(1024, 768);
-		setJMenuBar(new Menu());
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
+		//Panel p2 = new Panel("Tickets", 4, 4, 4, 4);
+		
+		p1.setComponent(new Label());
+		
+		//c.add(p1, BorderLayout.WEST);
+		//c.add(p2, BorderLayout.EAST);
+		c.add(d = getDesktop());
+		
+		ui.setResizable(false);
+		ui.setSize(1024, 768);
+		ui.setLocationRelativeTo(null);
+		ui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		ui.setJMenuBar(new Menu().getUI());
+		ui.setVisible(true);
 	}
 }
