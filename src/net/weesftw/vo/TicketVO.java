@@ -2,30 +2,36 @@ package net.weesftw.vo;
 
 import java.sql.Timestamp;
 
+import net.weesftw.constraint.Category;
+import net.weesftw.constraint.Product;
 import net.weesftw.constraint.Status;
 
 public class TicketVO 
-{
+{	
 	private int id;
-	private Timestamp time;
-	private Status status;
-	private String title, description;
-	private PeopleVO client;
-	private CompanyVO company;
-	private boolean priority;
 	private UserVO user;
+	private Status status;
+	private Timestamp time;
+	private Product product;
+	private PeopleVO client;
+	private boolean priority;
+	private CompanyVO company;
+	private Category category;
+	private String title, description;
 	
-	public TicketVO(int id, String title, PeopleVO client, CompanyVO company, String description, Timestamp time, UserVO user, boolean priority, Status status) 
+	public TicketVO(int id, UserVO user, Status status, Timestamp time, Product product, PeopleVO client, boolean priority, CompanyVO company, Category category, String title, String description) 
 	{
 		this.id = id;
-		this.title = title;
-		this.client = client;
-		this.company = company;
-		this.description = description;
-		this.time = time;
-		this.status = status;
 		this.user = user;
+		this.status = status;
+		this.time = time;
+		this.product = product;
+		this.client = client;
 		this.priority = priority;
+		this.company = company;
+		this.category = category;
+		this.title = title;
+		this.description = description;
 	}
 
 	public int getId() 
@@ -33,43 +39,53 @@ public class TicketVO
 		return id;
 	}
 
-	public String getTitle() 
+	public UserVO getUser() 
 	{
-		return title;
+		return user;
 	}
 
-	public PeopleVO getAuthor() 
+	public Status getStatus() 
 	{
-		return client;
-	}
-	
-	public CompanyVO getCompany()
-	{
-		return company;
-	}
-
-	public String getDescription() 
-	{
-		return description;
+		return status;
 	}
 
 	public Timestamp getTime() 
 	{
 		return time;
 	}
-	
-	public UserVO getUser() 
+
+	public Product getProduct() 
 	{
-		return user;
+		return product;	
 	}
-	
-	public boolean getPriority()
+
+	public PeopleVO getClient() 
+	{
+		return client;
+	}
+
+	public boolean isPriority() 
 	{
 		return priority;
 	}
 
-	public Status getStatus() 
+	public CompanyVO getCompany() 
 	{
-		return status;
+		return company;
+	}
+
+	public Category getCategory()
+	{
+		return category;
+	}
+
+	public String getTitle() 
+	{
+		return title;
+	}
+
+	public String getDescription() 
+	{
+		return description;
 	}
 }

@@ -12,9 +12,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class CepAPI 
+public final class CepAPI 
 {
-	private String cep, logradouro, bairro, localidade, uf, ddd;
+	private String cep, logradouro, bairro, localidade, uf, ddd, country;
 	
 	public CepAPI(String id) throws ParserConfigurationException, SAXException, IOException
 	{
@@ -40,8 +40,21 @@ public class CepAPI
 				ddd = e.getElementsByTagName("ddd").item(i).getTextContent();
 			}
 		}
-	}
+	}	
 	
+	public CepAPI(String cep, String logradouro, String bairro, String localidade, String uf, String ddd, String country) 
+	{
+		super();
+		
+		this.cep = cep;
+		this.logradouro = logradouro;
+		this.bairro = bairro;
+		this.localidade = localidade;
+		this.uf = uf;
+		this.ddd = ddd;
+		this.country = country;
+	}
+
 	public String getCep()
 	{
 		return cep;
@@ -70,5 +83,10 @@ public class CepAPI
 	public String getDDD()
 	{
 		return ddd;
+	}
+	
+	public String getCountry()
+	{
+		return country;
 	}
 }

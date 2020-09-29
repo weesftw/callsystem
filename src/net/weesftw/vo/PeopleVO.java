@@ -1,29 +1,14 @@
 package net.weesftw.vo;
 
-import java.io.File;
+import net.weesftw.constraint.Gender;
 
 public class PeopleVO 
-{
-	private String cpf, firstName, lastName, phoneNumber, email, zipCode, department, date;
-	private File img;
-	private byte[] imgLoad;
-
-	public PeopleVO(String cpf, String firstName, String lastName, String phoneNumber, String email, String date, String zipCode,
-			String department, File img) 
-	{
-		this.cpf = cpf;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.date = date;
-		this.zipCode = zipCode;
-		this.department = department;
-		this.img = img;
-	}
+{	
+	private String cpf, firstName, lastName, phoneNumber, email, zipCode, date, path;
+	private Gender gender;
+	private byte[] b;
 	
-	public PeopleVO(String cpf, String firstName, String lastName, String phoneNumber, String email, String date, String zipCode,
-			String department, byte[] imgLoad) 
+	public PeopleVO(String cpf, String firstName, String lastName, String phoneNumber, String email, String date, Gender gender, String zipCode, byte[] b) 
 	{
 		this.cpf = cpf;
 		this.firstName = firstName;
@@ -31,9 +16,22 @@ public class PeopleVO
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.date = date;
+		this.gender = gender;
 		this.zipCode = zipCode;
-		this.department = department;
-		this.imgLoad = imgLoad;
+		this.b = b;
+	}
+
+	public PeopleVO(String cpf, String firstName, String lastName, String phoneNumber, String email, String date, Gender gender, String zipCode, String path) 
+	{
+		this.cpf = cpf;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.date = date;
+		this.gender = gender;
+		this.zipCode = zipCode;
+		this.path = path;
 	}
 
 	public String getCpf() 
@@ -65,24 +63,24 @@ public class PeopleVO
 	{
 		return date;
 	}
+	
+	public Gender getGender()
+	{
+		return gender;
+	}
 
 	public String getZipCode() 
 	{
 		return zipCode;
 	}
-
-	public String getDepartment() 
+	
+	public String getPath()
 	{
-		return department;
+		return path;
 	}
 	
-	public File getImage()
+	public byte[] getByte()
 	{
-		return img;
-	}
-	
-	public byte[] getImageLoad()
-	{
-		return imgLoad;
+		return b;
 	}
 }

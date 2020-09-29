@@ -9,5 +9,7 @@ public class InternalFrame extends JInternalFrame
 	public InternalFrame(String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable)
 	{
 		super(title, resizable, closable, maximizable, iconifiable);
+		
+		toFront();
 	}
 }

@@ -8,6 +8,7 @@ import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
 import net.weesftw.model.TextField;
 
+@Deprecated
 public class Product extends UI<InternalFrame>
 {	
 	public Product()

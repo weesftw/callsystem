@@ -4,37 +4,44 @@ import java.awt.Container;
 
 import javax.swing.WindowConstants;
 
+import net.weesftw.manager.Authenticate;
 import net.weesftw.model.DesktopPane;
 import net.weesftw.model.Frame;
-import net.weesftw.model.Label;
-import net.weesftw.model.Panel;
+import net.weesftw.vo.PeopleVO;
 
 public final class Main extends UI<Frame>
-{
-	public static DesktopPane d;
+{	
+	public static Main instance;	
 	
-	public Main()
+	private DesktopPane d;
+	private Authenticate auth;
+	
+	public Main(PeopleVO p)
 	{
 		super(new Frame("Call System | Open your ticket."), true);
 		
 		Container c = ui.getContentPane();
 		
-		Panel p1 = new Panel("Informations", 4, 4, 4, 4);
-		Label img = new Label();
+		instance = this;
+		this.auth = new Authenticate(p);
 		
-		//Panel p2 = new Panel("Tickets", 4, 4, 4, 4);
+		c.add(d = new DesktopPane());
 		
-		p1.setComponent(new Label());
-		
-		//c.add(p1, BorderLayout.WEST);
-		//c.add(p2, BorderLayout.EAST);
-		c.add(d = getDesktop());
-		
-		ui.setResizable(false);
 		ui.setSize(1024, 768);
+		ui.setResizable(false);
 		ui.setLocationRelativeTo(null);
 		ui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		ui.setJMenuBar(new Menu().getUI());
 		ui.setVisible(true);
+	}
+	
+	public DesktopPane getDesktop()
+	{
+		return d;
+	}
+	
+	public Authenticate getAuth()
+	{
+		return auth;
 	}
 }
