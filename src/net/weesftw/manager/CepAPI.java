@@ -18,26 +18,29 @@ public final class CepAPI
 	
 	public CepAPI(String id) throws ParserConfigurationException, SAXException, IOException
 	{
-		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-		DocumentBuilder b = f.newDocumentBuilder();
-		Document d = b.parse("https://viacep.com.br/ws/" + id + "/xml");
-		
-		NodeList l = d.getElementsByTagName("xmlcep");
-		
-		for(int i = 0; i < l.getLength(); i++)
+		if(!id.isEmpty())
 		{
-			Node n = l.item(i);
+			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+			DocumentBuilder b = f.newDocumentBuilder();
+			Document d = b.parse("https://viacep.com.br/ws/" + id + "/xml");
 			
-			if(n.getNodeType() == Node.ELEMENT_NODE)
+			NodeList l = d.getElementsByTagName("xmlcep");
+			
+			for(int i = 0; i < l.getLength(); i++)
 			{
-				Element e = (Element) n;
+				Node n = l.item(i);
 				
-				cep = e.getElementsByTagName("cep").item(i).getTextContent();
-				logradouro = e.getElementsByTagName("logradouro").item(i).getTextContent();
-				bairro = e.getElementsByTagName("bairro").item(i).getTextContent();
-				localidade = e.getElementsByTagName("localidade").item(i).getTextContent();
-				uf = e.getElementsByTagName("uf").item(i).getTextContent();
-				ddd = e.getElementsByTagName("ddd").item(i).getTextContent();
+				if(n.getNodeType() == Node.ELEMENT_NODE)
+				{
+					Element e = (Element) n;
+					
+					cep = e.getElementsByTagName("cep").item(i).getTextContent();
+					logradouro = e.getElementsByTagName("logradouro").item(i).getTextContent();
+					bairro = e.getElementsByTagName("bairro").item(i).getTextContent();
+					localidade = e.getElementsByTagName("localidade").item(i).getTextContent();
+					uf = e.getElementsByTagName("uf").item(i).getTextContent();
+					ddd = e.getElementsByTagName("ddd").item(i).getTextContent();
+				}
 			}
 		}
 	}	

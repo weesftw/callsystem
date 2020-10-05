@@ -1,5 +1,7 @@
 package net.weesftw.view;
 
+import java.awt.Color;
+
 import javax.swing.WindowConstants;
 
 import net.weesftw.constraint.Department;
@@ -40,6 +42,7 @@ public class User extends UI<InternalFrame>
 		
 		p.setComponent(new Label("Department: "), 0, 3);
 		p.setComponent(department, 1, 3);
+		department.setBackground(Color.WHITE);
 		
 		p.setComponent(submit, 1, 4);
 		submit.addActionListener(new Action(this));

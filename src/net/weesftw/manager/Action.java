@@ -7,15 +7,21 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.RowFilter.ComparisonType;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import net.weesftw.constraint.Category;
 import net.weesftw.constraint.Department;
 import net.weesftw.constraint.Gender;
+import net.weesftw.constraint.Product;
+import net.weesftw.constraint.Status;
 import net.weesftw.constraint.Type;
 import net.weesftw.dao.CompanyDAO;
 import net.weesftw.dao.PeopleDAO;
+import net.weesftw.dao.TicketDAO;
 import net.weesftw.dao.UserDAO;
 import net.weesftw.exception.TypeException;
 import net.weesftw.model.DesktopPane;
@@ -24,12 +30,14 @@ import net.weesftw.view.Client;
 import net.weesftw.view.Company;
 import net.weesftw.view.Login;
 import net.weesftw.view.Main;
-import net.weesftw.view.Product;
 import net.weesftw.view.Ticket;
+import net.weesftw.view.TicketOpen;
+import net.weesftw.view.TicketTable;
 import net.weesftw.view.UI;
 import net.weesftw.view.User;
 import net.weesftw.vo.CompanyVO;
 import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.TicketVO;
 import net.weesftw.vo.UserVO;
 
 @SuppressWarnings("deprecation")
@@ -45,8 +53,8 @@ public class Action implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		String action = e.getActionCommand();
 		DesktopPane d = null;
-		String a = e.getActionCommand();
 		
 		Main m = Main.instance;
 		
@@ -101,11 +109,7 @@ public class Action implements ActionListener
 		{
 			Client c = ((Client) ui);
 			
-			if(a.equalsIgnoreCase(c.getClass().getSimpleName()))
-			{
-				d.add(new Client());
-			}
-			else if(a == c.getChoose().getActionCommand())
+			if(action == c.getChoose().getActionCommand())
 			{
 				JFileChooser f = new JFileChooser();
 				
@@ -114,7 +118,7 @@ public class Action implements ActionListener
 					c.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
 				}
 			}
-			else if(a == c.getSubmit().getActionCommand())
+			else if(action == c.getSubmit().getActionCommand())
 			{
 				PeopleDAO pd = new PeopleDAO();
 				
@@ -142,7 +146,7 @@ public class Action implements ActionListener
 				}
 				
 			}
-			else if(a.length() == 8)
+			else if(action.length() == 8)
 			{
 				try 
 				{
@@ -158,17 +162,17 @@ public class Action implements ActionListener
 					e1.printStackTrace();
 				}
 			}
+			else
+			{
+				d.add(new Client());
+			}
 		}
 		else if(ui instanceof Company)
 		{
 			Company co = ((Company) ui);
 			PeopleDAO pd = new PeopleDAO();
 			
-			if(a.equalsIgnoreCase(co.getClass().getSimpleName()))
-			{
-				d.add(new Company());				
-			}
-			else if(a.length() == 11)
+			if(action.length() == 11)
 			{
 				PeopleVO p;
 				
@@ -184,7 +188,7 @@ public class Action implements ActionListener
 				}
 				
 			}
-			else if(a == co.getSubmit().getActionCommand())
+			else if(action == co.getSubmit().getActionCommand())
 			{
 				CompanyDAO cod = new CompanyDAO();
 				
@@ -206,20 +210,51 @@ public class Action implements ActionListener
 					JOptionPane.showMessageDialog(null, "Fields is empty, please fill.");
 				}
 			}
+			else
+			{
+				d.add(new Company());
+			}
 		}
 		else if(ui instanceof Ticket)
 		{
-			d.add(new Ticket());
+			Ticket t = ((Ticket) ui);
+			
+			if(action == t.getSubmit().getActionCommand())
+			{
+				TicketDAO td = new TicketDAO();
+				
+				Category category = Category.valueOf(t.getCategory().getSelectedItem().toString());
+				Product product = Product.valueOf(t.getProduct().getSelectedItem().toString());
+				boolean priority = t.getPriority().isSelected() ? true : false;
+				String client = t.getClient().getText();
+				String title = t.getTitle().getText();
+				String company = t.getCompany().getText();
+				String description = t.getDescription().getText();
+				String user = m.getAuth().getPeople().getCpf();
+				
+				if(!(category == null || product == null) || client.isEmpty() || title.isEmpty() || company.isEmpty() || description.isEmpty() || user.isEmpty())
+				{
+					td.add(new TicketVO(product, priority, category, title, description, company, client, user, null));
+					
+					JOptionPane.showMessageDialog(null, "Ticket created succefully.");
+					
+					t.getUI().dispose();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Fields is empty, please fill.");
+				}
+			}
+			else
+			{
+				d.add(new Ticket());
+			}
 		}
 		else if(ui instanceof User)
 		{
 			User u = ((User) ui);
 			
-			if(a.equalsIgnoreCase(u.getClass().getSimpleName()))
-			{
-				d.add(new User());
-			}
-			else if(a == u.getSubmit().getActionCommand())
+			if(action == u.getSubmit().getActionCommand())
 			{
 				UserDAO ud = new UserDAO();
 				
@@ -241,18 +276,110 @@ public class Action implements ActionListener
 					JOptionPane.showMessageDialog(null, "Fields is empty, please fill.");
 				}
 			}
+			else
+			{
+				d.add(new User());
+			}
 		}
-		else if(ui instanceof Product)
-		{
-			d.add(new Product());
-		}
+//		else if(ui instanceof Product)
+//		{
+//			d.add(new Product());
+//		}
 		else if(ui instanceof Account)
 		{
-			Account acc = ((Account) ui);
+//			Account acc = ((Account) ui);
 			
-			if(a.equalsIgnoreCase(acc.getClass().getSimpleName()))
+			d.add(new Account());
+		}
+		else if(ui instanceof TicketTable)
+		{
+			TicketTable t = ((TicketTable) ui);
+			
+			if(action == t.getBtn().getActionCommand())
+			{				
+				String id = t.getId().getText();
+				String title = t.getTitle().getText();
+				String client = t.getClient().getText();
+				String company = t.getCompany().getText();
+				String user = t.getUser().getText();
+				String date = t.getDate().getText();
+				String priority = t.getPriority().isSelected() ? "✓" : "";
+				String status = t.getStatus().getSelectedItem().toString();
+				
+				if(!id.isEmpty())
+				{					
+					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(id), 0));
+				}
+				else if(!title.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + title, 1));
+				}
+				else if(!client.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + client, 2));
+				}
+				else if(!company.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + company, 3));
+				}
+				else if(!user.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + user, 4));
+				}
+				else if(!date.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + date, 5));
+				}
+				else if(!priority.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + priority, 6));
+				}
+				else if(!status.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + status, 7));
+				}
+				else
+				{
+					t.getSorter().setRowFilter(null);
+				}
+			}
+			else
 			{
-				d.add(new Account());
+				d.add(new TicketTable());			
+			}
+		}
+		else if(ui instanceof TicketOpen)
+		{
+			TicketOpen t = ((TicketOpen) ui);
+			
+			if(action == t.getSubmit().getActionCommand())
+			{
+				TicketDAO td = new TicketDAO();
+				
+				int id = Integer.valueOf(t.getId().getText());
+				Status status = Status.valueOf(t.getStatus().getSelectedItem().toString());
+				Product product = Product.valueOf(t.getProduct().getText());
+				boolean priority = t.getPriority().isSelected();
+				Category category = Category.valueOf(t.getCategory().getText());
+				String title = t.getTitle().getText();
+				String description = t.getDescription().getText();
+				String company = t.getCompany().getText();
+				String client = t.getClient().getText();
+				String user = t.getUser().getText();
+				String solution = t.getSolution().getText();
+				
+				if(!(solution.isEmpty()))
+				{
+					td.update(new TicketVO(id, status, product, priority, category, title, description, company, client, user, solution));
+					
+					JOptionPane.showMessageDialog(null, "Ticket updated.");
+					
+					t.getUI().dispose();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Solution is empty.");
+				}
 			}
 		}
 	}

@@ -121,6 +121,8 @@ create table if not exists `company`
 	constraint foreign key(`owner`) references `people`(`cpf`)
 )Engine=InnoDB;
 
+insert into `company` value ('2', 'Teeeee', '1', '07085410');
+
 create table if not exists `category`
 (
 	`id` tinyint unsigned not null auto_increment,
@@ -143,23 +145,27 @@ create table if not exists `product`
 )Engine=InnoDB;
 
 insert into `product` (`name`) value ('MOVEL');
-insert into `product` (`name`) value ('HOME');
+insert into `product` (`name`) value ('INTERNET');
 insert into `product` (`name`) value ('TV');
 
 create table if not exists `ticket`
 (
 	`id` int(10) unsigned zerofill auto_increment,
 	`title` varchar(120) not null,
-	`author` varchar(14) not null,
+	`client` varchar(14) not null,
     `company` varchar(18) not null,
+    `user` varchar(14) not null,
 	`time` timestamp default current_timestamp,
     `category` tinyint unsigned not null,
     `product` tinyint unsigned not null,
 	`description` text not null default '',
-	`status` enum('OPEN', 'PENDENT', 'CLOSED'),
+    `solution` text,
+    `priority` boolean not null default false,
+	`status` enum('OPEN', 'PENDENT', 'CLOSED') default 'OPEN',
 
 	constraint primary key(`id`),
-	constraint foreign key(`author`) references `people`(`cpf`),
+    constraint foreign key(`user`) references `user`(`cpf`),
+	constraint foreign key(`client`) references `people`(`cpf`),
     constraint foreign key(`company`) references `company`(`cnpj`),
     constraint foreign key(`category`) references `category`(`id`),
     constraint foreign key(`product`) references `product`(`id`)

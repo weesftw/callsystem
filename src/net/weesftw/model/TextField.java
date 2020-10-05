@@ -10,4 +10,16 @@ public class TextField extends JTextField
 	{
 		super(width);
 	}
+	
+	public TextField(int width, String args)
+	{
+		super(args);
+	}
+	
+	public TextField(int width, String args, boolean editable)
+	{
+		super(args);
+		
+		setEditable(editable);
+	}
 }

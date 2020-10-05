@@ -12,7 +12,7 @@ public class ComboBox<T> extends JComboBox<T>
 	public ComboBox(T[] items, int width, int height)
 	{
 		super(items);
-		
+				
 		setPreferredSize(new Dimension(width, height));
 	}
 	
@@ -21,5 +21,15 @@ public class ComboBox<T> extends JComboBox<T>
 		super(items);
 		
 		setPreferredSize(new Dimension(width, height));
+	}
+	
+	public ComboBox(T[] items)
+	{
+		super(items);
+	}
+	
+	public ComboBox(Vector<T> items)
+	{
+		super(items);
 	}
 }

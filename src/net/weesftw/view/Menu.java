@@ -30,7 +30,10 @@ public final class Menu extends UI<JMenuBar>
 		JMenuItem user = new JMenuItem("User");
 		user.addActionListener(new Action(new User()));
 		
-		JMenu edit = new JMenu("Edit");
+		JMenu edit = new JMenu("View");
+		
+		JMenuItem ticketTable = new JMenuItem("Ticket");
+		ticketTable.addActionListener(new Action(new TicketTable()));
 		
 		JMenu info = new JMenu("Info");
 		
@@ -43,6 +46,8 @@ public final class Menu extends UI<JMenuBar>
 //		add.add(product);
 		add.add(ticket);
 		add.add(user);
+		
+		edit.add(ticketTable);
 		
 		info.add(account);
 
