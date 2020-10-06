@@ -1,4 +1,4 @@
-drop database callSystem;
+/* drop database if not exists callSystem; */
 
 create database `callSystem` default charset utf8mb4 default collate utf8mb4_general_ci;
 
