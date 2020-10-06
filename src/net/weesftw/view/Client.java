@@ -6,6 +6,7 @@ import java.awt.Color;
 import javax.swing.WindowConstants;
 
 import net.weesftw.constraint.Gender;
+import net.weesftw.constraint.ImagePath;
 import net.weesftw.manager.Action;
 import net.weesftw.model.Button;
 import net.weesftw.model.ComboBox;
@@ -16,37 +17,33 @@ import net.weesftw.model.TextField;
 
 public class Client extends UI<InternalFrame>
 {
-	private Button submit;
-	private Button choose;
+	private boolean privilege = false;
+	
+	private Button submit, choose, search;
 	private ComboBox<Gender> gender;
 	private Label img;
-	private TextField cpf;
-	private TextField firstName;
-	private TextField lastName;
-	private TextField phoneNumber;
-	private TextField email;
-	private TextField zipCode;
-	private TextField date;
-	private TextField address;
-	private TextField city;
-	private TextField state;
-	private TextField neighborhood;
+	private TextField cnpj, name, owner, cpf, firstName, lastName, phoneNumber, email, zipCode, zipCodeEmployee, date, address, city, state, neighborhood;
 	
 	public Client()
 	{
 		super(new InternalFrame("Client", false, true, false, true));
 		
-//		ComboBox<Country> country = new ComboBox<Country>(Country.values(), 30, 21);
 		Panel p1 = new Panel("Photo", 4, 4, 4, 4);
 		Panel p2 = new Panel("New Client", 4, 4, 4, 4);
 		
+		gender = new ComboBox<Gender>(Gender.values(), 30, 21);
+		submit = new Button("Submit");
+		choose = new Button("Choose");
+		search = new Button(ImagePath.SEARCH, 13, 13);
+		img = new Label(ImagePath.ICON, 120, 120);
+		cnpj = new TextField(15);
+		name = new TextField(15);
+		zipCode = new TextField(3);
+		zipCodeEmployee = new TextField(15);
 		neighborhood = new TextField(15);
 		address = new TextField(15);
 		city = new TextField(15);
-		state = new TextField(5);
-		submit = new Button("Submit");
-		choose = new Button("Choose");
-		gender = new ComboBox<Gender>(Gender.values(), 30, 21);
+		state = new TextField(15);
 		cpf = new TextField(15);
 		firstName = new TextField(15);
 		lastName = new TextField(15);
@@ -54,10 +51,7 @@ public class Client extends UI<InternalFrame>
 		email = new TextField(15);
 		zipCode = new TextField(15);
 		date = new TextField(15);
-		img = new Label();
-		
-		img.loadImage();
-		
+				
 		p1.setComponent(img);
 		
 		p1.setComponent(choose, 0, 1);
@@ -65,7 +59,8 @@ public class Client extends UI<InternalFrame>
 		
 		p2.setComponent(new Label("Zip Code: "));
 		p2.setComponent(zipCode, 1, 0);
-		zipCode.addActionListener(new Action(this));
+		p2.setComponent(search, 1, 0);
+		search.addActionListener(new Action(this));
 		
 		p2.setComponent(new Label("Neighborhood: "), 2, 0);
 		p2.setComponent(neighborhood, 3, 0);
@@ -109,16 +104,71 @@ public class Client extends UI<InternalFrame>
 		submit.addActionListener(new Action(this));
 		
 		ui.add(p1, BorderLayout.WEST);
-		ui.add(p2, BorderLayout.EAST);
+		ui.add(p2);
+				
+		if(privilege)
+		{			
+			Panel p3 = new Panel("New Company", 4, 4, 4, 4);
+			
+			p3.setComponent(new Label("CNPJ: "));
+			p3.setComponent(cnpj, 1, 0);
+			
+			p3.setComponent(new Label("Name: "), 0, 1);
+			p3.setComponent(name, 1, 1);
+			
+			p3.setComponent(new Label("Zip Code: "), 0, 3);
+			p3.setComponent(zipCodeEmployee, 1, 3);
+			
+			p3.setComponent(submit, 1, 4);
+			submit.addActionListener(new Action(this));
+			
+			ui.add(p3, BorderLayout.EAST);
+		}
 		
 		ui.pack();
+		submit.setComponentZOrder(submit, ui.getComponentZOrder(zipCode) + 1);
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		ui.setVisible(true);
 	}
 	
-	public Label getImg()
+	public Button getSubmit() 
+	{
+		return submit;
+	}
+	
+	public Button getSearch()
+	{
+		return search;
+	}
+
+	public Button getChoose() 
+	{
+		return choose;
+	}
+
+	public ComboBox<Gender> getGender() 
+	{
+		return gender;
+	}
+
+	public Label getImg() 
 	{
 		return img;
+	}
+
+	public TextField getCnpj() 
+	{
+		return cnpj;
+	}
+
+	public TextField getName() 
+	{
+		return name;
+	}
+
+	public TextField getOwner() 
+	{
+		return owner;
 	}
 
 	public TextField getCpf() 
@@ -151,24 +201,14 @@ public class Client extends UI<InternalFrame>
 		return zipCode;
 	}
 
+	public TextField getZipCodeEmployee() 
+	{
+		return zipCodeEmployee;
+	}
+
 	public TextField getDate() 
 	{
 		return date;
-	}
-
-	public Button getSubmit()
-	{
-		return submit;
-	}
-
-	public Button getChoose() 
-	{
-		return choose;
-	}
-
-	public ComboBox<Gender> getGender() 
-	{
-		return gender;
 	}
 
 	public TextField getAddress() 
@@ -185,8 +225,8 @@ public class Client extends UI<InternalFrame>
 	{
 		return state;
 	}
-	
-	public TextField getNeighborhood()
+
+	public TextField getNeighborhood() 
 	{
 		return neighborhood;
 	}

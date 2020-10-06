@@ -102,20 +102,6 @@ public class TicketDAO implements DataAcess<TicketVO>
 	@Override
 	public boolean remove(TicketVO e) 
 	{
-		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("delete from `ticket` where `id` = ?"))
-		{
-			stmt.setInt(1, e.getId());
-			
-			stmt.execute();
-			
-			return true;
-		}
-		catch(SQLException ex)
-		{
-			ex.printStackTrace();
-		}
-		
 		return false;
 	}
 

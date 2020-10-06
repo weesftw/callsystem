@@ -18,16 +18,12 @@ import net.weesftw.constraint.Department;
 import net.weesftw.constraint.Gender;
 import net.weesftw.constraint.Product;
 import net.weesftw.constraint.Status;
-import net.weesftw.constraint.Type;
-import net.weesftw.dao.CompanyDAO;
 import net.weesftw.dao.PeopleDAO;
 import net.weesftw.dao.TicketDAO;
 import net.weesftw.dao.UserDAO;
-import net.weesftw.exception.TypeException;
 import net.weesftw.model.DesktopPane;
 import net.weesftw.view.Account;
 import net.weesftw.view.Client;
-import net.weesftw.view.Company;
 import net.weesftw.view.Login;
 import net.weesftw.view.Main;
 import net.weesftw.view.Ticket;
@@ -35,7 +31,6 @@ import net.weesftw.view.TicketOpen;
 import net.weesftw.view.TicketTable;
 import net.weesftw.view.UI;
 import net.weesftw.view.User;
-import net.weesftw.vo.CompanyVO;
 import net.weesftw.vo.PeopleVO;
 import net.weesftw.vo.TicketVO;
 import net.weesftw.vo.UserVO;
@@ -55,8 +50,7 @@ public class Action implements ActionListener
 	{
 		String action = e.getActionCommand();
 		DesktopPane d = null;
-		
-		Main m = Main.instance;
+		Main m = Main.instance;		
 		
 		if(m != null)
 		{
@@ -67,7 +61,6 @@ public class Action implements ActionListener
 		{
 			Login l = ((Login) ui);
 			UserDAO ud = new UserDAO();
-			PeopleDAO pd = new PeopleDAO();
 			Window c = (Window) ui.getUI();
 			
 			String user = l.getUser().getText();
@@ -81,18 +74,12 @@ public class Action implements ActionListener
 				{
 					if(ud.isValid(user, passwd))
 					{
+						PeopleDAO pd = new PeopleDAO();
+						PeopleVO p = pd.searchByUser(user);
+						
 						c.dispose();
 						
-						try 
-						{
-							PeopleVO p = pd.search(Type.USERNAME, user);
-							
-							new Main(p);
-						} 
-						catch(TypeException ex) 
-						{
-							ex.printStackTrace();
-						}
+						new Main(p);
 					}
 					else
 					{
@@ -108,8 +95,8 @@ public class Action implements ActionListener
 		else if(ui instanceof Client)
 		{
 			Client c = ((Client) ui);
-			
-			if(action == c.getChoose().getActionCommand())
+
+			if(action.equals(c.getChoose().getActionCommand()))
 			{
 				JFileChooser f = new JFileChooser();
 				
@@ -118,7 +105,7 @@ public class Action implements ActionListener
 					c.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
 				}
 			}
-			else if(action == c.getSubmit().getActionCommand())
+			else if(action.equals(c.getSubmit().getActionCommand()))
 			{
 				PeopleDAO pd = new PeopleDAO();
 				
@@ -130,13 +117,13 @@ public class Action implements ActionListener
 				String date = c.getDate().getText();
 				Gender gender = Gender.valueOf(c.getGender().getSelectedItem().toString());
 				String zipCode = c.getZipCode().getText();
-				String img = c.getImg().getRoot();
+				String img = c.getImg().getUrl();
 				
 				if(!(cpf.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || date.isEmpty() || gender == null || zipCode.isEmpty() || img.isEmpty()))
 				{
 					pd.add(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
 					
-					JOptionPane.showMessageDialog(null, "Client created succefully.");
+					JOptionPane.showMessageDialog(null, "Register created succefully.");
 					
 					c.getUI().dispose();
 				}
@@ -146,75 +133,82 @@ public class Action implements ActionListener
 				}
 				
 			}
-			else if(action.length() == 8)
-			{
-				try 
+			else if(action.equals(c.getSearch().getActionCommand()))
+			{				
+				if(c.getZipCode().getText().length() == 8)
 				{
-					CepAPI cep = new CepAPI(e.getActionCommand());
-					
-					c.getNeighborhood().setText(cep.getBairro());
-					c.getAddress().setText(cep.getLogradouro());
-					c.getCity().setText(cep.getLocalidade());
-					c.getState().setText(cep.getUf());
-				} 
-				catch (ParserConfigurationException | SAXException | IOException e1) 
-				{
-					e1.printStackTrace();
-				}
-			}
-			else
-			{
-				d.add(new Client());
-			}
-		}
-		else if(ui instanceof Company)
-		{
-			Company co = ((Company) ui);
-			PeopleDAO pd = new PeopleDAO();
-			
-			if(action.length() == 11)
-			{
-				PeopleVO p;
-				
-				try 
-				{
-					p = pd.search(Type.CPF, co.getOwner().getText());
-					
-					co.getImage().loadImage(p.getByte());
-				} 
-				catch(TypeException ex) 
-				{
-					ex.printStackTrace();
-				}
-				
-			}
-			else if(action == co.getSubmit().getActionCommand())
-			{
-				CompanyDAO cod = new CompanyDAO();
-				
-				String cnpj = co.getCnpj().getText();
-				String name = co.getName().getText();
-				String owner = co.getOwner().getText();
-				String zipCode = co.getZipCode().getText();
-				
-				if(!(cnpj.isEmpty() || name.isEmpty() || owner.isEmpty() || zipCode.isEmpty()))
-				{
-					cod.add(new CompanyVO(cnpj, name, owner, zipCode));
-					
-					JOptionPane.showMessageDialog(null, "Company created succefully.");
-					
-					co.getUI().dispose();
+					try
+					{
+						CepAPI cep = new CepAPI(e.getActionCommand());
+						
+						c.getNeighborhood().setText(cep.getBairro());
+						c.getAddress().setText(cep.getLogradouro());
+						c.getCity().setText(cep.getLocalidade());
+						c.getState().setText(cep.getUf());
+					} 
+					catch (ParserConfigurationException | SAXException | IOException ex) 
+					{
+						ex.printStackTrace();
+					}	
 				}
 				else
-				{
-					JOptionPane.showMessageDialog(null, "Fields is empty, please fill.");
+				{					
+					JOptionPane.showMessageDialog(null, "Zip Code Invalid.");
 				}
 			}
 			else
 			{
-				d.add(new Company());
+				d.add(new Client());					
 			}
 		}
+//		else if(ui instanceof Company)
+//		{
+//			Company co = ((Company) ui);
+//			PeopleDAO pd = new PeopleDAO();
+//			
+//			if(action.length() == 11)
+//			{
+//				PeopleVO p;
+//				
+//				try 
+//				{
+//					p = pd.search(Type.CPF, co.getOwner().getText());
+//					
+//					co.getImage().loadImage(p.getByte());
+//				} 
+//				catch(TypeException ex) 
+//				{
+//					ex.printStackTrace();
+//				}
+//				
+//			}
+//			else if(action == co.getSubmit().getActionCommand())
+//			{
+//				CompanyDAO cod = new CompanyDAO();
+//				
+//				String cnpj = co.getCnpj().getText();
+//				String name = co.getName().getText();
+//				String owner = co.getOwner().getText();
+//				String zipCode = co.getZipCode().getText();
+//				
+//				if(!(cnpj.isEmpty() || name.isEmpty() || owner.isEmpty() || zipCode.isEmpty()))
+//				{
+//					cod.add(new CompanyVO(cnpj, name, owner, zipCode));
+//					
+//					JOptionPane.showMessageDialog(null, "Company created succefully.");
+//					
+//					co.getUI().dispose();
+//				}
+//				else
+//				{
+//					JOptionPane.showMessageDialog(null, "Fields is empty, please fill.");
+//				}
+//			}
+//			else
+//			{
+//				d.add(new Company());
+//			}
+//		}
 		else if(ui instanceof Ticket)
 		{
 			Ticket t = ((Ticket) ui);
@@ -246,7 +240,7 @@ public class Action implements ActionListener
 				}
 			}
 			else
-			{
+			{				
 				d.add(new Ticket());
 			}
 		}

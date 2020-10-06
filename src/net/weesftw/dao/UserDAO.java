@@ -26,7 +26,7 @@ public class UserDAO implements DataAcess<UserVO>
 				String cpf = rs.getString(1);
 				String user = rs.getString(2);
 				String passwd = rs.getString(3);
-				Department department = Department.valueOf(rs.getString(4));
+				Department department = Department.valueOf(rs.getString(4).toUpperCase());
 				
 				return new UserVO(cpf, user, passwd, department);
 			}

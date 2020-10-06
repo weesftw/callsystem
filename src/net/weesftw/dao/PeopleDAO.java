@@ -10,36 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.weesftw.constraint.Gender;
-import net.weesftw.constraint.Type;
-import net.weesftw.exception.TypeException;
 import net.weesftw.manager.Database;
 import net.weesftw.vo.PeopleVO;
 
 public class PeopleDAO implements DataAcess<PeopleVO>
 {	
-	public PeopleVO search(Type type, String args) throws TypeException
+	public PeopleVO searchByUser(String user)
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select `people`.`cpf`, `people`.`firstName`, `people`.`lastName`, `people`.`phoneNumber`, `people`.`email`, `people`.`dateBorn`, `people`.`gender`, `people`.`zipCode`, `people`.`photo` as `people` from `people` where `people`.`cpf` = ?");
-				PreparedStatement stmt2 = d.con.prepareStatement("select `people`.`cpf`, `people`.`firstName`, `people`.`lastName`, `people`.`phoneNumber`, `people`.`email`, `people`.`dateBorn`, `people`.`gender`, `people`.`zipCode`, `people`.`photo` as `people` from `people` join `user` on `people`.`cpf` = `user`.`cpf` where `user`.`username` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("select `people`.`cpf`, `people`.`firstName`, `people`.`lastName`, `people`.`phoneNumber`, `people`.`email`, `people`.`dateBorn`, `people`.`gender`, `people`.`zipCode`, `people`.`photo` as `people` from `people` join `user` on `people`.`cpf` = `user`.`cpf` where `user`.`username` = ?"))
 		{
-			stmt.setString(1, args);
-			stmt2.setString(1, args);
+			stmt.setString(1, user);
 			
-			ResultSet rs = null;
-			
-			if(type == Type.CPF)
-			{
-				rs = stmt.executeQuery();
-			}
-			else if(type == Type.USERNAME)
-			{
-				rs = stmt2.executeQuery();
-			}
-			else
-			{
-				throw new TypeException();
-			}
+			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
 			{
@@ -94,13 +77,9 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 			
 			return true;
 		}
-		catch(SQLException ex)
+		catch(SQLException | IOException ex)
 		{
 			ex.printStackTrace();
-		}
-		catch(IOException ex1)
-		{
-			ex1.printStackTrace();
 		}
 		
 		return false;
@@ -219,10 +198,10 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 				String zipCode = rs.getString(8);
 				byte[] img = rs.getBytes(9);
 				
-				l.add(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
-				
-				return l;
+				l.add(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));				
 			}
+			
+			return l;
 		}
 		catch(SQLException ex)
 		{

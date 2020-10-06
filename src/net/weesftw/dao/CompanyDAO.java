@@ -38,8 +38,10 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 	public CompanyVO search(CompanyVO c) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select * from `company`"))
+				PreparedStatement stmt = d.con.prepareStatement("select * from `company` where `cnpj` = ?"))
 		{
+			stmt.setString(1, c.getCnpj());
+			
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
@@ -64,12 +66,12 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 	public boolean update(CompanyVO c) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("update `company` set `cnpj` = ?, `name` = ?, `owner` = ?, `zipCode` = ? where `cnpj` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("update `company` set `owner` = ?, `name` = ?, `zipCode` = ? where `cnpj` = ?"))
 		{
-			stmt.setString(1, c.getCnpj());
-			stmt.setString(2, c.getName());
-			stmt.setString(3, c.getOwner());
-			stmt.setString(4, c.getZipCode());
+			stmt.setString(1, c.getName());
+			stmt.setString(2, c.getOwner());
+			stmt.setString(3, c.getZipCode());
+			stmt.setString(4, c.getCnpj());
 			
 			stmt.execute();
 			
@@ -132,5 +134,4 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 		
 		return null;
 	}
-
 }

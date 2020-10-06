@@ -13,7 +13,7 @@ public enum Department
 	private int id;
 	private boolean privilege;
 	
-	public boolean getPrivilege()
+	public boolean isPrivilege()
 	{
 		return privilege;
 	}

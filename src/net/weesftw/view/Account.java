@@ -8,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import net.weesftw.constraint.ImagePath;
 import net.weesftw.manager.CepAPI;
 import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
@@ -24,11 +25,10 @@ public class Account extends UI<InternalFrame>
 		PeopleVO p = Main.instance.getAuth().getPeople();
 		Panel p2 = new Panel("Your Account", 4, 4, 4, 4);
 		Panel p1 = new Panel("Photo", 4, 4, 4, 4);
-		Label img = new Label();
-		
-		img.loadImage(p.getByte(), 120, 120);
+		Label img = new Label();		
 		
 		p1.setComponent(img);
+		img.loadImage(p.getByte(), 160, 160);
 		
 		p2.setComponent(new Label("Name: "));
 		p2.setComponent(new TextField(30, p.getFirstName() + " " + p.getLastName(), false), 0, 1);
