@@ -12,7 +12,7 @@ import javax.swing.table.TableRowSorter;
 
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Action;
-import net.weesftw.manager.Mouse;
+import net.weesftw.manager.MouseAction;
 import net.weesftw.model.AbstractTable;
 import net.weesftw.model.Button;
 import net.weesftw.model.ComboBox;
@@ -57,7 +57,7 @@ public class TicketTable extends UI<InternalFrame>
 		r.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		
 		t.setRowSorter(sorter);
-		t.addMouseListener(new Mouse(this));
+		t.addMouseListener(new MouseAction(this));
 		t.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		t.getTableHeader().setReorderingAllowed(false);
 		t.getColumnModel().getColumn(0).setPreferredWidth(50);

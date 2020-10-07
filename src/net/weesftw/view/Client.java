@@ -59,8 +59,6 @@ public class Client extends UI<InternalFrame>
 		
 		p2.setComponent(new Label("Zip Code: "));
 		p2.setComponent(zipCode, 1, 0);
-		p2.setComponent(search, 1, 0);
-		search.addActionListener(new Action(this));
 		
 		p2.setComponent(new Label("Neighborhood: "), 2, 0);
 		p2.setComponent(neighborhood, 3, 0);
@@ -126,7 +124,6 @@ public class Client extends UI<InternalFrame>
 		}
 		
 		ui.pack();
-		submit.setComponentZOrder(submit, ui.getComponentZOrder(zipCode) + 1);
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		ui.setVisible(true);
 	}

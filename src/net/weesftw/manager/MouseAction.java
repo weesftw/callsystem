@@ -9,11 +9,11 @@ import net.weesftw.view.TicketTable;
 import net.weesftw.view.UI;
 import net.weesftw.vo.TicketVO;
 
-public class Mouse extends MouseAdapter
+public class MouseAction extends MouseAdapter
 {
 	private UI<?> ui;
 	
-	public Mouse(UI<?> ui)
+	public MouseAction(UI<?> ui)
 	{
 		this.ui = ui;
 	}
