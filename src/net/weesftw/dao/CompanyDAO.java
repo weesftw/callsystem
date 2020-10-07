@@ -12,7 +12,7 @@ import net.weesftw.vo.CompanyVO;
 public class CompanyDAO implements DataAcess<CompanyVO> 
 {
 	@Override
-	public boolean add(CompanyVO c) 
+	public boolean create(CompanyVO c) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("insert into `company` (`cnpj`, `name`, `owner`, `zipCode`) value (?, ?, ?, ?)"))
@@ -35,7 +35,7 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 	}
 
 	@Override
-	public CompanyVO search(CompanyVO c) 
+	public CompanyVO read(CompanyVO c) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("select * from `company` where `cnpj` = ?"))
@@ -86,7 +86,7 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 	}
 
 	@Override
-	public boolean remove(CompanyVO c) 
+	public boolean delete(CompanyVO c) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("delete from `company` where `cnpj` = ?"))

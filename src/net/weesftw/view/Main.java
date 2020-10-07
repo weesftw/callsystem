@@ -27,7 +27,7 @@ public final class Main extends UI<Frame>
 		
 		c.add(d = new DesktopPane());
 		
-		ui.setSize(1024, 768);
+		ui.setSize(1176, 800);
 		ui.setResizable(false);
 		ui.setLocationRelativeTo(null);
 		ui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

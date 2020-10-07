@@ -46,9 +46,7 @@ public final class CepAPI
 	}	
 	
 	public CepAPI(String cep, String logradouro, String bairro, String localidade, String uf, String ddd, String country) 
-	{
-		super();
-		
+	{		
 		this.cep = cep;
 		this.logradouro = logradouro;
 		this.bairro = bairro;

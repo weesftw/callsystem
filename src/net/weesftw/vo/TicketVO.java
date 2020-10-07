@@ -9,114 +9,99 @@ import net.weesftw.constraint.Status;
 public class TicketVO 
 {	
 	private int id;
-	private Status status;
-	private Timestamp timestamp;
-	private Product product;
-	private boolean priority;
+	private String title, client, company, user, description, solution;
+	private Timestamp time;
 	private Category category;
-	private String title, description, company, client, user, solution;
-
-	public TicketVO(int id, Status status, Timestamp timestamp, Product product, boolean priority, Category category, String title, String description, String company, String client, String user, String solution) 
+	private Product product;
+	private Status status;
+	private boolean priority;
+	
+	public TicketVO(String title, String client, String company, String user, String description, Category category, Product product, boolean priority)
 	{
-		this.id = id;
-		this.status = status;
-		this.timestamp = timestamp;
+		this.title = title;
+		this.client = client;
+		this.company = company;
+		this.user = user;
+		this.description = description;
+		this.category = category;
 		this.product = product;
 		this.priority = priority;
-		this.category = category;
-		this.title = title;
-		this.description = description;
-		this.company = company;
-		this.client = client;
-		this.user = user;
-		this.solution = solution;
 	}
 	
-	public TicketVO(int id, Status status, Product product, boolean priority, Category category, String title, String description, String company, String client, String user, String solution) 
+	public TicketVO(int id, String title, String client, String company, String user, String description, String solution, Timestamp time, Category category, Product product, Status status, boolean priority) 
 	{
 		this.id = id;
+		this.title = title;
+		this.client = client;
+		this.company = company;
+		this.user = user;
+		this.description = description;
+		this.solution = solution;
+		this.time = time;
+		this.category = category;
+		this.product = product;
 		this.status = status;
-		this.product = product;
 		this.priority = priority;
-		this.category = category;
-		this.title = title;
-		this.description = description;
-		this.company = company;
-		this.client = client;
-		this.user = user;
-		this.solution = solution;
-	}
-	
-	public TicketVO(Product product, boolean priority, Category category, String title, String description, String company, String client, String user, String solution) 
-	{
-		this.product = product;
-		this.priority = priority;
-		this.category = category;
-		this.title = title;
-		this.description = description;
-		this.company = company;
-		this.client = client;
-		this.user = user;
-		this.solution = solution;
 	}
 
 	public int getId() 
 	{
 		return id;
 	}
-
-	public Status getStatus() 
-	{
-		return status;
-	}
-
-	public Timestamp getTimestamp() 
-	{
-		return timestamp;
-	}
-
-	public Product getProduct() 
-	{
-		return product;
-	}
-
-	public boolean isPriority() 
-	{
-		return priority;
-	}
-
-	public Category getCategory() 
-	{
-		return category;
-	}
-
+	
 	public String getTitle() 
 	{
 		return title;
 	}
-
-	public String getDescription() 
-	{
-		return description;
-	}
-
-	public String getCompany() 
-	{
-		return company;
-	}
-
+	
 	public String getClient() 
 	{
 		return client;
 	}
-
+	
+	public String getCompany()
+	{
+		return company;
+	}
+	
 	public String getUser() 
 	{
 		return user;
 	}
 	
-	public String getSolution()
+	public String getDescription() 
+	{
+		return description;
+	}
+	
+	public String getSolution() 
 	{
 		return solution;
 	}
+	
+	public Timestamp getTimestamp()
+	{
+		return time;
+	}
+	
+	public Category getCategory() 
+	{
+		return category;
+	}
+	
+	public Product getProduct() 
+	{
+		return product;
+	}
+	
+	public Status getStatus() 
+	{
+		return status;
+	}
+	
+	public boolean isPriority() 
+	{
+		
+		return priority;
+	}	
 }

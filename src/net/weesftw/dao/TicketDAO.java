@@ -16,7 +16,7 @@ import net.weesftw.vo.TicketVO;
 public class TicketDAO implements DataAcess<TicketVO>
 {
 	@Override
-	public boolean add(TicketVO e) 
+	public boolean create(TicketVO e) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("insert into `ticket` (`title`, `client`, `company`, `user`, `category`, `product`, `description`, `priority`) value (?, ?, ?, ?, ?, ?, ?, ?)"))
@@ -43,7 +43,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 	}
 
 	@Override
-	public TicketVO search(TicketVO e) 
+	public TicketVO read(TicketVO e) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("select `ticket`.`id`, `ticket`.`title`, `ticket`.`client`, `ticket`.`company`, `ticket`.`user`, `ticket`.`time`, `category`.`name`, `product`.`name`, `ticket`.`description`, `ticket`.`solution`, `ticket`.`priority`, `ticket`.`status` from `ticket` join `category` on `category`.`id` = `ticket`.`id` join `product` on `product`.`id` = `ticket`.`product`"))
@@ -65,7 +65,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 				boolean priority = rs.getBoolean(11);
 				Status status = Status.valueOf(rs.getString(12));
 				
-				return new TicketVO(id, status, time, product, priority, category, title, description, company, client, user, solution);
+				return new TicketVO(id, title, client, company, user, description, solution, time, category, product, status, priority);
 			}
 		}
 		catch(SQLException ex)
@@ -100,7 +100,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 	}
 
 	@Override
-	public boolean remove(TicketVO e) 
+	public boolean delete(TicketVO e) 
 	{
 		return false;
 	}
@@ -111,8 +111,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 		List<TicketVO> l = new ArrayList<TicketVO>();
 		
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("\r\n"
-						+ "select `ticket`.`id`, `ticket`.`title`, `people`.`firstName` as `firstName`, `people`.`lastName` as `lastName`, `company`.`name` as `company`, `user`.`username` as `user`, `ticket`.`time`, `category`.`name` as `category`, `product`.`name` as `product`, `ticket`.`description`, `ticket`.`solution`, `ticket`.`priority`, `ticket`.`status` from `ticket` join `category` on `category`.`id` = `ticket`.`category` join `product` on `product`.`id` = `ticket`.`product` join `people` on `people`.`cpf` = `ticket`.`client` join `company` on `company`.`cnpj` = `ticket`.`company` join `user` on `user`.`cpf` = `ticket`.`user`"))
+				PreparedStatement stmt = d.con.prepareStatement("select `ticket`.`id`, `ticket`.`title`, `people`.`firstName` as `firstName`, `people`.`lastName` as `lastName`, `company`.`name` as `company`, `user`.`username` as `user`, `ticket`.`time`, `category`.`name` as `category`, `product`.`name` as `product`, `ticket`.`description`, `ticket`.`solution`, `ticket`.`priority`, `ticket`.`status` from `ticket` join `category` on `category`.`id` = `ticket`.`category` join `product` on `product`.`id` = `ticket`.`product` join `people` on `people`.`cpf` = `ticket`.`client` join `company` on `company`.`cnpj` = `ticket`.`company` join `user` on `user`.`cpf` = `ticket`.`user`"))
 		{
 			ResultSet rs = stmt.executeQuery();
 			
@@ -131,7 +130,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 				boolean priority = rs.getBoolean(12);
 				Status status = Status.valueOf(rs.getString(13));
 				
-				l.add(new TicketVO(id, status, time, product, priority, category, title, description, company, client, user, solution));				
+				l.add(new TicketVO(id, title, client, company, user, description, solution, time, category, product, status, priority));				
 			}
 			
 			return l;

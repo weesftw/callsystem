@@ -14,6 +14,8 @@ public final class Menu extends UI<JMenuBar>
 		
 		JMenu file = new JMenu("File");
 		JMenu fileMenu = new JMenu("New");
+		JMenu edit = new JMenu("View");
+		JMenu info = new JMenu("Info");
 		
 		JMenuItem client = new JMenuItem("Client");
 		client.addActionListener(new Action(new Client()));
@@ -24,12 +26,8 @@ public final class Menu extends UI<JMenuBar>
 		JMenuItem user = new JMenuItem("User");
 		user.addActionListener(new Action(new User()));
 		
-		JMenu edit = new JMenu("View");
-		
 		JMenuItem ticketTable = new JMenuItem("Ticket");
 		ticketTable.addActionListener(new Action(new TicketTable()));
-		
-		JMenu info = new JMenu("Info");
 		
 		JMenuItem account = new JMenuItem("Account");
 		account.addActionListener(new Action(new Account()));

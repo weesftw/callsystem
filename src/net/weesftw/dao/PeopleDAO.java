@@ -48,7 +48,7 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 	}
 	
 	@Override
-	public boolean add(PeopleVO p) 
+	public boolean create(PeopleVO p) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("insert into `people` (`cpf`, `firstName`, `lastName`, `phoneNumber`, `email`, `dateBorn`, `gender`, `zipCode`, `photo`) value (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -86,7 +86,7 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 	}
 
 	@Override
-	public PeopleVO search(PeopleVO p) 
+	public PeopleVO read(PeopleVO p) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("select * from `people` where cpf = ?"))
@@ -105,9 +105,9 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 				String date = rs.getString(6);
 				Gender gender = Gender.valueOf(rs.getString(7));
 				String zipCode = rs.getString(7);
-				byte[] img = rs.getBytes(9);
+				byte[] b = rs.getBytes(9);
 				
-				return new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img);
+				return new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, b);
 			}
 		}
 		catch(SQLException ex)
@@ -157,7 +157,7 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 	}
 
 	@Override
-	public boolean remove(PeopleVO p) 
+	public boolean delete(PeopleVO p) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("delete from `people` where `cpf` = ?"))
@@ -196,9 +196,9 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 				String date = rs.getString(6);
 				Gender gender = Gender.valueOf(rs.getString(7));
 				String zipCode = rs.getString(8);
-				byte[] img = rs.getBytes(9);
+				byte[] b = rs.getBytes(9);
 				
-				l.add(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));				
+				l.add(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, b));				
 			}
 			
 			return l;

@@ -17,7 +17,7 @@ import net.weesftw.model.TextField;
 
 public class Client extends UI<InternalFrame>
 {
-	private boolean privilege = false;
+	private boolean privilege;
 	
 	private Button submit, choose, search;
 	private ComboBox<Gender> gender;

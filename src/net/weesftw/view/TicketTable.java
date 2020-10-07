@@ -57,6 +57,7 @@ public class TicketTable extends UI<InternalFrame>
 		r.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		
 		t.setRowSorter(sorter);
+		t.setBackground(Color.WHITE);
 		t.addMouseListener(new MouseAction(this));
 		t.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		t.getTableHeader().setReorderingAllowed(false);
@@ -65,7 +66,6 @@ public class TicketTable extends UI<InternalFrame>
 		t.getColumnModel().getColumn(2).setPreferredWidth(90);
 		t.getColumnModel().getColumn(3).setPreferredWidth(90);
 		t.getColumnModel().getColumn(6).setPreferredWidth(50);
-		
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{

@@ -60,7 +60,7 @@ public class UserDAO implements DataAcess<UserVO>
 	}
 	
 	@Override
-	public boolean add(UserVO u) 
+	public boolean create(UserVO u) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("insert into `user` (`cpf`, `username`, `passwd`, `department`) value (?, ?, ?, ?)"))
@@ -83,7 +83,7 @@ public class UserDAO implements DataAcess<UserVO>
 	}
 
 	@Override
-	public UserVO search(UserVO u) 
+	public UserVO read(UserVO u) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id` where `cpf` = ?"))
@@ -133,7 +133,7 @@ public class UserDAO implements DataAcess<UserVO>
 	}
 
 	@Override
-	public boolean remove(UserVO p) 
+	public boolean delete(UserVO p) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("delete from `user` where `cpf` = ?"))

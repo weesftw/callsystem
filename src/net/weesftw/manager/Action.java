@@ -4,6 +4,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -95,7 +96,7 @@ public class Action implements ActionListener
 		else if(ui instanceof Client)
 		{
 			Client c = ((Client) ui);
-
+			
 			if(action.equals(c.getChoose().getActionCommand()))
 			{
 				JFileChooser f = new JFileChooser();
@@ -104,6 +105,8 @@ public class Action implements ActionListener
 				{
 					c.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
 				}
+				
+				return;
 			}
 			else if(action.equals(c.getSubmit().getActionCommand()))
 			{
@@ -121,17 +124,16 @@ public class Action implements ActionListener
 				
 				if(!(cpf.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || date.isEmpty() || gender == null || zipCode.isEmpty() || img.isEmpty()))
 				{
-					pd.add(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
+					pd.create(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
 					
-					JOptionPane.showMessageDialog(null, "Register created succefully.");
+					JOptionPane.showMessageDialog(null, "Register created successfully.");
 					
 					c.getUI().dispose();
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Fields is empty, please fill.");
+					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
 				}
-				
 			}
 			else if(action.equals(c.getSearch().getActionCommand()))
 			{				
@@ -161,54 +163,6 @@ public class Action implements ActionListener
 				d.add(new Client());					
 			}
 		}
-//		else if(ui instanceof Company)
-//		{
-//			Company co = ((Company) ui);
-//			PeopleDAO pd = new PeopleDAO();
-//			
-//			if(action.length() == 11)
-//			{
-//				PeopleVO p;
-//				
-//				try 
-//				{
-//					p = pd.search(Type.CPF, co.getOwner().getText());
-//					
-//					co.getImage().loadImage(p.getByte());
-//				} 
-//				catch(TypeException ex) 
-//				{
-//					ex.printStackTrace();
-//				}
-//				
-//			}
-//			else if(action == co.getSubmit().getActionCommand())
-//			{
-//				CompanyDAO cod = new CompanyDAO();
-//				
-//				String cnpj = co.getCnpj().getText();
-//				String name = co.getName().getText();
-//				String owner = co.getOwner().getText();
-//				String zipCode = co.getZipCode().getText();
-//				
-//				if(!(cnpj.isEmpty() || name.isEmpty() || owner.isEmpty() || zipCode.isEmpty()))
-//				{
-//					cod.add(new CompanyVO(cnpj, name, owner, zipCode));
-//					
-//					JOptionPane.showMessageDialog(null, "Company created succefully.");
-//					
-//					co.getUI().dispose();
-//				}
-//				else
-//				{
-//					JOptionPane.showMessageDialog(null, "Fields is empty, please fill.");
-//				}
-//			}
-//			else
-//			{
-//				d.add(new Company());
-//			}
-//		}
 		else if(ui instanceof Ticket)
 		{
 			Ticket t = ((Ticket) ui);
@@ -226,17 +180,17 @@ public class Action implements ActionListener
 				String description = t.getDescription().getText();
 				String user = m.getAuth().getPeople().getCpf();
 				
-				if(!(category == null || product == null) || client.isEmpty() || title.isEmpty() || company.isEmpty() || description.isEmpty() || user.isEmpty())
+				if(category != null && product != null && !client.isEmpty() && !title.isEmpty() && !company.isEmpty() && !description.isEmpty() && !user.isEmpty())
 				{
-					td.add(new TicketVO(product, priority, category, title, description, company, client, user, null));
+					td.create(new TicketVO(title, client, company, user, description, category, product, priority));
 					
-					JOptionPane.showMessageDialog(null, "Ticket created succefully.");
+					JOptionPane.showMessageDialog(null, "Ticket created successfully.");
 					
 					t.getUI().dispose();
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Fields is empty, please fill.");
+					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
 				}
 			}
 			else
@@ -248,26 +202,47 @@ public class Action implements ActionListener
 		{
 			User u = ((User) ui);
 			
-			if(action == u.getSubmit().getActionCommand())
+			if(action.equals(u.getChoose().getActionCommand()))
+			{
+				JFileChooser f = new JFileChooser();
+				
+				if(f.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+				{
+					u.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
+				}
+				
+				return;
+			}
+			if(action.equals(u.getSubmit().getActionCommand()))
 			{
 				UserDAO ud = new UserDAO();
+				PeopleDAO pd = new PeopleDAO();
 				
 				String cpf = u.getCpf().getText();
+				String firstName = u.getFirstName().getText();
+				String lastName = u.getLastName().getText();
+				String phoneNumber = u.getPhoneNumber().getText();
+				String email = u.getEmail().getText();
+				String date = u.getDate().getText();
+				Gender gender = Gender.valueOf(u.getGender().getSelectedItem().toString());
+				String zipCode = u.getZipCode().getText();
+				String img = u.getImg().getUrl();
 				String username = u.getUser().getText();
 				String passwd = u.getPasswd().getText();
 				Department department = Department.valueOf(u.getDepartment().getSelectedItem().toString());
 				
-				if(!(cpf.isEmpty() || username.isEmpty() || passwd.isEmpty()))
+				if(!(cpf.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || date.isEmpty() || gender == null || zipCode.isEmpty() || img.isEmpty() && !cpf.isEmpty() && !username.isEmpty() && !passwd.isEmpty() && department != null))
 				{
-					ud.add(new UserVO(cpf, username, passwd, department));
+					pd.create(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
+					ud.create(new UserVO(cpf, username, passwd, department));
 					
-					JOptionPane.showMessageDialog(null, "User created succefully.");
+					JOptionPane.showMessageDialog(null, "Register created succefully.");
 					
 					u.getUI().dispose();
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Fields is empty, please fill.");
+					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
 				}
 			}
 			else
@@ -289,7 +264,7 @@ public class Action implements ActionListener
 		{
 			TicketTable t = ((TicketTable) ui);
 			
-			if(action == t.getBtn().getActionCommand())
+			if(action.equals(t.getBtn().getActionCommand()))
 			{				
 				String id = t.getId().getText();
 				String title = t.getTitle().getText();
@@ -346,7 +321,7 @@ public class Action implements ActionListener
 		{
 			TicketOpen t = ((TicketOpen) ui);
 			
-			if(action == t.getSubmit().getActionCommand())
+			if(action.equals(t.getSubmit().getActionCommand()))
 			{
 				TicketDAO td = new TicketDAO();
 				
@@ -361,10 +336,11 @@ public class Action implements ActionListener
 				String client = t.getClient().getText();
 				String user = t.getUser().getText();
 				String solution = t.getSolution().getText();
+				Timestamp time = new Timestamp(System.currentTimeMillis());
 				
 				if(!(solution.isEmpty()))
 				{
-					td.update(new TicketVO(id, status, product, priority, category, title, description, company, client, user, solution));
+					td.update(new TicketVO(id, title, client, company, user, description, solution, time, category, product, status, priority));
 					
 					JOptionPane.showMessageDialog(null, "Ticket updated.");
 					
@@ -372,7 +348,7 @@ public class Action implements ActionListener
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Solution is empty.");
+					JOptionPane.showMessageDialog(null, "The solution's empty.");
 				}
 			}
 		}

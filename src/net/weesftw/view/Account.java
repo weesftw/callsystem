@@ -8,7 +8,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import net.weesftw.constraint.ImagePath;
 import net.weesftw.manager.CepAPI;
 import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;

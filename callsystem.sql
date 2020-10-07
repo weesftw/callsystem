@@ -118,12 +118,14 @@ create table if not exists `sell`
 (
 	`id` int unsigned auto_increment,
 	`product` tinyint unsigned not null,
-	`cpf` varchar(14),
+    `by` varchar(14) not null,
+	`cpf` varchar(14) not null,
 	`cnpj` varchar(18),
 	`date` timestamp default current_timestamp,
 	`observation` varchar(256),
 
 	constraint primary key(`id`),
 	constraint foreign key(`cpf`) references `people`(`cpf`),
+    constraint foreign key(`by`) references `user`(`cpf`),
 	constraint foreign key(`cnpj`) references `company`(`cnpj`)
 )Engine=InnoDB;
