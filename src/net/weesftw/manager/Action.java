@@ -19,6 +19,7 @@ import net.weesftw.constraint.Department;
 import net.weesftw.constraint.Gender;
 import net.weesftw.constraint.Product;
 import net.weesftw.constraint.Status;
+import net.weesftw.dao.CompanyDAO;
 import net.weesftw.dao.PeopleDAO;
 import net.weesftw.dao.TicketDAO;
 import net.weesftw.dao.UserDAO;
@@ -69,7 +70,7 @@ public class Action implements ActionListener
 			
 			if((!user.isEmpty() && !passwd.isEmpty()))
 			{
-				UserVO us = ud.search(user);
+				UserVO us = ud.searchByUser(user);
 				
 				if(us != null)
 				{
@@ -80,7 +81,7 @@ public class Action implements ActionListener
 						
 						c.dispose();
 						
-						new Main(p);
+						new Main(p, us);
 					}
 					else
 					{
@@ -124,20 +125,29 @@ public class Action implements ActionListener
 				
 				if(!(cpf.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || date.isEmpty() || gender == null || zipCode.isEmpty() || img.isEmpty()))
 				{
-					pd.create(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
-					
-					JOptionPane.showMessageDialog(null, "Register created successfully.");
-					
-					c.getUI().dispose();
+					if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
+					{
+						pd.create(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
+						
+						JOptionPane.showMessageDialog(null, "Register created successfully.");
+						
+						c.getUI().dispose();						
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+					}
 				}
 				else
 				{
 					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
 				}
 			}
-			else if(action.equals(c.getSearch().getActionCommand()))
+			else if(action.equals(c.getZipCode().getText()))
 			{				
-				if(c.getZipCode().getText().length() == 8)
+				String zipCode = c.getZipCode().getText();
+				
+				if(zipCode.length() == 8 && zipCode.matches(Regex.CEP))
 				{
 					try
 					{
@@ -167,9 +177,15 @@ public class Action implements ActionListener
 		{
 			Ticket t = ((Ticket) ui);
 			
-			if(action == t.getSubmit().getActionCommand())
+			if(action.equals(t.getPj().getActionCommand()))
+			{
+				t.getCompany().setEditable(t.getPj().isSelected() ? true : false);
+			}
+			else if(action.equals(t.getSubmit().getActionCommand()))
 			{
 				TicketDAO td = new TicketDAO();
+				PeopleDAO pd = new PeopleDAO();
+				CompanyDAO cd = new CompanyDAO();
 				
 				Category category = Category.valueOf(t.getCategory().getSelectedItem().toString());
 				Product product = Product.valueOf(t.getProduct().getSelectedItem().toString());
@@ -180,13 +196,56 @@ public class Action implements ActionListener
 				String description = t.getDescription().getText();
 				String user = m.getAuth().getPeople().getCpf();
 				
-				if(category != null && product != null && !client.isEmpty() && !title.isEmpty() && !company.isEmpty() && !description.isEmpty() && !user.isEmpty())
+				if(category != null && product != null && !title.isEmpty() && !description.isEmpty() && !user.isEmpty())
 				{
-					td.create(new TicketVO(title, client, company, user, description, category, product, priority));
-					
-					JOptionPane.showMessageDialog(null, "Ticket created successfully.");
-					
-					t.getUI().dispose();
+					if(t.getPj().isSelected())
+					{
+						if(company.matches(Regex.CNPJ) && client.matches(Regex.CPF))
+						{
+							if(pd.searchById(client) && cd.searchById(company))
+							{
+								td.create(new TicketVO(title, client, company, user, description, category, product, priority));
+								
+								JOptionPane.showMessageDialog(null, "Ticket created successfully.");
+								
+								t.getUI().dispose();							
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(null, "There is no record of this company.");
+							}
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+						}
+					}
+					else
+					{
+						if(client.matches(Regex.CPF))
+						{
+							System.out.println(pd.searchById(client));
+							
+							System.out.println("Client: " + client);
+							
+							if(pd.searchById(client))
+							{
+								td.create(new TicketVO(title, client, company, user, description, category, product, priority));
+								
+								JOptionPane.showMessageDialog(null, "Ticket created successfully.");
+								
+								t.getUI().dispose();							
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(null, "There is no record of this client.");
+							}
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+						}
+					}
 				}
 				else
 				{
@@ -233,12 +292,26 @@ public class Action implements ActionListener
 				
 				if(!(cpf.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || date.isEmpty() || gender == null || zipCode.isEmpty() || img.isEmpty() && !cpf.isEmpty() && !username.isEmpty() && !passwd.isEmpty() && department != null))
 				{
-					pd.create(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
-					ud.create(new UserVO(cpf, username, passwd, department));
-					
-					JOptionPane.showMessageDialog(null, "Register created succefully.");
-					
-					u.getUI().dispose();
+					if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
+					{
+						if(ud.searchByUser(username) != null)
+						{
+							pd.create(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
+							ud.create(new UserVO(cpf, username, passwd, department));
+							
+							JOptionPane.showMessageDialog(null, "Register created succefully.");
+							
+							u.getUI().dispose();							
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, "There is already someone with that username.");
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+					}
 				}
 				else
 				{
@@ -250,14 +323,8 @@ public class Action implements ActionListener
 				d.add(new User());
 			}
 		}
-//		else if(ui instanceof Product)
-//		{
-//			d.add(new Product());
-//		}
 		else if(ui instanceof Account)
-		{
-//			Account acc = ((Account) ui);
-			
+		{			
 			d.add(new Account());
 		}
 		else if(ui instanceof TicketTable)

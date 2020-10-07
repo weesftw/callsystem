@@ -25,7 +25,7 @@ public class Login extends UI<Frame>
 		passwd = new PasswordField(10);
 		submit = new Button("Sign In");
 		
-		p.setComponent(new Label("User: "), 0, 0);
+		p.setComponent(new Label("Username: "), 0, 0);
 		p.setComponent(user, 1, 0);
 		
 		p.setComponent(new Label("Password: "), 0, 1);

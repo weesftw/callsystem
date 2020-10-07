@@ -12,7 +12,7 @@ import net.weesftw.vo.UserVO;
 
 public class UserDAO implements DataAcess<UserVO> 
 {
-	public UserVO search(String username) 
+	public UserVO searchByUser(String username) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id` where `username` = ?"))

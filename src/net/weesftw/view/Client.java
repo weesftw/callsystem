@@ -16,9 +16,7 @@ import net.weesftw.model.Panel;
 import net.weesftw.model.TextField;
 
 public class Client extends UI<InternalFrame>
-{
-	private boolean privilege;
-	
+{	
 	private Button submit, choose, search;
 	private ComboBox<Gender> gender;
 	private Label img;
@@ -28,6 +26,7 @@ public class Client extends UI<InternalFrame>
 	{
 		super(new InternalFrame("Client", false, true, false, true));
 		
+		boolean privilege = Main.instance.getAuth().isPrivilege();
 		Panel p1 = new Panel("Photo", 4, 4, 4, 4);
 		Panel p2 = new Panel("New Client", 4, 4, 4, 4);
 		
@@ -59,6 +58,7 @@ public class Client extends UI<InternalFrame>
 		
 		p2.setComponent(new Label("Zip Code: "));
 		p2.setComponent(zipCode, 1, 0);
+		zipCode.addActionListener(new Action(this));
 		
 		p2.setComponent(new Label("Neighborhood: "), 2, 0);
 		p2.setComponent(neighborhood, 3, 0);

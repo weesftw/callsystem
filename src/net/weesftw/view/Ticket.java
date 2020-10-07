@@ -22,7 +22,7 @@ public class Ticket extends UI<InternalFrame>
 {
 	private Button submit;
 	private ComboBox<?> category, product;
-	private JCheckBox priority;
+	private JCheckBox priority, pj;
 	private TextArea description;
 	private TextField client, title, company;
 	
@@ -34,6 +34,7 @@ public class Ticket extends UI<InternalFrame>
 		category = new ComboBox<Category>(Category.values(), 15, 21);
 		product = new ComboBox<Product>(Product.values(), 15, 21);
 		priority = new JCheckBox("Priority");
+		pj = new JCheckBox("PJ");
 		client = new TextField(15);
 		title = new TextField(15);
 		company = new TextField(15);
@@ -50,6 +51,7 @@ public class Ticket extends UI<InternalFrame>
 		
 		p.setComponent(new Label("Company: "), 1, 0);
 		p.setComponent(company, 1, 1);
+		company.setEditable(false);
 		
 		p.setComponent(new Label("Title: "), 0, 2);
 		p.setComponent(title, 0, 3);
@@ -61,6 +63,10 @@ public class Ticket extends UI<InternalFrame>
 		p.setComponent(new Label("Product: "), 0, 4);
 		p.setComponent(product, 0, 5);
 		product.setBackground(Color.WHITE);
+		
+		p.setComponent(new Label("Select: "), 1, 4);
+		p.setComponent(pj, 1, 5);
+		pj.addActionListener(new Action(this));
 		
 		p.setComponent(new Label("Description: "), 0, 6);
 		p.setComponent(s, 0, 7, 100, 150, 2);
@@ -75,6 +81,11 @@ public class Ticket extends UI<InternalFrame>
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		ui.setVisible(true);
+	}
+	
+	public JCheckBox getPj()
+	{
+		return pj;
 	}
 
 	public Button getSubmit() 

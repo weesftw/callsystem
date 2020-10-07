@@ -14,7 +14,26 @@ import net.weesftw.manager.Database;
 import net.weesftw.vo.PeopleVO;
 
 public class PeopleDAO implements DataAcess<PeopleVO>
-{	
+{
+	public boolean searchById(String cpf)
+	{
+		try(Database d = new Database();
+				PreparedStatement stmt = d.con.prepareStatement("select * from `people` where `cpf` = ?"))
+		{
+			stmt.setString(1, cpf);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			return rs.next();
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	public PeopleVO searchByUser(String user)
 	{
 		try(Database d = new Database();

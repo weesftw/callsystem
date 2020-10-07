@@ -11,6 +11,25 @@ import net.weesftw.vo.CompanyVO;
 
 public class CompanyDAO implements DataAcess<CompanyVO> 
 {
+	public boolean searchById(String cnpj)
+	{
+		try(Database d = new Database();
+				PreparedStatement stmt = d.con.prepareStatement("select * from `company` where `cnpj` = ?"))
+		{
+			stmt.setString(1, cnpj);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			return rs.next();
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	@Override
 	public boolean create(CompanyVO c) 
 	{

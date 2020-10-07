@@ -32,6 +32,7 @@ public class TicketOpen extends UI<Dialog>
 	{
 		super(new Dialog("Ticket: " + t.getId(), true));
 		
+		boolean privilege = Main.instance.getAuth().isPrivilege();
 		SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
 		Panel p = new Panel("Ticket Detail", 4, 4, 4, 4);
 		
@@ -127,8 +128,11 @@ public class TicketOpen extends UI<Dialog>
 		p.setComponent(new Label("Description: "), 0, 5);
 		p.setComponent(s, 0, 6, 100, 150, 2);
 		
-		p.setComponent(new Label("Solution: "), 3, 5);
-		p.setComponent(s2, 3, 6, 100, 150);
+		if(privilege)
+		{
+			p.setComponent(new Label("Solution: "), 3, 5);
+			p.setComponent(s2, 3, 6, 100, 150);			
+		}
 		
 		p.setComponent(submit, 3, 7);
 		

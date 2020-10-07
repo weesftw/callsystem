@@ -8,6 +8,7 @@ import net.weesftw.manager.Authenticate;
 import net.weesftw.model.DesktopPane;
 import net.weesftw.model.Frame;
 import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.UserVO;
 
 public final class Main extends UI<Frame>
 {	
@@ -16,14 +17,14 @@ public final class Main extends UI<Frame>
 	private DesktopPane d;
 	private Authenticate auth;
 	
-	public Main(PeopleVO p)
+	public Main(PeopleVO p, UserVO v)
 	{
 		super(new Frame("Call System | Open your ticket."), true);
 		
 		Container c = ui.getContentPane();
 		
 		instance = this;
-		this.auth = new Authenticate(p);
+		this.auth = new Authenticate(p, v);
 		
 		c.add(d = new DesktopPane());
 		

@@ -96,7 +96,7 @@ create table if not exists `ticket`
 	`id` int(10) unsigned zerofill auto_increment,
 	`title` varchar(120) not null,
 	`client` varchar(14) not null,
-    `company` varchar(18) not null,
+    `company` varchar(18),
     `user` varchar(14) not null,
 	`time` timestamp default current_timestamp,
     `category` tinyint unsigned not null,
