@@ -27,15 +27,19 @@ import net.weesftw.dao.UserDAO;
 import net.weesftw.model.DesktopPane;
 import net.weesftw.view.Account;
 import net.weesftw.view.Client;
+import net.weesftw.view.ClientTable;
 import net.weesftw.view.Login;
 import net.weesftw.view.Main;
 import net.weesftw.view.Product;
+import net.weesftw.view.ProductTable;
 import net.weesftw.view.Provider;
+import net.weesftw.view.ProviderTable;
 import net.weesftw.view.Ticket;
 import net.weesftw.view.TicketOpen;
 import net.weesftw.view.TicketTable;
 import net.weesftw.view.UI;
 import net.weesftw.view.User;
+import net.weesftw.view.UserTable;
 import net.weesftw.vo.PeopleVO;
 import net.weesftw.vo.ProductVO;
 import net.weesftw.vo.ProviderVO;
@@ -504,6 +508,149 @@ public class Action implements ActionListener
 			else
 			{
 				d.add(new Provider());
+			}
+		}
+		else if(ui instanceof ClientTable)
+		{
+			ClientTable t = ((ClientTable) ui);
+			
+			if(action.equals(t.getSearch().getActionCommand()))
+			{				
+				String cpf = t.getCpf().getText();
+				String name = t.getName().getText();
+				String phone = t.getPhone().getText();
+				String zipCode = t.getZipCode().getText();
+				String gender = t.getGender().getSelectedItem().toString();
+				
+				if(!cpf.isEmpty())
+				{					
+					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+				}
+				else if(!name.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + name, 1));
+				}
+				else if(!phone.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + phone, 2));
+				}
+				else if(!zipCode.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + zipCode, 3));
+				}
+				else if(!gender.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + gender, 7));
+				}
+				else
+				{
+					t.getSorter().setRowFilter(null);
+				}
+			}
+			else
+			{
+				d.add(new ClientTable());				
+			}
+		}
+		else if(ui instanceof ProductTable)
+		{
+			ProductTable t = ((ProductTable) ui);
+			
+			if(action.equals(t.getSearch().getActionCommand()))
+			{				
+				String cpf = t.getCpf().getText();
+				String name = t.getName().getText();
+				String price = t.getPrice().getText();
+				String provider = t.getProvider().getText();
+				
+				if(!cpf.isEmpty())
+				{					
+					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+				}
+				else if(!name.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + name, 1));
+				}
+				else if(!price.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + price, 3));
+				}
+				else if(!provider.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + provider, 7));
+				}
+				else
+				{
+					t.getSorter().setRowFilter(null);
+				}
+			}
+			else
+			{
+				d.add(new ProductTable());
+			}
+		}
+		else if(ui instanceof ProviderTable)
+		{
+			ProviderTable t = ((ProviderTable) ui);
+			
+			if(action.equals(t.getSearch().getActionCommand()))
+			{				
+				String cpf = t.getId().getText();
+				String name = t.getName().getText();
+				String freight = t.getFreight().getText();
+				String phone = t.getPhone().getText();
+				
+				if(!cpf.isEmpty())
+				{					
+					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+				}
+				else if(!name.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + name, 1));
+				}
+				else if(!freight.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + freight, 3));
+				}
+				else if(!phone.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + phone, 7));
+				}
+				else
+				{
+					t.getSorter().setRowFilter(null);
+				}
+			}
+			else
+			{
+				d.add(new ProviderTable());
+			}
+		}
+		else if(ui instanceof UserTable)
+		{
+			UserTable t = ((UserTable) ui);
+			
+			if(action.equals(t.getSearch().getActionCommand()))
+			{				
+				String cpf = t.getCpf().getText();
+				String username = t.getUsername().getText();
+				
+				if(!cpf.isEmpty())
+				{					
+					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+				}
+				else if(!username.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + username, 1));
+				}
+				else
+				{
+					t.getSorter().setRowFilter(null);
+				}
+			}
+			else
+			{
+				d.add(new UserTable());
 			}
 		}
 	}

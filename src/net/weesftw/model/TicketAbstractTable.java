@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import net.weesftw.dao.TicketDAO;
 import net.weesftw.vo.TicketVO;
 
-public class AbstractTable extends AbstractTableModel
+public class TicketAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	

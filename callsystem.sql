@@ -88,6 +88,10 @@ create table if not exists `product`
 	`id` tinyint unsigned not null auto_increment,
 	`name` varchar(120) not null,
     `price` varchar(12) not null,
+	`weight` varchar(6) not null,
+	`length`varchar(6) not null,
+	`width` varchar(6) not null,
+	`height` varchar(6) not null,
 	`provider` tinyint unsigned not null,
     `photo` longblob,
     
@@ -121,8 +125,8 @@ create table if not exists `ticket`
 create table if not exists `sell`
 (
 	`id` int unsigned auto_increment,
-	`product` tinyint unsigned not null,
-    `by` varchar(14) not null,
+	`cart` int unsigned not null,
+   	 `by` varchar(14) not null,
 	`cpf` varchar(14) not null,
 	`cnpj` varchar(18),
 	`date` timestamp default current_timestamp,
@@ -130,7 +134,19 @@ create table if not exists `sell`
     `status` enum('Pendent', 'Canceled', 'Complete') default 'Pendent',
 	
 	constraint primary key(`id`),
+	constraint foreign key(`cart`) references `cart`(`id`),
+	constraint foreign key(`product`) references `product`(`id`)
 	constraint foreign key(`cpf`) references `people`(`cpf`),
     constraint foreign key(`by`) references `user`(`cpf`),
 	constraint foreign key(`cnpj`) references `company`(`cnpj`)
 )Engine=InnoDB;
+
+create table if not exists `cart`
+(
+	`id` int unsigned not null auto_increment,
+	`product` tinyint unsigned not null,
+	`amount` smallint unsigned default 1,
+
+	constraint primary key(`id`, `product`),
+	constraint forein key(`product`) references `product`(`id`)
+);

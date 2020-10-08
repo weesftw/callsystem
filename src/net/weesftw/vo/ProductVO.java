@@ -3,7 +3,7 @@ package net.weesftw.vo;
 public class ProductVO 
 {
 	private int id;
-	private String name, path, price;
+	private String name, path, price, weight, length, width, height;
 	private ProviderVO provider;
 	private byte[] photo;
 	
@@ -53,6 +53,24 @@ public class ProductVO
 	{
 		return photo;
 	}
-	
-	
+
+	public String getWeight() 
+	{
+		return weight;
+	}
+
+	public String getLength() 
+	{
+		return length;
+	}
+
+	public String getWidth() 
+	{
+		return width;
+	}
+
+	public String getHeight() 
+	{
+		return height;
+	}
 }

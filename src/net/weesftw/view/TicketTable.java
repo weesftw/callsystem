@@ -13,7 +13,7 @@ import javax.swing.table.TableRowSorter;
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Action;
 import net.weesftw.manager.MouseAction;
-import net.weesftw.model.AbstractTable;
+import net.weesftw.model.TicketAbstractTable;
 import net.weesftw.model.Button;
 import net.weesftw.model.ComboBox;
 import net.weesftw.model.InternalFrame;
@@ -27,7 +27,7 @@ public class TicketTable extends UI<InternalFrame>
 {
 	private TableRowSorter<TableModel> sorter;
 	
-	private AbstractTable at;
+	private TicketAbstractTable at;
 	private Button btn;
 	private ComboBox<?> status;
 	private TextField id, title, client, company, user, date;
@@ -37,7 +37,7 @@ public class TicketTable extends UI<InternalFrame>
 	{
 		super(new InternalFrame("Ticket", false, true, false, true));
 		
-		at = new AbstractTable();
+		at = new TicketAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
 		status = new ComboBox<Status>(Status.values());
 		btn = new Button("Search");
@@ -110,7 +110,7 @@ public class TicketTable extends UI<InternalFrame>
 		ui.setVisible(true);
 	}
 
-	public AbstractTable getAt() 
+	public TicketAbstractTable getAt() 
 	{
 		return at;
 	}

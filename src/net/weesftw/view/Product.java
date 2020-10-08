@@ -1,7 +1,7 @@
 package net.weesftw.view;
 
 import java.awt.BorderLayout;
-import java.awt.TextField;
+import java.awt.Color;
 import java.util.Vector;
 
 import javax.swing.WindowConstants;
@@ -14,52 +14,70 @@ import net.weesftw.model.ComboBox;
 import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
+import net.weesftw.model.TextField;
 import net.weesftw.vo.ProviderVO;
 
-public class Product extends UI<InternalFrame> 
+public class Product extends UI<InternalFrame>
 {
 	private Button choose, submit;
 	private ComboBox<?> provider;
 	private Label img;
-	private TextField name, price;
+	private TextField name, price, weight, length, width, height;
 	
-	public Product()
+	public Product() 
 	{
 		super(new InternalFrame("Product", false, true, false, true));
 		
 		ProviderDAO pd = new ProviderDAO();
-		Vector<String> v = new Vector<String>();
+		Vector<String> v = new Vector<>();
 		
-		for(ProviderVO p : pd.list())
+		for(ProviderVO pv : pd.list())
 		{
-			v.add(p.getName());
+			v.add(pv.getName());
 		}
 		
 		Panel p = new Panel("Photo", 4, 4, 4, 4);
 		Panel p2 = new Panel("New Product", 4, 4, 4, 4);
 		
-		provider = new ComboBox<String>(v);
 		choose = new Button("Choose");
 		submit = new Button("Submit");
+		provider = new ComboBox<String>(v);
 		img = new Label(ImagePath.ICON, 120, 120);
 		name = new TextField(15);
 		price = new TextField(15);
+		weight = new TextField(5);
+		length = new TextField(5);
+		width = new TextField(5);
+		height = new TextField(5);
 		
 		p.setComponent(img);
 		
 		p.setComponent(choose, 0, 1);
 		choose.addActionListener(new Action(this));
 		
-		p2.setComponent(new Label("Name: "));
+		p2.setComponent(new Label("Name : "));
 		p2.setComponent(name, 1, 0);
+				
+		p2.setComponent(new Label("Weight: "), 2, 0);
+		p2.setComponent(weight, 3, 0);
 		
 		p2.setComponent(new Label("Price: "), 0, 1);
 		p2.setComponent(price, 1, 1);
 		
+		p2.setComponent(new Label("Length: "), 2, 1);
+		p2.setComponent(length, 3, 1);
+		
 		p2.setComponent(new Label("Provider: "), 0, 2);
 		p2.setComponent(provider, 1, 2);
+		provider.setBackground(Color.WHITE);
 		
-		p2.setComponent(submit, 1, 3);
+		p2.setComponent(new Label("Width: "), 2, 2);
+		p2.setComponent(width, 3, 2);
+		
+		p2.setComponent(new Label("Height: "), 2, 3);
+		p2.setComponent(height, 3, 3);
+		
+		p2.setComponent(submit, 3, 4);
 		submit.addActionListener(new Action(this));
 		
 		ui.add(p, BorderLayout.WEST);
@@ -75,7 +93,7 @@ public class Product extends UI<InternalFrame>
 		return choose;
 	}
 
-	public Button getSubmit() 
+	public Button getSubmit()
 	{
 		return submit;
 	}
@@ -85,7 +103,7 @@ public class Product extends UI<InternalFrame>
 		return provider;
 	}
 
-	public Label getImg() 
+	public Label getImg()
 	{
 		return img;
 	}
@@ -98,5 +116,25 @@ public class Product extends UI<InternalFrame>
 	public TextField getPrice() 
 	{
 		return price;
+	}
+	
+	public TextField getWeight() 
+	{
+		return weight;
+	}
+
+	public TextField getLength() 
+	{
+		return length;
+	}
+
+	public TextField getWidth() 
+	{
+		return width;
+	}
+
+	public TextField getHeight() 
+	{
+		return height;
 	}
 }

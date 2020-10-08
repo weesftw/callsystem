@@ -23,14 +23,12 @@ public class TicketDAO implements DataAcess<TicketVO>
 		{
 			stmt.setString(1, e.getTitle());
 			stmt.setString(2, e.getClient());
-			stmt.setString(3, e.getCompany().isBlank() ? null : e.getCompany());
+			stmt.setString(3, e.getCompany());
 			stmt.setString(4, e.getUser());
 			stmt.setInt(5, e.getCategory().getId());
 			stmt.setInt(6, e.getProduct().getId());
 			stmt.setString(7, e.getDescription());
 			stmt.setBoolean(8, e.isPriority());
-			
-			System.out.println(e.getCompany());
 			
 			stmt.execute();
 			

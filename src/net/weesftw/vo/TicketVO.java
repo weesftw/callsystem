@@ -60,7 +60,7 @@ public class TicketVO
 	
 	public String getCompany()
 	{
-		return company;
+		return company.isEmpty() ? null : company;
 	}
 	
 	public String getUser() 

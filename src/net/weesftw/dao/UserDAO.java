@@ -97,7 +97,7 @@ public class UserDAO implements DataAcess<UserVO>
 				String id = rs.getString(1);
 				String username = rs.getString(2);
 				String passwd = rs.getString(3);
-				Department department = Department.valueOf(rs.getString(4));
+				Department department = Department.valueOf(rs.getString(4).toUpperCase());
 				
 				return new UserVO(id, username, passwd, department);
 			}
@@ -167,7 +167,7 @@ public class UserDAO implements DataAcess<UserVO>
 				String cpf = rs.getString(1);
 				String username = rs.getString(2);
 				String passwd = rs.getString(3);
-				Department department = Department.valueOf(rs.getString(4));
+				Department department = Department.valueOf(rs.getString(4).toUpperCase());
 				
 				l.add(new UserVO(cpf, username, passwd, department));				
 			}

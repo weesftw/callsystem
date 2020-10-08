@@ -17,6 +17,9 @@ public final class Menu extends UI<JMenuBar>
 		JMenu edit = new JMenu("View");
 		JMenu info = new JMenu("Info");
 		
+		JMenuItem sale = new JMenuItem("Sale");
+		sale.addActionListener(new Action(new Sale()));
+		
 		JMenuItem client = new JMenuItem("Client");
 		client.addActionListener(new Action(new Client()));
 		
@@ -32,20 +35,37 @@ public final class Menu extends UI<JMenuBar>
 		JMenuItem user = new JMenuItem("User");
 		user.addActionListener(new Action(new User()));
 		
+		JMenuItem clientTable = new JMenuItem("Client");
+		clientTable.addActionListener(new Action(new ClientTable()));
+		
 		JMenuItem ticketTable = new JMenuItem("Ticket");
 		ticketTable.addActionListener(new Action(new TicketTable()));
+		
+		JMenuItem productTable = new JMenuItem("Product");
+		productTable.addActionListener(new Action(new ProductTable()));
+		
+		JMenuItem providerTable = new JMenuItem("Provider");
+		providerTable.addActionListener(new Action(new ProviderTable()));
+		
+		JMenuItem userTable = new JMenuItem("User");
+		userTable.addActionListener(new Action(new UserTable()));
 		
 		JMenuItem account = new JMenuItem("Account");
 		account.addActionListener(new Action(new Account()));
 		
 		file.add(fileMenu);
+		file.add(sale);
 		fileMenu.add(client);
 		fileMenu.add(product);
 		fileMenu.add(provider);
 		fileMenu.add(ticket);
 		fileMenu.add(user);
 		
+		edit.add(clientTable);
+		edit.add(productTable);
+		edit.add(providerTable);
 		edit.add(ticketTable);
+		edit.add(userTable);
 		
 		info.add(account);
 
