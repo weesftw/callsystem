@@ -17,10 +17,11 @@ import org.xml.sax.SAXException;
 import net.weesftw.constraint.Category;
 import net.weesftw.constraint.Department;
 import net.weesftw.constraint.Gender;
-import net.weesftw.constraint.Product;
 import net.weesftw.constraint.Status;
 import net.weesftw.dao.CompanyDAO;
 import net.weesftw.dao.PeopleDAO;
+import net.weesftw.dao.ProductDAO;
+import net.weesftw.dao.ProviderDAO;
 import net.weesftw.dao.TicketDAO;
 import net.weesftw.dao.UserDAO;
 import net.weesftw.model.DesktopPane;
@@ -28,12 +29,16 @@ import net.weesftw.view.Account;
 import net.weesftw.view.Client;
 import net.weesftw.view.Login;
 import net.weesftw.view.Main;
+import net.weesftw.view.Product;
+import net.weesftw.view.Provider;
 import net.weesftw.view.Ticket;
 import net.weesftw.view.TicketOpen;
 import net.weesftw.view.TicketTable;
 import net.weesftw.view.UI;
 import net.weesftw.view.User;
 import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.ProductVO;
+import net.weesftw.vo.ProviderVO;
 import net.weesftw.vo.TicketVO;
 import net.weesftw.vo.UserVO;
 
@@ -186,9 +191,10 @@ public class Action implements ActionListener
 				TicketDAO td = new TicketDAO();
 				PeopleDAO pd = new PeopleDAO();
 				CompanyDAO cd = new CompanyDAO();
+				ProductDAO pdd = new ProductDAO();
 				
 				Category category = Category.valueOf(t.getCategory().getSelectedItem().toString());
-				Product product = Product.valueOf(t.getProduct().getSelectedItem().toString());
+				ProductVO product = pdd.searchByName(t.getProduct().getSelectedItem().toString());
 				boolean priority = t.getPriority().isSelected() ? true : false;
 				String client = t.getClient().getText();
 				String title = t.getTitle().getText();
@@ -202,7 +208,7 @@ public class Action implements ActionListener
 					{
 						if(company.matches(Regex.CNPJ) && client.matches(Regex.CPF))
 						{
-							if(pd.searchById(client) && cd.searchById(company))
+							if(pd.read(client) != null && cd.read(company) != null)
 							{
 								td.create(new TicketVO(title, client, company, user, description, category, product, priority));
 								
@@ -223,12 +229,8 @@ public class Action implements ActionListener
 					else
 					{
 						if(client.matches(Regex.CPF))
-						{
-							System.out.println(pd.searchById(client));
-							
-							System.out.println("Client: " + client);
-							
-							if(pd.searchById(client))
+						{							
+							if(pd.read(client) != null)
 							{
 								td.create(new TicketVO(title, client, company, user, description, category, product, priority));
 								
@@ -272,7 +274,7 @@ public class Action implements ActionListener
 				
 				return;
 			}
-			if(action.equals(u.getSubmit().getActionCommand()))
+			else if(action.equals(u.getSubmit().getActionCommand()))
 			{
 				UserDAO ud = new UserDAO();
 				PeopleDAO pd = new PeopleDAO();
@@ -391,10 +393,11 @@ public class Action implements ActionListener
 			if(action.equals(t.getSubmit().getActionCommand()))
 			{
 				TicketDAO td = new TicketDAO();
+				ProductDAO pd = new ProductDAO();
 				
 				int id = Integer.valueOf(t.getId().getText());
 				Status status = Status.valueOf(t.getStatus().getSelectedItem().toString());
-				Product product = Product.valueOf(t.getProduct().getText());
+				ProductVO product = pd.searchByName(t.getProduct().getText());
 				boolean priority = t.getPriority().isSelected();
 				Category category = Category.valueOf(t.getCategory().getText());
 				String title = t.getTitle().getText();
@@ -417,6 +420,90 @@ public class Action implements ActionListener
 				{
 					JOptionPane.showMessageDialog(null, "The solution's empty.");
 				}
+			}
+		}
+		else if(ui instanceof Product)
+		{
+			Product p = ((Product) ui);
+			
+			if(action.equals(p.getChoose().getActionCommand()))
+			{
+				JFileChooser f = new JFileChooser();
+				
+				if(f.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+				{
+					p.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
+				}
+				
+				return;
+			}
+			else if(action.equals(p.getSubmit().getActionCommand()))
+			{
+				ProviderDAO pd = new ProviderDAO();
+				ProductDAO pdd = new ProductDAO();
+				
+				String name = p.getName().getText();
+				String price = p.getPrice().getText();
+				ProviderVO provider = pd.searchByName(p.getProvider().getSelectedItem().toString());
+				String path = p.getImg().getUrl();
+				
+				if(!name.isEmpty() && !price.isEmpty() && provider != null && !path.isEmpty())
+				{
+					if(price.matches(Regex.PRICE))
+					{						
+						pdd.create(new ProductVO(provider, name, price, path));		
+						
+						JOptionPane.showMessageDialog(null, "Register created succefully.");
+						
+						p.getUI().dispose();
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
+				}
+			}
+			else
+			{
+				d.add(new Product());
+			}
+		}
+		else if(ui instanceof Provider)
+		{
+			Provider p = ((Provider) ui);
+			
+			if(action.equals(p.getSubmit().getActionCommand()))
+			{
+				ProviderDAO pd = new ProviderDAO();
+				
+				String name = p.getName().getText();
+				String freight = p.getFreight().getText();
+				String zipCode = p.getZipCode().getText();
+				String phoneNumber = p.getPhoneNumber().getText();
+				
+				if(!name.isEmpty() && !freight.isEmpty() && !zipCode.isEmpty() && !phoneNumber.isEmpty())
+				{
+					if(freight.matches(Regex.PRICE))
+					{
+						pd.create(new ProviderVO(name, zipCode, phoneNumber, freight));
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
+				}
+			}
+			else
+			{
+				d.add(new Provider());
 			}
 		}
 	}

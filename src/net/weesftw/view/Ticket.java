@@ -1,13 +1,14 @@
 package net.weesftw.view;
 
 import java.awt.Color;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.WindowConstants;
 
 import net.weesftw.constraint.Category;
-import net.weesftw.constraint.Product;
+import net.weesftw.dao.ProductDAO;
 import net.weesftw.manager.Action;
 import net.weesftw.model.Button;
 import net.weesftw.model.ComboBox;
@@ -17,6 +18,7 @@ import net.weesftw.model.Panel;
 import net.weesftw.model.ScrollPane;
 import net.weesftw.model.TextArea;
 import net.weesftw.model.TextField;
+import net.weesftw.vo.ProductVO;
 
 public class Ticket extends UI<InternalFrame>
 {
@@ -30,9 +32,17 @@ public class Ticket extends UI<InternalFrame>
 	{
 		super(new InternalFrame("Ticket", false, true, false, true));
 		
+		ProductDAO pd = new ProductDAO();
+		Vector<String> v = new Vector<String>();
+		
+		for(ProductVO pv : pd.list())
+		{
+			v.add(pv.getName());
+		}
+		
 		submit = new Button("Submit");
-		category = new ComboBox<Category>(Category.values(), 15, 21);
-		product = new ComboBox<Product>(Product.values(), 15, 21);
+		category = new ComboBox<Category>(Category.values());
+		product = new ComboBox<String>(v);
 		priority = new JCheckBox("Priority");
 		pj = new JCheckBox("PJ");
 		client = new TextField(15);

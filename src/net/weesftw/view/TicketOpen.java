@@ -49,7 +49,7 @@ public class TicketOpen extends UI<Dialog>
 		timestamp.setEditable(false);
 		
 		product = new TextField(15);
-		product.setText(t.getProduct().name());
+		product.setText(t.getProduct().getName());
 		product.setEditable(false);
 		
 		category = new TextField(15);

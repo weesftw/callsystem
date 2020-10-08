@@ -14,26 +14,7 @@ import net.weesftw.manager.Database;
 import net.weesftw.vo.PeopleVO;
 
 public class PeopleDAO implements DataAcess<PeopleVO>
-{
-	public boolean searchById(String cpf)
-	{
-		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select * from `people` where `cpf` = ?"))
-		{
-			stmt.setString(1, cpf);
-			
-			ResultSet rs = stmt.executeQuery();
-			
-			return rs.next();
-		}
-		catch(SQLException ex)
-		{
-			ex.printStackTrace();
-		}
-		
-		return false;
-	}
-	
+{	
 	public PeopleVO searchByUser(String user)
 	{
 		try(Database d = new Database();
@@ -105,18 +86,18 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 	}
 
 	@Override
-	public PeopleVO read(PeopleVO p) 
+	public PeopleVO read(String cpf) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("select * from `people` where cpf = ?"))
 		{
-			stmt.setString(1, p.getCpf());
+			stmt.setString(1, cpf);
 
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
 			{
-				String cpf = rs.getString(1);
+				String id = rs.getString(1);
 				String firstName = rs.getString(2);
 				String lastName = rs.getString(3);
 				String phoneNumber = rs.getString(4);
@@ -126,7 +107,7 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 				String zipCode = rs.getString(7);
 				byte[] b = rs.getBytes(9);
 				
-				return new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, b);
+				return new PeopleVO(id, firstName, lastName, phoneNumber, email, date, gender, zipCode, b);
 			}
 		}
 		catch(SQLException ex)

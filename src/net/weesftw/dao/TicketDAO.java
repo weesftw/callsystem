@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.weesftw.constraint.Category;
-import net.weesftw.constraint.Product;
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Database;
+import net.weesftw.vo.ProductVO;
 import net.weesftw.vo.TicketVO;
 
 public class TicketDAO implements DataAcess<TicketVO>
@@ -23,12 +23,14 @@ public class TicketDAO implements DataAcess<TicketVO>
 		{
 			stmt.setString(1, e.getTitle());
 			stmt.setString(2, e.getClient());
-			stmt.setString(3, e.getCompany().isEmpty() ? null : e.getCompany());
+			stmt.setString(3, e.getCompany().isBlank() ? null : e.getCompany());
 			stmt.setString(4, e.getUser());
 			stmt.setInt(5, e.getCategory().getId());
 			stmt.setInt(6, e.getProduct().getId());
 			stmt.setString(7, e.getDescription());
 			stmt.setBoolean(8, e.isPriority());
+			
+			System.out.println(e.getCompany());
 			
 			stmt.execute();
 			
@@ -43,29 +45,33 @@ public class TicketDAO implements DataAcess<TicketVO>
 	}
 
 	@Override
-	public TicketVO read(TicketVO e) 
+	public TicketVO read(String id) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select `ticket`.`id`, `ticket`.`title`, `ticket`.`client`, `ticket`.`company`, `ticket`.`user`, `ticket`.`time`, `category`.`name`, `product`.`name`, `ticket`.`description`, `ticket`.`solution`, `ticket`.`priority`, `ticket`.`status` from `ticket` join `category` on `category`.`id` = `ticket`.`id` join `product` on `product`.`id` = `ticket`.`product`"))
+				PreparedStatement stmt = d.con.prepareStatement("select `ticket`.`id`, `ticket`.`title`, `ticket`.`client`, `ticket`.`company`, `ticket`.`user`, `ticket`.`time`, `category`.`name`, `product`.`name`, `ticket`.`description`, `ticket`.`solution`, `ticket`.`priority`, `ticket`.`status` from `ticket` join `category` on `category`.`id` = `ticket`.`id` join `product` on `product`.`id` = `ticket`.`product` where `ticket`.`id` = ?"))
 		{
+			stmt.setString(1, id);
+			
 			ResultSet rs = stmt.executeQuery();
+			
+			ProductDAO pd = new ProductDAO();
 			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
+				int id1 = rs.getInt(1);
 				String title = rs.getString(2);
 				String client = rs.getString(3);
 				String company = rs.getString(4);
 				String user = rs.getString(5);
 				Timestamp time = rs.getTimestamp(6);
 				Category category = Category.valueOf(rs.getString(7));
-				Product product = Product.valueOf(rs.getString(8));
+				ProductVO product = pd.searchByName(rs.getString(8));
 				String description = rs.getString(9);
 				String solution = rs.getString(10);
 				boolean priority = rs.getBoolean(11);
 				Status status = Status.valueOf(rs.getString(12));
 				
-				return new TicketVO(id, title, client, company, user, description, solution, time, category, product, status, priority);
+				return new TicketVO(id1, title, client, company, user, description, solution, time, category, product, status, priority);
 			}
 		}
 		catch(SQLException ex)
@@ -115,6 +121,8 @@ public class TicketDAO implements DataAcess<TicketVO>
 		{
 			ResultSet rs = stmt.executeQuery();
 			
+			ProductDAO pd = new ProductDAO();
+			
 			while(rs.next())
 			{
 				int id = rs.getInt(1);
@@ -124,7 +132,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 				String user = rs.getString(6);
 				Timestamp time = rs.getTimestamp(7);				
 				Category category = Category.valueOf(rs.getString(8));
-				Product product = Product.valueOf(rs.getString(9));
+				ProductVO product = pd.read(rs.getString(9));
 				String description = rs.getString(10);
 				String solution = rs.getString(11);
 				boolean priority = rs.getBoolean(12);

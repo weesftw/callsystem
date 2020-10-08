@@ -39,7 +39,7 @@ public class TicketTable extends UI<InternalFrame>
 		
 		at = new AbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
-		status = new ComboBox<Status>(Status.values(), 50, 15);
+		status = new ComboBox<Status>(Status.values());
 		btn = new Button("Search");
 		id = new TextField(15);
 		title = new TextField(15);

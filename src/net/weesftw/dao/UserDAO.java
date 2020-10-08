@@ -83,23 +83,23 @@ public class UserDAO implements DataAcess<UserVO>
 	}
 
 	@Override
-	public UserVO read(UserVO u) 
+	public UserVO read(String cpf) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id` where `cpf` = ?"))
 		{
-			stmt.setString(1, u.getCpf());
+			stmt.setString(1, cpf);
 			
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
 			{
-				String cpf = rs.getString(1);
+				String id = rs.getString(1);
 				String username = rs.getString(2);
 				String passwd = rs.getString(3);
 				Department department = Department.valueOf(rs.getString(4));
 				
-				return new UserVO(cpf, username, passwd, department);
+				return new UserVO(id, username, passwd, department);
 			}
 		}
 		catch(SQLException ex)

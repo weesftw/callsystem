@@ -3,7 +3,6 @@ package net.weesftw.vo;
 import java.sql.Timestamp;
 
 import net.weesftw.constraint.Category;
-import net.weesftw.constraint.Product;
 import net.weesftw.constraint.Status;
 
 public class TicketVO 
@@ -12,11 +11,11 @@ public class TicketVO
 	private String title, client, company, user, description, solution;
 	private Timestamp time;
 	private Category category;
-	private Product product;
+	private ProductVO product;
 	private Status status;
 	private boolean priority;
 	
-	public TicketVO(String title, String client, String company, String user, String description, Category category, Product product, boolean priority)
+	public TicketVO(String title, String client, String company, String user, String description, Category category, ProductVO product, boolean priority)
 	{
 		this.title = title;
 		this.client = client;
@@ -28,7 +27,7 @@ public class TicketVO
 		this.priority = priority;
 	}
 	
-	public TicketVO(int id, String title, String client, String company, String user, String description, String solution, Timestamp time, Category category, Product product, Status status, boolean priority) 
+	public TicketVO(int id, String title, String client, String company, String user, String description, String solution, Timestamp time, Category category, ProductVO product, Status status, boolean priority) 
 	{
 		this.id = id;
 		this.title = title;
@@ -89,7 +88,7 @@ public class TicketVO
 		return category;
 	}
 	
-	public Product getProduct() 
+	public ProductVO getProduct() 
 	{
 		return product;
 	}

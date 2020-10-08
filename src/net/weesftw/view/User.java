@@ -33,8 +33,8 @@ public class User extends UI<InternalFrame>
 		Panel p2 = new Panel("Photo", 4, 4, 4, 4);
 		Panel p3 = new Panel("New Employee", 4, 4, 4, 4);
 		
-		department = new ComboBox<Department>(Department.values(), 30, 21);
-		gender = new ComboBox<Gender>(Gender.values(), 30, 21);
+		department = new ComboBox<Department>(Department.values());
+		gender = new ComboBox<Gender>(Gender.values());
 		img = new Label(ImagePath.ICON, 120, 120);
 		choose = new Button("Choose");
 		submit = new Button("Submit");

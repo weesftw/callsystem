@@ -10,26 +10,7 @@ import net.weesftw.manager.Database;
 import net.weesftw.vo.CompanyVO;
 
 public class CompanyDAO implements DataAcess<CompanyVO> 
-{
-	public boolean searchById(String cnpj)
-	{
-		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select * from `company` where `cnpj` = ?"))
-		{
-			stmt.setString(1, cnpj);
-			
-			ResultSet rs = stmt.executeQuery();
-			
-			return rs.next();
-		}
-		catch(SQLException ex)
-		{
-			ex.printStackTrace();
-		}
-		
-		return false;
-	}
-	
+{	
 	@Override
 	public boolean create(CompanyVO c) 
 	{
@@ -54,23 +35,23 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 	}
 
 	@Override
-	public CompanyVO read(CompanyVO c) 
+	public CompanyVO read(String cnpj) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("select * from `company` where `cnpj` = ?"))
 		{
-			stmt.setString(1, c.getCnpj());
+			stmt.setString(1, cnpj);
 			
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
 			{
-				String cnpj = rs.getString(1);
+				String id = rs.getString(1);
 				String name = rs.getString(2);
 				String owner = rs.getString(3);
 				String zipCode = rs.getString(4);
 				
-				return new CompanyVO(cnpj, name, owner, zipCode);
+				return new CompanyVO(id, name, owner, zipCode);
 			}
 		}
 		catch(SQLException ex)

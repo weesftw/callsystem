@@ -71,12 +71,14 @@ create table if not exists `category`
 insert into `category` (`name`) value ('Cancelament');
 insert into `category` (`name`) value ('Financial');
 insert into `category` (`name`) value ('Support');
-insert into `category` (`name`) value ('Upgrade');
 
 create table if not exists `provider`
 (
 	`id` tinyint unsigned not null auto_increment,
 	`name` varchar(120) not null,
+    `freight` varchar(12) not null,
+    `zipCode` varchar(10) not null,
+    `phoneNumber` varchar(15) not null,
 
 	constraint primary key(`id`)
 )Engine=InnoDB;
@@ -84,8 +86,10 @@ create table if not exists `provider`
 create table if not exists `product`
 (
 	`id` tinyint unsigned not null auto_increment,
-	`name` varchar(120),
+	`name` varchar(120) not null,
+    `price` varchar(12) not null,
 	`provider` tinyint unsigned not null,
+    `photo` longblob,
     
     constraint primary key(`id`),
 	constraint foreign key(`provider`) references `provider`(`id`)
@@ -93,7 +97,7 @@ create table if not exists `product`
 
 create table if not exists `ticket`
 (
-	`id` int(10) unsigned zerofill auto_increment,
+	`id` int(10) unsigned auto_increment,
 	`title` varchar(120) not null,
 	`client` varchar(14) not null,
     `company` varchar(18),
@@ -123,7 +127,8 @@ create table if not exists `sell`
 	`cnpj` varchar(18),
 	`date` timestamp default current_timestamp,
 	`observation` varchar(256),
-
+    `status` enum('Pendent', 'Canceled', 'Complete') default 'Pendent',
+	
 	constraint primary key(`id`),
 	constraint foreign key(`cpf`) references `people`(`cpf`),
     constraint foreign key(`by`) references `user`(`cpf`),

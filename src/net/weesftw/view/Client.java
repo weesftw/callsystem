@@ -30,7 +30,7 @@ public class Client extends UI<InternalFrame>
 		Panel p1 = new Panel("Photo", 4, 4, 4, 4);
 		Panel p2 = new Panel("New Client", 4, 4, 4, 4);
 		
-		gender = new ComboBox<Gender>(Gender.values(), 30, 21);
+		gender = new ComboBox<Gender>(Gender.values());
 		submit = new Button("Submit");
 		choose = new Button("Choose");
 		search = new Button(ImagePath.SEARCH, 13, 13);
