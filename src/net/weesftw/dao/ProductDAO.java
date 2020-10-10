@@ -18,7 +18,7 @@ public class ProductDAO implements DataAcess<ProductVO>
 	public ProductVO searchByName(String args)
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select `product`.`id`, `product`.`name`, `product`.`price`, `provider`.`name` as `provider`, `product`.`photo` from `product` join `provider` on `product`.`provider` = `provider`.`id` where `product`.`name` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("select * from `product` where `name` = ?"))
 		{
 			stmt.setString(1, args);
 			
@@ -31,10 +31,14 @@ public class ProductDAO implements DataAcess<ProductVO>
 				int id = rs.getInt(1);
 				String name = rs.getString(2);
 				String price = rs.getString(3);
-				ProviderVO provider = pd.read(rs.getString(4));
-				byte[] photo = rs.getBytes(5);
+				String weight = rs.getString(4);
+				String length = rs.getString(5);
+				String width = rs.getString(6);
+				String height = rs.getString(7);
+				ProviderVO provider = pd.read(rs.getString(8));
+				byte[] photo = rs.getBytes(9);
 				
-				return new ProductVO(id, provider, name, price, photo);
+				return new ProductVO(id, provider, name, price, photo, weight, length, width, height);
 			}
 		}
 		catch (SQLException ex) 
@@ -49,7 +53,7 @@ public class ProductDAO implements DataAcess<ProductVO>
 	public boolean create(ProductVO e)
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("insert into `product` (`name`, `price`, `provider`, `photo`) value (?, ?, ?, ?)");
+				PreparedStatement stmt = d.con.prepareStatement("insert into `product` (`name`, `price`, `weight`, `length`, `width`, `height`, `provider`, `photo`) value (?, ?, ?, ?, ?, ?, ?, ?)");
 				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 				FileInputStream file = new FileInputStream(e.getPath()))
 		{
@@ -63,8 +67,12 @@ public class ProductDAO implements DataAcess<ProductVO>
 	
 			stmt.setString(1, e.getName());
 			stmt.setString(2, e.getPrice());
-			stmt.setInt(3, e.getProvider().getId());
-			stmt.setBytes(4, buffer.toByteArray());
+			stmt.setString(3, e.getWeight());
+			stmt.setString(4, e.getLength());
+			stmt.setString(5, e.getWidth());
+			stmt.setString(6, e.getHeight());
+			stmt.setInt(7, e.getProvider().getId());
+			stmt.setBytes(8, buffer.toByteArray());
 			
 			stmt.execute();
 			
@@ -95,10 +103,14 @@ public class ProductDAO implements DataAcess<ProductVO>
 				int id1 = rs.getInt(1);
 				String name = rs.getString(2);
 				String price = rs.getString(3);
-				ProviderVO provider = pd.read(rs.getString(4));
-				byte[] b = rs.getBytes(5);
+				String weight = rs.getString(4);
+				String length = rs.getString(5);
+				String width = rs.getString(6);
+				String height = rs.getString(7);
+				ProviderVO provider = pd.read(rs.getString(8));
+				byte[] photo = rs.getBytes(9);
 				
-				return new ProductVO(id1, provider, name, price, b);
+				return new ProductVO(id1, provider, name, price, photo, weight, length, width, height);
 			}
 		}
 		catch(SQLException ex)
@@ -113,7 +125,7 @@ public class ProductDAO implements DataAcess<ProductVO>
 	public boolean update(ProductVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("update `product` set `name` = ?, `price` = ?, `provider` = ?, `photo` = ? where `id` = ?");
+				PreparedStatement stmt = d.con.prepareStatement("update `product` set `name` = ?, `price` = ?, `weight` = ?, `length` = ?, `width` = ?, `height` = ?, `provider` = ?, `photo` = ? where `id` = ?");
 				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 				FileInputStream file = new FileInputStream(e.getPath()))
 		{
@@ -127,8 +139,13 @@ public class ProductDAO implements DataAcess<ProductVO>
 			
 			stmt.setString(1, e.getName());
 			stmt.setString(2, e.getPrice());
-			stmt.setInt(3, e.getProvider().getId());
-			stmt.setBytes(4, buffer.toByteArray());
+			stmt.setString(3, e.getWeight());
+			stmt.setString(4, e.getLength());
+			stmt.setString(5, e.getWidth());
+			stmt.setString(6, e.getHeight());
+			stmt.setInt(7, e.getProvider().getId());
+			stmt.setBytes(8, buffer.toByteArray());
+			stmt.setInt(9, e.getId());
 			
 			stmt.execute();
 			
@@ -176,13 +193,17 @@ public class ProductDAO implements DataAcess<ProductVO>
 			
 			while(rs.next())
 			{
-				int id1 = rs.getInt(1);
+				int id = rs.getInt(1);
 				String name = rs.getString(2);
 				String price = rs.getString(3);
-				ProviderVO provider = pd.read(rs.getString(4));
-				byte[] b = rs.getBytes(5);
+				String weight = rs.getString(4);
+				String length = rs.getString(5);
+				String width = rs.getString(6);
+				String height = rs.getString(7);
+				ProviderVO provider = pd.read(rs.getString(8));
+				byte[] photo = rs.getBytes(9);
 				
-				l.add(new ProductVO(id1, provider, name, price, b));
+				l.add(new ProductVO(id, provider, name, price, photo, weight, length, width, height));
 			}
 			
 			return l;

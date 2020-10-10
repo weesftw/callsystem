@@ -4,30 +4,44 @@ import java.sql.Timestamp;
 
 import net.weesftw.constraint.Category;
 import net.weesftw.constraint.Status;
+import net.weesftw.view.Main;
 
 public class TicketVO 
 {	
 	private int id;
-	private String title, client, company, user, description, solution;
+	private String title, description, solution;
+	private PeopleVO client;
+	private CompanyVO company;
 	private Timestamp time;
 	private Category category;
 	private ProductVO product;
 	private Status status;
 	private boolean priority;
+	private UserVO user;
 	
-	public TicketVO(String title, String client, String company, String user, String description, Category category, ProductVO product, boolean priority)
+	public TicketVO(String title, PeopleVO client, String description, Category category, ProductVO product, boolean priority)
 	{
 		this.title = title;
 		this.client = client;
-		this.company = company;
-		this.user = user;
+		this.user = Main.instance.getAuth().getUser();
 		this.description = description;
 		this.category = category;
 		this.product = product;
 		this.priority = priority;
 	}
 	
-	public TicketVO(int id, String title, String client, String company, String user, String description, String solution, Timestamp time, Category category, ProductVO product, Status status, boolean priority) 
+	public TicketVO(String title, CompanyVO company, String description, Category category, ProductVO product, boolean priority)
+	{
+		this.title = title;
+		this.company = company;
+		this.user = Main.instance.getAuth().getUser();
+		this.description = description;
+		this.category = category;
+		this.product = product;
+		this.priority = priority;
+	}
+	
+	public TicketVO(int id, String title, PeopleVO client, CompanyVO company, UserVO user, String description, String solution, Timestamp time, Category category, ProductVO product, Status status, boolean priority) 
 	{
 		this.id = id;
 		this.title = title;
@@ -53,17 +67,17 @@ public class TicketVO
 		return title;
 	}
 	
-	public String getClient() 
+	public PeopleVO getClient() 
 	{
 		return client;
 	}
 	
-	public String getCompany()
+	public CompanyVO getCompany()
 	{
-		return company.isEmpty() ? null : company;
+		return company;
 	}
 	
-	public String getUser() 
+	public UserVO getUser() 
 	{
 		return user;
 	}

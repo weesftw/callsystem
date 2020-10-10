@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import net.weesftw.dao.PeopleDAO;
 import net.weesftw.vo.PeopleVO;
 
@@ -51,7 +49,7 @@ public class ClientAbstractTable extends AbstractTableModel
 		case 4:
 			return list.get(rowIndex).getDate();
 		case 5:
-			return StringUtils.capitalize(list.get(rowIndex).getGender().toString());
+			return list.get(rowIndex).getGender().toString();
 		case 6:
 			return list.get(rowIndex).getZipCode();
 		default:

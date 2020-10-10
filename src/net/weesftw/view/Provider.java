@@ -1,6 +1,10 @@
 package net.weesftw.view;
 
+import java.text.ParseException;
+
+import javax.swing.JFormattedTextField;
 import javax.swing.WindowConstants;
+import javax.swing.text.MaskFormatter;
 
 import net.weesftw.manager.Action;
 import net.weesftw.model.Button;
@@ -12,7 +16,8 @@ import net.weesftw.model.TextField;
 public class Provider extends UI<InternalFrame> 
 {
 	private Button submit;
-	private TextField name, freight, zipCode, phoneNumber;
+	private TextField name, freight, zipCode;
+	private JFormattedTextField phoneNumber;
 	
 	public Provider() 
 	{
@@ -24,7 +29,15 @@ public class Provider extends UI<InternalFrame>
 		name = new TextField(15);
 		freight = new TextField(15);
 		zipCode = new TextField(15);
-		phoneNumber = new TextField(15);
+		
+		try 
+		{
+			phoneNumber = new JFormattedTextField(new MaskFormatter("(##)#####-####"));
+		} 
+		catch (ParseException e) 
+		{
+			e.printStackTrace();
+		}
 		
 		p.setComponent(new Label("Name: "));
 		p.setComponent(name, 1, 0);
@@ -68,7 +81,7 @@ public class Provider extends UI<InternalFrame>
 		return zipCode;
 	}
 
-	public TextField getPhoneNumber() 
+	public JFormattedTextField getPhoneNumber() 
 	{
 		return phoneNumber;
 	}

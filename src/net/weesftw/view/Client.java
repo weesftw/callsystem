@@ -2,8 +2,11 @@ package net.weesftw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.text.ParseException;
 
+import javax.swing.JFormattedTextField;
 import javax.swing.WindowConstants;
+import javax.swing.text.MaskFormatter;
 
 import net.weesftw.constraint.Gender;
 import net.weesftw.constraint.ImagePath;
@@ -20,7 +23,8 @@ public class Client extends UI<InternalFrame>
 	private Button submit, choose, search;
 	private ComboBox<Gender> gender;
 	private Label img;
-	private TextField cnpj, name, owner, cpf, firstName, lastName, phoneNumber, email, zipCode, zipCodeEmployee, date, address, city, state, neighborhood;
+	private TextField cnpj, name, owner, cpf, firstName, lastName, email, zipCode, zipCodeEmployee, date, address, city, state, neighborhood;
+	private JFormattedTextField phoneNumber;
 	
 	public Client()
 	{
@@ -46,7 +50,16 @@ public class Client extends UI<InternalFrame>
 		cpf = new TextField(15);
 		firstName = new TextField(15);
 		lastName = new TextField(15);
-		phoneNumber = new TextField(15);
+		
+		try 
+		{
+			phoneNumber = new JFormattedTextField(new MaskFormatter("(##)#####-####"));
+		} 
+		catch (ParseException e) 
+		{
+			e.printStackTrace();
+		}
+		
 		email = new TextField(15);
 		zipCode = new TextField(15);
 		date = new TextField(15);
@@ -183,7 +196,7 @@ public class Client extends UI<InternalFrame>
 		return lastName;
 	}
 
-	public TextField getPhoneNumber() 
+	public JFormattedTextField getPhoneNumber() 
 	{
 		return phoneNumber;
 	}

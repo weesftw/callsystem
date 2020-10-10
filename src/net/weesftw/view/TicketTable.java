@@ -28,7 +28,7 @@ public class TicketTable extends UI<InternalFrame>
 	private TableRowSorter<TableModel> sorter;
 	
 	private TicketAbstractTable at;
-	private Button btn;
+	private Button btn, refresh;
 	private ComboBox<?> status;
 	private TextField id, title, client, company, user, date;
 	private JCheckBox priority;
@@ -41,6 +41,7 @@ public class TicketTable extends UI<InternalFrame>
 		sorter = new TableRowSorter<TableModel>(at);
 		status = new ComboBox<Status>(Status.values());
 		btn = new Button("Search");
+		refresh = new Button("Refresh");
 		id = new TextField(15);
 		title = new TextField(15);
 		client = new TextField(15);
@@ -96,6 +97,9 @@ public class TicketTable extends UI<InternalFrame>
 		p.setComponent(new Label("Status: "), 0, 3);
 		p.setComponent(status, 1, 3);
 		status.setBackground(Color.WHITE);
+		
+		p.setComponent(refresh, 1, 4);
+		refresh.addActionListener(new Action(this));
 		
 		p.setComponent(priority, 3, 3);
 		
@@ -163,5 +167,10 @@ public class TicketTable extends UI<InternalFrame>
 	public TableRowSorter<TableModel> getSorter() 
 	{
 		return sorter;
+	}
+
+	public Button getRefresh() 
+	{
+		return refresh;
 	}
 }

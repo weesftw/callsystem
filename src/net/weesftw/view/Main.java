@@ -11,24 +11,24 @@ import net.weesftw.vo.PeopleVO;
 import net.weesftw.vo.UserVO;
 
 public final class Main extends UI<Frame>
-{	
-	public static Main instance;	
+{
+	public static Main instance;
 	
 	private DesktopPane d;
-	private Authenticate auth;
+	private Authenticate a;
 	
-	public Main(PeopleVO p, UserVO v)
+	public Main(PeopleVO p, UserVO vs)
 	{
 		super(new Frame("Call System | Open your ticket."), true);
 		
 		Container c = ui.getContentPane();
 		
+		a = new Authenticate(p, vs);
 		instance = this;
-		this.auth = new Authenticate(p, v);
 		
 		c.add(d = new DesktopPane());
 		
-		ui.setSize(1176, 800);
+		ui.setSize(1024, 650);
 		ui.setResizable(false);
 		ui.setLocationRelativeTo(null);
 		ui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -43,6 +43,6 @@ public final class Main extends UI<Frame>
 	
 	public Authenticate getAuth()
 	{
-		return auth;
+		return a;
 	}
 }

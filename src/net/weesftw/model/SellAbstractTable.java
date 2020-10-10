@@ -1,19 +1,19 @@
 package net.weesftw.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.weesftw.dao.ProductDAO;
-import net.weesftw.vo.ProductVO;
+import net.weesftw.vo.CartVO;
 
-public class ProductAbstractTable extends AbstractTableModel
+public class SellAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private List<ProductVO> list = new ProductDAO().list();
+	private List<CartVO> list = new ArrayList<CartVO>();
 	
-	private String[] columnIndex = {"ID", "Name", "Price", "Provider"};
+	private String[] columnIndex = {"ID", "Amount", "Product", "Provider", "Unit Price", "Subtotal"};
 	
 	@Override
 	public int getRowCount() 
@@ -36,23 +36,29 @@ public class ProductAbstractTable extends AbstractTableModel
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) 
 	{
+		double subtotal = 0.0;
+		
 		switch(columnIndex)
 		{
 		case 0:
 			return list.get(rowIndex).getId();
 		case 1:
-			return list.get(rowIndex).getName();
+			return list.get(rowIndex).getAmount();
 		case 2:
-			return list.get(rowIndex).getPrice();
+			return list.get(rowIndex).getProduct().getName();
 		case 3:
-			return list.get(rowIndex).getProvider().getName();
+			return list.get(rowIndex).getProduct().getProvider().getName();
+		case 4:
+			return list.get(rowIndex).getProduct().getPrice();
+		case 5:
+			return subtotal;
 		default:
 			return null;
 		}
 	}
 	
-	public void setList(List<ProductVO> list)
+	public List<CartVO> getList()
 	{
-		this.list = list;
+		return list;
 	}
 }

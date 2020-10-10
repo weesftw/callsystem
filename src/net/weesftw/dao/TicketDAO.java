@@ -10,8 +10,11 @@ import java.util.List;
 import net.weesftw.constraint.Category;
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Database;
+import net.weesftw.vo.CompanyVO;
+import net.weesftw.vo.PeopleVO;
 import net.weesftw.vo.ProductVO;
 import net.weesftw.vo.TicketVO;
+import net.weesftw.vo.UserVO;
 
 public class TicketDAO implements DataAcess<TicketVO>
 {
@@ -22,9 +25,9 @@ public class TicketDAO implements DataAcess<TicketVO>
 				PreparedStatement stmt = d.con.prepareStatement("insert into `ticket` (`title`, `client`, `company`, `user`, `category`, `product`, `description`, `priority`) value (?, ?, ?, ?, ?, ?, ?, ?)"))
 		{
 			stmt.setString(1, e.getTitle());
-			stmt.setString(2, e.getClient());
-			stmt.setString(3, e.getCompany());
-			stmt.setString(4, e.getUser());
+			stmt.setString(2, e.getClient().getCpf());
+			stmt.setString(3, e.getCompany().getCnpj());
+			stmt.setString(4, e.getUser().getUsername());
 			stmt.setInt(5, e.getCategory().getId());
 			stmt.setInt(6, e.getProduct().getId());
 			stmt.setString(7, e.getDescription());
@@ -52,15 +55,18 @@ public class TicketDAO implements DataAcess<TicketVO>
 			
 			ResultSet rs = stmt.executeQuery();
 			
+			CompanyDAO cd = new CompanyDAO();
 			ProductDAO pd = new ProductDAO();
+			PeopleDAO pdd = new PeopleDAO();
+			UserDAO ud = new UserDAO();
 			
 			while(rs.next())
 			{
 				int id1 = rs.getInt(1);
 				String title = rs.getString(2);
-				String client = rs.getString(3);
-				String company = rs.getString(4);
-				String user = rs.getString(5);
+				PeopleVO client = pdd.read(rs.getString(3));
+				CompanyVO company = cd.read(rs.getString(4));
+				UserVO user = ud.searchByUser(rs.getString(5));
 				Timestamp time = rs.getTimestamp(6);
 				Category category = Category.valueOf(rs.getString(7));
 				ProductVO product = pd.searchByName(rs.getString(8));
@@ -119,15 +125,18 @@ public class TicketDAO implements DataAcess<TicketVO>
 		{
 			ResultSet rs = stmt.executeQuery();
 			
+			CompanyDAO cd = new CompanyDAO();
 			ProductDAO pd = new ProductDAO();
+			PeopleDAO pdd = new PeopleDAO();
+			UserDAO ud = new UserDAO();
 			
 			while(rs.next())
 			{
 				int id = rs.getInt(1);
 				String title = rs.getString(2);
-				String client = rs.getString(3) + " " + rs.getString(4);
-				String company = rs.getString(5);
-				String user = rs.getString(6);
+				PeopleVO client = pdd.read(rs.getString(3));
+				CompanyVO company = cd.read(rs.getString(4));
+				UserVO user = ud.searchByUser(rs.getString(5));
 				Timestamp time = rs.getTimestamp(7);				
 				Category category = Category.valueOf(rs.getString(8));
 				ProductVO product = pd.read(rs.getString(9));

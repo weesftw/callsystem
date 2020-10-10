@@ -24,7 +24,7 @@ public class UserTable extends UI<InternalFrame>
 	private TableRowSorter<TableModel> sorter;
 	
 	private UserAbstractTable at;
-	private Button search;
+	private Button search, refresh;
 	private TextField cpf, username;
 	
 	public UserTable() 
@@ -34,6 +34,7 @@ public class UserTable extends UI<InternalFrame>
 		at = new UserAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
 		search = new Button("Search");
+		refresh = new Button("Refresh");
 		cpf = new TextField(15);
 		username = new TextField(15);
 		
@@ -62,6 +63,9 @@ public class UserTable extends UI<InternalFrame>
 		
 		p.setComponent(new Label("Username: "), 2, 0);
 		p.setComponent(username, 3, 0);
+		
+		p.setComponent(refresh, 1, 1);
+		refresh.addActionListener(new Action(this));
 		
 		p.setComponent(search, 3, 1);
 		search.addActionListener(new Action(this));
@@ -97,5 +101,10 @@ public class UserTable extends UI<InternalFrame>
 	public TextField getUsername() 
 	{
 		return username;
+	}
+
+	public Button getRefresh() 
+	{
+		return refresh;
 	}
 }

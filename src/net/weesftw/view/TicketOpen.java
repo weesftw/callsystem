@@ -67,15 +67,15 @@ public class TicketOpen extends UI<Dialog>
 		description.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
 		company = new TextField(15);
-		company.setText(t.getCompany());
+		company.setText(t.getCompany().getName());
 		company.setEditable(false);
 		
 		client = new TextField(15);
-		client.setText(t.getClient());
+		client.setText(t.getClient().getFirstName() + " " + t.getClient().getLastName());
 		client.setEditable(false);
 		
 		user = new TextField(15);
-		user.setText(t.getUser());
+		user.setText(t.getUser().getUsername());
 		user.setEditable(false);
 		
 		priority = new JCheckBox("Priority");

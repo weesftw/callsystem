@@ -25,7 +25,7 @@ public class ProviderTable extends UI<InternalFrame>
 	private TableRowSorter<TableModel> sorter;
 	
 	private ProviderAbstractTable at;
-	private Button search;
+	private Button search, refresh;
 	private TextField id, name, phoneNumber, freight;
 	
 	public ProviderTable() 
@@ -35,6 +35,7 @@ public class ProviderTable extends UI<InternalFrame>
 		at = new ProviderAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
 		search = new Button("Search");
+		refresh = new Button("Refresh");
 		id = new TextField(15);
 		name = new TextField(15);
 		freight = new TextField(15);
@@ -71,11 +72,14 @@ public class ProviderTable extends UI<InternalFrame>
 		p.setComponent(new Label("Name: "), 2, 0);
 		p.setComponent(name, 3, 0);
 		
-		p.setComponent(new Label("Price: "), 0, 1);
-		p.setComponent(phoneNumber, 1, 1);
+		p.setComponent(new Label("Freight: "), 0, 1);
+		p.setComponent(freight, 1, 1);
 		
 		p.setComponent(new Label("Provider: "), 2, 1);
 		p.setComponent(phoneNumber, 3, 1);
+		
+		p.setComponent(refresh, 1, 2);
+		refresh.addActionListener(new Action(this));
 		
 		p.setComponent(search, 3, 2);
 		search.addActionListener(new Action(this));
@@ -121,5 +125,10 @@ public class ProviderTable extends UI<InternalFrame>
 	public TextField getFreight() 
 	{
 		return freight;
+	}
+
+	public Button getRefresh() 
+	{
+		return refresh;
 	}
 }

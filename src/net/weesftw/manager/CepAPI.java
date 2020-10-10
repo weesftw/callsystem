@@ -2,6 +2,7 @@ package net.weesftw.manager;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,12 +35,12 @@ public final class CepAPI
 				{
 					Element e = (Element) n;
 					
-					cep = e.getElementsByTagName("cep").item(i).getTextContent();
+					cep = e.getElementsByTagName("cep").item(i).getTextContent();					
 					logradouro = e.getElementsByTagName("logradouro").item(i).getTextContent();
 					bairro = e.getElementsByTagName("bairro").item(i).getTextContent();
 					localidade = e.getElementsByTagName("localidade").item(i).getTextContent();
 					uf = e.getElementsByTagName("uf").item(i).getTextContent();
-					ddd = e.getElementsByTagName("ddd").item(i).getTextContent();
+					ddd = e.getElementsByTagName("ddd").item(i).getTextContent();				
 				}
 			}
 		}

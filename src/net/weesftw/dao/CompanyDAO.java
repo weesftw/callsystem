@@ -8,6 +8,7 @@ import java.util.List;
 
 import net.weesftw.manager.Database;
 import net.weesftw.vo.CompanyVO;
+import net.weesftw.vo.PeopleVO;
 
 public class CompanyDAO implements DataAcess<CompanyVO> 
 {	
@@ -19,7 +20,7 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 		{
 			stmt.setString(1, c.getCnpj());
 			stmt.setString(2, c.getName());
-			stmt.setString(3, c.getOwner());
+			stmt.setString(3, c.getOwner().getCpf());
 			stmt.setString(4, c.getZipCode());
 			
 			stmt.execute();
@@ -44,11 +45,13 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 			
 			ResultSet rs = stmt.executeQuery();
 			
+			PeopleDAO pd = new PeopleDAO();
+			
 			while(rs.next())
 			{
 				String id = rs.getString(1);
 				String name = rs.getString(2);
-				String owner = rs.getString(3);
+				PeopleVO owner = pd.read(rs.getString(3));
 				String zipCode = rs.getString(4);
 				
 				return new CompanyVO(id, name, owner, zipCode);
@@ -69,7 +72,7 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 				PreparedStatement stmt = d.con.prepareStatement("update `company` set `owner` = ?, `name` = ?, `zipCode` = ? where `cnpj` = ?"))
 		{
 			stmt.setString(1, c.getName());
-			stmt.setString(2, c.getOwner());
+			stmt.setString(2, c.getOwner().getCpf());
 			stmt.setString(3, c.getZipCode());
 			stmt.setString(4, c.getCnpj());
 			
@@ -115,11 +118,13 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 		{
 			ResultSet rs = stmt.executeQuery();
 			
+			PeopleDAO pd = new PeopleDAO();
+			
 			while(rs.next())
 			{
 				String cnpj = rs.getString(1);
 				String name = rs.getString(2);
-				String owner = rs.getString(3);
+				PeopleVO owner = pd.read(rs.getString(3));
 				String zipCode = rs.getString(4);
 				
 				l.add(new CompanyVO(cnpj, name, owner, zipCode));

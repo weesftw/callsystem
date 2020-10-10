@@ -28,7 +28,7 @@ public class ClientTable extends UI<InternalFrame>
 	private TableRowSorter<TableModel> sorter;
 	
 	private ClientAbstractTable at;
-	private Button search;
+	private Button search, refresh;
 	private ComboBox<?> gender;
 	private TextField cpf, name, phone, zipCode;
 	private JCheckBox priority;
@@ -41,6 +41,7 @@ public class ClientTable extends UI<InternalFrame>
 		sorter = new TableRowSorter<TableModel>(at);
 		gender = new ComboBox<Gender>(Gender.values());
 		search = new Button("Search");
+		refresh = new Button("Refresh");
 		cpf = new TextField(15);
 		name = new TextField(15);
 		phone = new TextField(15);
@@ -88,6 +89,9 @@ public class ClientTable extends UI<InternalFrame>
 		p.setComponent(new Label("Gender: "), 0, 3);
 		p.setComponent(gender, 1, 3);
 		gender.setBackground(Color.WHITE);
+		
+		p.setComponent(refresh, 1, 4);
+		refresh.addActionListener(new Action(this));
 		
 		p.setComponent(search, 3, 4);
 		search.addActionListener(new Action(this));
@@ -143,5 +147,10 @@ public class ClientTable extends UI<InternalFrame>
 	public JCheckBox getPriority() 
 	{
 		return priority;
+	}
+
+	public Button getRefresh() 
+	{
+		return refresh;
 	}
 }

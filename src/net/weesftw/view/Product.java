@@ -58,23 +58,23 @@ public class Product extends UI<InternalFrame>
 		p2.setComponent(new Label("Name : "));
 		p2.setComponent(name, 1, 0);
 				
-		p2.setComponent(new Label("Weight: "), 2, 0);
+		p2.setComponent(new Label("Weight (kg): "), 2, 0);
 		p2.setComponent(weight, 3, 0);
 		
 		p2.setComponent(new Label("Price: "), 0, 1);
 		p2.setComponent(price, 1, 1);
 		
-		p2.setComponent(new Label("Length: "), 2, 1);
+		p2.setComponent(new Label("Length (cm): "), 2, 1);
 		p2.setComponent(length, 3, 1);
 		
 		p2.setComponent(new Label("Provider: "), 0, 2);
 		p2.setComponent(provider, 1, 2);
 		provider.setBackground(Color.WHITE);
 		
-		p2.setComponent(new Label("Width: "), 2, 2);
+		p2.setComponent(new Label("Width (cm): "), 2, 2);
 		p2.setComponent(width, 3, 2);
 		
-		p2.setComponent(new Label("Height: "), 2, 3);
+		p2.setComponent(new Label("Height (cm): "), 2, 3);
 		p2.setComponent(height, 3, 3);
 		
 		p2.setComponent(submit, 3, 4);

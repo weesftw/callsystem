@@ -104,7 +104,7 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 				String email = rs.getString(5);
 				String date = rs.getString(6);
 				Gender gender = Gender.valueOf(rs.getString(7));
-				String zipCode = rs.getString(7);
+				String zipCode = rs.getString(8);
 				byte[] b = rs.getBytes(9);
 				
 				return new PeopleVO(id, firstName, lastName, phoneNumber, email, date, gender, zipCode, b);
