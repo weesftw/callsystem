@@ -11,7 +11,7 @@ import net.weesftw.constraint.Category;
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Database;
 import net.weesftw.vo.CompanyVO;
-import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.ClientVO;
 import net.weesftw.vo.ProductVO;
 import net.weesftw.vo.TicketVO;
 import net.weesftw.vo.UserVO;
@@ -57,14 +57,14 @@ public class TicketDAO implements DataAcess<TicketVO>
 			
 			CompanyDAO cd = new CompanyDAO();
 			ProductDAO pd = new ProductDAO();
-			PeopleDAO pdd = new PeopleDAO();
+			ClientDAO pdd = new ClientDAO();
 			UserDAO ud = new UserDAO();
 			
 			while(rs.next())
 			{
 				int id1 = rs.getInt(1);
 				String title = rs.getString(2);
-				PeopleVO client = pdd.read(rs.getString(3));
+				ClientVO client = pdd.read(rs.getString(3));
 				CompanyVO company = cd.read(rs.getString(4));
 				UserVO user = ud.searchByUser(rs.getString(5));
 				Timestamp time = rs.getTimestamp(6);
@@ -127,14 +127,14 @@ public class TicketDAO implements DataAcess<TicketVO>
 			
 			CompanyDAO cd = new CompanyDAO();
 			ProductDAO pd = new ProductDAO();
-			PeopleDAO pdd = new PeopleDAO();
+			ClientDAO pdd = new ClientDAO();
 			UserDAO ud = new UserDAO();
 			
 			while(rs.next())
 			{
 				int id = rs.getInt(1);
 				String title = rs.getString(2);
-				PeopleVO client = pdd.read(rs.getString(3));
+				ClientVO client = pdd.read(rs.getString(3));
 				CompanyVO company = cd.read(rs.getString(4));
 				UserVO user = ud.searchByUser(rs.getString(5));
 				Timestamp time = rs.getTimestamp(7);				

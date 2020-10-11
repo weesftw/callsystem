@@ -39,7 +39,7 @@ public class User extends UI<InternalFrame>
 		
 		department = new ComboBox<Department>(Department.values());
 		gender = new ComboBox<Gender>(Gender.values());
-		img = new Label(ImagePath.ICON, 120, 120);
+		img = new Label();
 		choose = new Button("Choose");
 		submit = new Button("Submit");
 		neighborhood = new TextField(15);
@@ -66,6 +66,7 @@ public class User extends UI<InternalFrame>
 		passwd = new TextField(15);
 				
 		p2.setComponent(img);
+		img.loadImage(ImagePath.ICON, 120, 120);
 		
 		p2.setComponent(choose, 0, 1);
 		choose.addActionListener(new Action(this));

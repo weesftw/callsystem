@@ -2,13 +2,13 @@ package net.weesftw.vo;
 
 import net.weesftw.constraint.Gender;
 
-public class PeopleVO 
+public class ClientVO 
 {	
 	private String cpf, firstName, lastName, phoneNumber, email, zipCode, date, path;
 	private Gender gender;
 	private byte[] b;
 	
-	public PeopleVO(String cpf, String firstName, String lastName, String phoneNumber, String email, String date, Gender gender, String zipCode, byte[] b) 
+	public ClientVO(String cpf, String firstName, String lastName, String phoneNumber, String email, String date, Gender gender, String zipCode, byte[] b) 
 	{
 		this.cpf = cpf;
 		this.firstName = firstName;
@@ -21,7 +21,7 @@ public class PeopleVO
 		this.b = b;
 	}
 
-	public PeopleVO(String cpf, String firstName, String lastName, String phoneNumber, String email, String date, Gender gender, String zipCode, String path) 
+	public ClientVO(String cpf, String firstName, String lastName, String phoneNumber, String email, String date, Gender gender, String zipCode, String path) 
 	{
 		this.cpf = cpf;
 		this.firstName = firstName;

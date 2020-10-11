@@ -8,7 +8,7 @@ import java.util.List;
 
 import net.weesftw.manager.Database;
 import net.weesftw.vo.CompanyVO;
-import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.ClientVO;
 
 public class CompanyDAO implements DataAcess<CompanyVO> 
 {	
@@ -45,13 +45,13 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 			
 			ResultSet rs = stmt.executeQuery();
 			
-			PeopleDAO pd = new PeopleDAO();
+			ClientDAO pd = new ClientDAO();
 			
 			while(rs.next())
 			{
 				String id = rs.getString(1);
 				String name = rs.getString(2);
-				PeopleVO owner = pd.read(rs.getString(3));
+				ClientVO owner = pd.read(rs.getString(3));
 				String zipCode = rs.getString(4);
 				
 				return new CompanyVO(id, name, owner, zipCode);
@@ -118,13 +118,13 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 		{
 			ResultSet rs = stmt.executeQuery();
 			
-			PeopleDAO pd = new PeopleDAO();
+			ClientDAO pd = new ClientDAO();
 			
 			while(rs.next())
 			{
 				String cnpj = rs.getString(1);
 				String name = rs.getString(2);
-				PeopleVO owner = pd.read(rs.getString(3));
+				ClientVO owner = pd.read(rs.getString(3));
 				String zipCode = rs.getString(4);
 				
 				l.add(new CompanyVO(cnpj, name, owner, zipCode));

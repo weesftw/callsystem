@@ -2,7 +2,6 @@ package net.weesftw.manager;
 
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,11 +12,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import net.weesftw.exception.CepNotFoundException;
+
 public final class CepAPI 
 {
 	private String cep, logradouro, bairro, localidade, uf, ddd, country;
 	
-	public CepAPI(String id) throws ParserConfigurationException, SAXException, IOException
+	public CepAPI(String id) throws ParserConfigurationException, SAXException, IOException, CepNotFoundException
 	{
 		if(!id.isEmpty())
 		{
@@ -35,12 +36,19 @@ public final class CepAPI
 				{
 					Element e = (Element) n;
 					
-					cep = e.getElementsByTagName("cep").item(i).getTextContent();					
-					logradouro = e.getElementsByTagName("logradouro").item(i).getTextContent();
-					bairro = e.getElementsByTagName("bairro").item(i).getTextContent();
-					localidade = e.getElementsByTagName("localidade").item(i).getTextContent();
-					uf = e.getElementsByTagName("uf").item(i).getTextContent();
-					ddd = e.getElementsByTagName("ddd").item(i).getTextContent();				
+					if(e.getElementsByTagName("erro").item(i) == null)
+					{
+						cep = e.getElementsByTagName("cep").item(i).getTextContent();
+						logradouro = e.getElementsByTagName("logradouro").item(i).getTextContent();
+						bairro = e.getElementsByTagName("bairro").item(i).getTextContent();
+						localidade = e.getElementsByTagName("localidade").item(i).getTextContent();
+						uf = e.getElementsByTagName("uf").item(i).getTextContent();
+						ddd = e.getElementsByTagName("ddd").item(i).getTextContent();				
+					}
+					else
+					{
+						throw new CepNotFoundException();
+					}
 				}
 			}
 		}
@@ -56,7 +64,7 @@ public final class CepAPI
 		this.ddd = ddd;
 		this.country = country;
 	}
-
+	
 	public String getCep()
 	{
 		return cep;

@@ -13,7 +13,7 @@ public class SellAbstractTable extends AbstractTableModel
 	
 	private List<CartVO> list = new ArrayList<CartVO>();
 	
-	private String[] columnIndex = {"ID", "Amount", "Product", "Provider", "Unit Price", "Subtotal"};
+	private String[] columnIndex = {"Amount", "Product", "Provider", "Unit Price", "Subtotal"};
 	
 	@Override
 	public int getRowCount() 
@@ -36,22 +36,21 @@ public class SellAbstractTable extends AbstractTableModel
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) 
 	{
-		double subtotal = 0.0;
+		double subtotal = Double.parseDouble(list.get(rowIndex).getProduct().getPrice()) * Double.parseDouble(list.get(rowIndex).getAmount());
+		double total =+ subtotal;
 		
 		switch(columnIndex)
 		{
 		case 0:
-			return list.get(rowIndex).getId();
-		case 1:
 			return list.get(rowIndex).getAmount();
-		case 2:
+		case 1:
 			return list.get(rowIndex).getProduct().getName();
-		case 3:
+		case 2:
 			return list.get(rowIndex).getProduct().getProvider().getName();
-		case 4:
+		case 3:
 			return list.get(rowIndex).getProduct().getPrice();
-		case 5:
-			return subtotal;
+		case 4:
+			return total;
 		default:
 			return null;
 		}

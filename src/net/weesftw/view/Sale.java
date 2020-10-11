@@ -38,7 +38,7 @@ public class Sale extends UI<InternalFrame>
 		c = new JCheckBox("CNPJ");
 		phoneNumber = new Label("Phone: ");
 		cnpj = new Label("CPF: ");
-		img = new Label(ImagePath.ICON, 100, 100);
+		img = new Label();
 		observation = new TextArea();
 		cpf = new TextField(12);
 		name = new TextField(12);
@@ -62,6 +62,7 @@ public class Sale extends UI<InternalFrame>
 		s.setPreferredSize(new Dimension(0, 180));
 		
 		p.setComponent(img);
+		img.loadImage(ImagePath.ICON, 120, 120);
 		
 		p2.setComponent(cnpj);
 		p2.setComponent(cpf, 1, 0);

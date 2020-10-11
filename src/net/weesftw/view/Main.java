@@ -7,7 +7,7 @@ import javax.swing.WindowConstants;
 import net.weesftw.manager.Authenticate;
 import net.weesftw.model.DesktopPane;
 import net.weesftw.model.Frame;
-import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.ClientVO;
 import net.weesftw.vo.UserVO;
 
 public final class Main extends UI<Frame>
@@ -17,7 +17,7 @@ public final class Main extends UI<Frame>
 	private DesktopPane d;
 	private Authenticate a;
 	
-	public Main(PeopleVO p, UserVO vs)
+	public Main(ClientVO p, UserVO vs)
 	{
 		super(new Frame("Call System | Open your ticket."), true);
 		

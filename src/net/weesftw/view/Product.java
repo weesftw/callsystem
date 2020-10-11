@@ -42,7 +42,7 @@ public class Product extends UI<InternalFrame>
 		choose = new Button("Choose");
 		submit = new Button("Submit");
 		provider = new ComboBox<String>(v);
-		img = new Label(ImagePath.ICON, 120, 120);
+		img = new Label();
 		name = new TextField(15);
 		price = new TextField(15);
 		weight = new TextField(5);
@@ -51,6 +51,7 @@ public class Product extends UI<InternalFrame>
 		height = new TextField(5);
 		
 		p.setComponent(img);
+		img.loadImage(ImagePath.ICON, 120, 120);
 		
 		p.setComponent(choose, 0, 1);
 		choose.addActionListener(new Action(this));

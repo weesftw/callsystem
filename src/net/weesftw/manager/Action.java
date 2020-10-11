@@ -17,15 +17,18 @@ import org.xml.sax.SAXException;
 import net.weesftw.constraint.Category;
 import net.weesftw.constraint.Department;
 import net.weesftw.constraint.Gender;
+import net.weesftw.constraint.ImagePath;
+import net.weesftw.constraint.Message;
 import net.weesftw.constraint.Status;
 import net.weesftw.dao.CartDAO;
 import net.weesftw.dao.CompanyDAO;
-import net.weesftw.dao.PeopleDAO;
+import net.weesftw.dao.ClientDAO;
 import net.weesftw.dao.ProductDAO;
 import net.weesftw.dao.ProviderDAO;
 import net.weesftw.dao.SellDAO;
 import net.weesftw.dao.TicketDAO;
 import net.weesftw.dao.UserDAO;
+import net.weesftw.exception.CepNotFoundException;
 import net.weesftw.model.DesktopPane;
 import net.weesftw.view.Account;
 import net.weesftw.view.Client;
@@ -45,7 +48,7 @@ import net.weesftw.view.User;
 import net.weesftw.view.UserTable;
 import net.weesftw.vo.CartVO;
 import net.weesftw.vo.CompanyVO;
-import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.ClientVO;
 import net.weesftw.vo.ProductVO;
 import net.weesftw.vo.ProviderVO;
 import net.weesftw.vo.SellVO;
@@ -86,8 +89,8 @@ public class Action implements ActionListener
 				{
 					if(ud.isValid(user, passwd))
 					{
-						PeopleDAO pd = new PeopleDAO();
-						PeopleVO p = pd.searchByUser(user);
+						ClientDAO pd = new ClientDAO();
+						ClientVO p = pd.searchByUser(user);
 						
 						c.dispose();
 						
@@ -95,12 +98,12 @@ public class Action implements ActionListener
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Username or Password incorrect.");
+						JOptionPane.showMessageDialog(null, Message.AUTHENTICATED_FAILED.get(null));
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Username not found.");
+					JOptionPane.showMessageDialog(null, Message.USERNAME_NOT_FOUND.get(null));
 				}
 			}
 		}
@@ -131,26 +134,26 @@ public class Action implements ActionListener
 			}
 			else if(action.equals(c.getSubmit().getActionCommand()))
 			{
-				PeopleDAO pd = new PeopleDAO();
+				ClientDAO pd = new ClientDAO();
 				
 				if(!(cpf.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || date.isEmpty() || gender == null || zipCode.isEmpty() || img == null))
 				{
 					if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
 					{
-						pd.create(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
+						pd.create(new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
 						
-						JOptionPane.showMessageDialog(null, "Register created successfully.");
+						JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(firstName));
 						
 						c.getUI().dispose();						
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 				}
 			}
 			else if(action.equals(c.getZipCode().getText()))
@@ -165,7 +168,11 @@ public class Action implements ActionListener
 						c.getAddress().setText(cep.getLogradouro());
 						c.getCity().setText(cep.getLocalidade());
 						c.getState().setText(cep.getUf());
-					} 
+					}
+					catch(CepNotFoundException ex)
+					{
+						JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
+					}
 					catch (ParserConfigurationException | SAXException | IOException ex) 
 					{
 						ex.printStackTrace();
@@ -173,7 +180,7 @@ public class Action implements ActionListener
 				}
 				else
 				{					
-					JOptionPane.showMessageDialog(null, "Zip Code Invalid.");
+					JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
 				}
 			}
 			else
@@ -189,21 +196,20 @@ public class Action implements ActionListener
 			{
 				t.getCompany().setEditable(t.getPj().isSelected() ? true : false);
 				t.getClient().setEditable(!t.getCompany().isEditable());
-				
 				t.getCompany().setText("");
-				t.getClient().setText("");
+				t.getClient().setText("");				
 			}
 			else if(action.equals(t.getSubmit().getActionCommand()))
 			{
 				TicketDAO td = new TicketDAO();
-				PeopleDAO pd = new PeopleDAO();
+				ClientDAO pd = new ClientDAO();
 				CompanyDAO cd = new CompanyDAO();
 				ProductDAO pdd = new ProductDAO();
 				
 				Category category = Category.valueOf(t.getCategory().getSelectedItem().toString());
 				ProductVO product = pdd.searchByName(t.getProduct().getSelectedItem().toString());
 				boolean priority = t.getPriority().isSelected() ? true : false;
-				PeopleVO client = pd.read(t.getClient().getText());
+				ClientVO client = pd.read(t.getClient().getText());
 				String title = t.getTitle().getText();
 				CompanyVO company = cd.read(t.getCompany().getText());
 				String description = t.getDescription().getText();
@@ -219,18 +225,18 @@ public class Action implements ActionListener
 	
 								td.create(new TicketVO(title, company, description, category, product, priority));
 								
-								JOptionPane.showMessageDialog(null, "Ticket created successfully.");
+								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Ticket"));
 								
 								t.getUI().dispose();
 							}
 							else
 							{
-								JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+								JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 							}
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, "There is no record of this company.");
+							JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(t.getCompany().getText()));
 						}
 					}
 					else
@@ -241,24 +247,24 @@ public class Action implements ActionListener
 							{							
 								td.create(new TicketVO(title, client, description, category, product, priority));
 								
-								JOptionPane.showMessageDialog(null, "Ticket created successfully.");
+								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Ticket"));
 								
-								t.getUI().dispose();							
+								t.getUI().dispose();
 							}
 							else
 							{
-								JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+								JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 							}
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, "There is no record of this client.");
+							JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(t.getClient().getText()));
 						}
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 				}
 			}
 			else
@@ -297,7 +303,7 @@ public class Action implements ActionListener
 			else if(action.equals(u.getSubmit().getActionCommand()))
 			{
 				UserDAO ud = new UserDAO();
-				PeopleDAO pd = new PeopleDAO();
+				ClientDAO pd = new ClientDAO();
 				
 				if(!(cpf.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || date.isEmpty() || gender == null || zipCode.isEmpty() || img.isEmpty() && !cpf.isEmpty() && !username.isEmpty() && !passwd.isEmpty() && department == null))
 				{
@@ -305,33 +311,37 @@ public class Action implements ActionListener
 					{
 						if(ud.searchByUser(username) == null)
 						{
-							if(pd.read(cpf) == null)
+							if(pd.read(cpf) != null)
 							{
-								pd.create(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
 								ud.create(new UserVO(cpf, username, passwd, department));
 								
-								JOptionPane.showMessageDialog(null, "Register created succefully.");
+								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("User"));
 								
 								u.getUI().dispose();															
 							}
 							else
 							{
-								JOptionPane.showMessageDialog(null, "There is already someone with that CPF.");
+								pd.create(new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
+								ud.create(new UserVO(cpf, username, passwd, department));
+								
+								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("User"));
+								
+								u.getUI().dispose();	
 							}
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, "There is already someone with that username.");
+							JOptionPane.showMessageDialog(null, Message.EXISTS.get(username));
 						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 				}
 			}
 			else if(action.equals(u.getZipCode().getText()))
@@ -345,16 +355,20 @@ public class Action implements ActionListener
 						u.getNeighborhood().setText(cep.getBairro());
 						u.getAddress().setText(cep.getLogradouro());
 						u.getCity().setText(cep.getLocalidade());
-						u.getState().setText(cep.getUf());
+						u.getState().setText(cep.getUf());							
 					} 
-					catch (ParserConfigurationException | SAXException | IOException ex) 
+					catch(CepNotFoundException ex)
 					{
-						ex.printStackTrace();
+						JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
+					}
+					catch (ParserConfigurationException | SAXException | IOException ex1) 
+					{
+						ex1.printStackTrace();
 					}	
 				}
 				else
 				{					
-					JOptionPane.showMessageDialog(null, "Zip Code invalid.");
+					JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 				}
 			}
 			else
@@ -435,7 +449,7 @@ public class Action implements ActionListener
 			{
 				TicketDAO td = new TicketDAO();
 				ProductDAO pd = new ProductDAO();
-				PeopleDAO pdd = new PeopleDAO();
+				ClientDAO pdd = new ClientDAO();
 				CompanyDAO cd = new CompanyDAO();
 				UserDAO ud = new UserDAO();
 				
@@ -447,7 +461,7 @@ public class Action implements ActionListener
 				String title = t.getTitle().getText();
 				String description = t.getDescription().getText();
 				CompanyVO company = cd.read(t.getCompany().getText());
-				PeopleVO client = pdd.read(t.getClient().getText());
+				ClientVO client = pdd.read(t.getClient().getText());
 				UserVO user = ud.searchByUser(t.getUser().getText());
 				String solution = t.getSolution().getText();
 				Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -456,13 +470,13 @@ public class Action implements ActionListener
 				{
 					td.update(new TicketVO(id, title, client, company, user, description, solution, time, category, product, status, priority));
 					
-					JOptionPane.showMessageDialog(null, "Ticket updated.");
+					JOptionPane.showMessageDialog(null, Message.TICKET_UPDATED.get(t.getTitle().getText()));
 					
 					t.getUI().dispose();
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "The solution's empty.");
+					JOptionPane.showMessageDialog(null, Message.SOLUTION_EMPTY.get(null));
 				}
 			}
 		}
@@ -504,23 +518,23 @@ public class Action implements ActionListener
 						{						
 							pdd.create(new ProductVO(provider, name, price, path, weight, length, width, height));		
 							
-							JOptionPane.showMessageDialog(null, "Register created succefully.");
+							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Produto"));
 							
 							p.getUI().dispose();
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+							JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "There is no record of this provider.");
+						JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get("Provedor"));
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 				}
 			}
 			else
@@ -549,23 +563,23 @@ public class Action implements ActionListener
 						{
 							pd.create(new ProviderVO(name, zipCode, phoneNumber, freight));
 							
-							JOptionPane.showMessageDialog(null, "Provider created succefully.");
+							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Fornecedor"));
 							
 							p.getUI().dispose();							
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, "The Provider already registered.");
+							JOptionPane.showMessageDialog(null, Message.EXISTS.get("Fornecedor"));
 						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 				}
 			}
 			else
@@ -743,7 +757,7 @@ public class Action implements ActionListener
 			SellDAO sd = new SellDAO();
 			ProductDAO pd = new ProductDAO();
 			CompanyDAO cdd = new CompanyDAO();
-			PeopleDAO pdd = new PeopleDAO();
+			ClientDAO pdd = new ClientDAO();
 			
 			String amount = s.getAmount().getText();
 			String cpf = s.getCpf().getText();
@@ -766,18 +780,18 @@ public class Action implements ActionListener
 				}
 			}
 			else if(action.equals(s.getCpf().getText()))
-			{				
+			{
 				if(!se)
 				{
-					PeopleVO p = new PeopleDAO().read(cpf);
-					
-					s.getC().setEnabled(false);
+					ClientVO p = new ClientDAO().read(cpf);
 					
 					if(p != null)
 					{
 						s.getName().setText(p.getFirstName() + " " + p.getLastName());
 						s.getPhone().setText(p.getPhoneNumber());
 						s.getZipCode().setText(p.getZipCode());
+						s.getCpf().setEditable(false);
+						s.getC().setEnabled(false);
 						
 						try
 						{
@@ -788,14 +802,14 @@ public class Action implements ActionListener
 							s.getCity().setText(cep.getLocalidade());
 							s.getState().setText(cep.getUf());
 						}
-						catch(IOException | ParserConfigurationException | SAXException ex)
+						catch(IOException | ParserConfigurationException | SAXException | CepNotFoundException ex)
 						{
 							ex.printStackTrace();
 						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "CPF Invalid.");
+						JOptionPane.showMessageDialog(null, Message.INVALID.get("CPF"));
 					}
 				}
 				else
@@ -817,14 +831,14 @@ public class Action implements ActionListener
 							s.getCity().setText(cep.getLocalidade());
 							s.getState().setText(cep.getUf());
 						}
-						catch(IOException | ParserConfigurationException | SAXException ex)
+						catch(IOException | ParserConfigurationException | SAXException | CepNotFoundException ex)
 						{
 							ex.printStackTrace();
 						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "CNPJ Invalid.");
+						JOptionPane.showMessageDialog(null, Message.INVALID.get("CNPJ"));
 					}
 				}
 			}
@@ -840,7 +854,7 @@ public class Action implements ActionListener
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Product Invalid.");
+					JOptionPane.showMessageDialog(null, Message.INVALID.get("Produto"));
 				}
 			}
 			else if(action.equals(s.getAdd().getActionCommand()))
@@ -849,7 +863,7 @@ public class Action implements ActionListener
 				
 				if(pv != null)
 				{
-					if(!(cpf.isEmpty() && id.isEmpty() && amount.isEmpty() && product.isEmpty()))
+					if(!(cpf.isEmpty() && id.isEmpty() && amount.isEmpty() && product.isEmpty() && price.isEmpty()))
 					{
 						if(cpf.matches(Regex.CPF) && id.matches(Regex.NUMBER) && amount.matches(Regex.NUMBER))
 						{
@@ -857,23 +871,25 @@ public class Action implements ActionListener
 							s.getAmount().setText("1");
 							s.getProduct().setText("");
 							s.getPrice().setText("R$: ");
+							s.getImg().loadImage(ImagePath.ICON, 100, 100);
 							
 							s.getAt().getList().add(new CartVO(amount, pv));
 							s.getAt().fireTableDataChanged();
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, "Some field contains invalid information.");
+							JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 						}
 					}
 					else
+						
 					{
-						JOptionPane.showMessageDialog(null, "There are empty fields, please fill in.");
+						JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Product not found.");
+					JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get("Produto"));
 				}
 			}
 			else if(action.equals(s.getSubmit().getActionCommand()))
@@ -892,17 +908,17 @@ public class Action implements ActionListener
 					}
 					else
 					{
-						PeopleVO client = pdd.read(cpf);
+						ClientVO client = pdd.read(cpf);
 						
 						cd.create(cart);
 						sd.create(new SellVO(cart, client, observation));
 					}
 					
-					JOptionPane.showMessageDialog(null, "Successful purchase.");	
+					JOptionPane.showMessageDialog(null, Message.PURCHASE.get(null));	
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Empty checkout list.");
+					JOptionPane.showMessageDialog(null, Message.CHECKOUT_EMPTY.get(null));
 				}
 			}
 			else

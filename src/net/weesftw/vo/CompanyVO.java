@@ -3,9 +3,9 @@ package net.weesftw.vo;
 public class CompanyVO 
 {
 	private String cnpj, name, zipCode;
-	private PeopleVO owner;
+	private ClientVO owner;
 	
-	public CompanyVO(String cnpj, String name, PeopleVO owner, String zipCode)
+	public CompanyVO(String cnpj, String name, ClientVO owner, String zipCode)
 	{
 		this.cnpj = cnpj;
 		this.name = name;
@@ -23,7 +23,7 @@ public class CompanyVO
 		return name;
 	}
 
-	public PeopleVO getOwner() 
+	public ClientVO getOwner() 
 	{
 		return owner;
 	}

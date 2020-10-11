@@ -38,7 +38,7 @@ public class Client extends UI<InternalFrame>
 		submit = new Button("Submit");
 		choose = new Button("Choose");
 		search = new Button(ImagePath.SEARCH, 13, 13);
-		img = new Label(ImagePath.ICON, 120, 120);
+		img = new Label();
 		cnpj = new TextField(15);
 		name = new TextField(15);
 		zipCode = new TextField(3);
@@ -65,6 +65,7 @@ public class Client extends UI<InternalFrame>
 		date = new TextField(15);
 				
 		p1.setComponent(img);
+		img.loadImage(ImagePath.ICON, 120, 120);
 		
 		p1.setComponent(choose, 0, 1);
 		choose.addActionListener(new Action(this));

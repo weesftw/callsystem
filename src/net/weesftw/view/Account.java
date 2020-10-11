@@ -8,12 +8,13 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import net.weesftw.exception.CepNotFoundException;
 import net.weesftw.manager.CepAPI;
 import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
 import net.weesftw.model.TextField;
-import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.ClientVO;
 
 public class Account extends UI<InternalFrame>
 {	
@@ -21,7 +22,7 @@ public class Account extends UI<InternalFrame>
 	{
 		super(new InternalFrame("Account", false, true, false, true));
 		
-		PeopleVO p = Main.instance.getAuth().getPeople();
+		ClientVO p = Main.instance.getAuth().getPeople();
 		Panel p2 = new Panel("Your Account", 4, 4, 4, 4);
 		Panel p1 = new Panel("Photo", 4, 4, 4, 4);
 		Label img = new Label();		
@@ -66,7 +67,7 @@ public class Account extends UI<InternalFrame>
 			p2.setComponent(new Label("State: "), 0, 10);
 			p2.setComponent(new TextField(30, c.getUf(), false), 0, 11);
 		} 
-		catch (ParserConfigurationException | SAXException | IOException e) 
+		catch (ParserConfigurationException | SAXException | IOException | CepNotFoundException e) 
 		{
 			e.printStackTrace();
 		}

@@ -10,7 +10,7 @@ public class TicketVO
 {	
 	private int id;
 	private String title, description, solution;
-	private PeopleVO client;
+	private ClientVO client;
 	private CompanyVO company;
 	private Timestamp time;
 	private Category category;
@@ -19,7 +19,7 @@ public class TicketVO
 	private boolean priority;
 	private UserVO user;
 	
-	public TicketVO(String title, PeopleVO client, String description, Category category, ProductVO product, boolean priority)
+	public TicketVO(String title, ClientVO client, String description, Category category, ProductVO product, boolean priority)
 	{
 		this.title = title;
 		this.client = client;
@@ -41,7 +41,7 @@ public class TicketVO
 		this.priority = priority;
 	}
 	
-	public TicketVO(int id, String title, PeopleVO client, CompanyVO company, UserVO user, String description, String solution, Timestamp time, Category category, ProductVO product, Status status, boolean priority) 
+	public TicketVO(int id, String title, ClientVO client, CompanyVO company, UserVO user, String description, String solution, Timestamp time, Category category, ProductVO product, Status status, boolean priority) 
 	{
 		this.id = id;
 		this.title = title;
@@ -67,7 +67,7 @@ public class TicketVO
 		return title;
 	}
 	
-	public PeopleVO getClient() 
+	public ClientVO getClient() 
 	{
 		return client;
 	}

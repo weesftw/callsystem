@@ -11,7 +11,7 @@ import net.weesftw.constraint.Status;
 import net.weesftw.manager.Database;
 import net.weesftw.vo.CartVO;
 import net.weesftw.vo.CompanyVO;
-import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.ClientVO;
 import net.weesftw.vo.SellVO;
 import net.weesftw.vo.UserVO;
 
@@ -52,7 +52,7 @@ public class SellDAO implements DataAcess<SellVO>
 			
 			CartDAO cd = new CartDAO();
 			UserDAO ud = new UserDAO();
-			PeopleDAO pd = new PeopleDAO();
+			ClientDAO pd = new ClientDAO();
 			CompanyDAO cod = new CompanyDAO();
 			
 			while(rs.next())
@@ -61,7 +61,7 @@ public class SellDAO implements DataAcess<SellVO>
 				CartVO cart = cd.read(rs.getString(2));
 				UserVO by = ud.read(rs.getString(3));
 				CompanyVO cnpj = null;
-				PeopleVO cpf = null;
+				ClientVO cpf = null;
 				
 				String i = rs.getString(4);
 				
@@ -128,7 +128,7 @@ public class SellDAO implements DataAcess<SellVO>
 			
 			CartDAO cd = new CartDAO();
 			UserDAO ud = new UserDAO();
-			PeopleDAO pd = new PeopleDAO();
+			ClientDAO pd = new ClientDAO();
 			CompanyDAO cod = new CompanyDAO();
 			
 			while(rs.next())
@@ -137,7 +137,7 @@ public class SellDAO implements DataAcess<SellVO>
 				CartVO cart = cd.read(rs.getString(2));
 				UserVO by = ud.read(rs.getString(3));
 				CompanyVO cnpj = null;
-				PeopleVO cpf = null;
+				ClientVO cpf = null;
 				
 				String i = rs.getString(4);
 				

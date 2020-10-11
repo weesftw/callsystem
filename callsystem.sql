@@ -18,7 +18,7 @@ insert into `department` (`name`, `privilege`) value ('TI',  1);
 insert into `department` (`name`, `privilege`) value ('RH',  0);
 insert into `department` (`name`, `privilege`) value ('Attendance',  0);
 
-create table if not exists `people`
+create table if not exists `client`
 (
 	`cpf` varchar(14) not null,
 	`firstName` varchar(60) not null,
@@ -43,7 +43,7 @@ create table if not exists `user`
     `department` tinyint unsigned not null,
 	
 	primary key(`cpf`),
-	constraint foreign key(`cpf`) references `people`(`cpf`),
+	constraint foreign key(`cpf`) references `client`(`cpf`),
 	constraint foreign key(`department`) references `department`(`id`)
 )Engine=InnoDB;
 
@@ -57,7 +57,7 @@ create table if not exists `company`
 	`zipCode` varchar(10) not null,
 
 	constraint primary key(`cnpj`, `owner`),
-	constraint foreign key(`owner`) references `people`(`cpf`)
+	constraint foreign key(`owner`) references `client`(`cpf`)
 )Engine=InnoDB;
 
 create table if not exists `category`
@@ -116,7 +116,7 @@ create table if not exists `ticket`
 
 	constraint primary key(`id`),
     constraint foreign key(`user`) references `user`(`cpf`),
-	constraint foreign key(`client`) references `people`(`cpf`),
+	constraint foreign key(`client`) references `client`(`cpf`),
     constraint foreign key(`company`) references `company`(`cnpj`),
     constraint foreign key(`category`) references `category`(`id`),
     constraint foreign key(`product`) references `product`(`id`)
@@ -144,7 +144,7 @@ create table if not exists `sell`
 	
 	constraint primary key(`id`),
 	constraint foreign key(`cart`) references `cart`(`id`),
-	constraint foreign key(`client`) references `people`(`cpf`),
+	constraint foreign key(`client`) references `client`(`cpf`),
     constraint foreign key(`client`) references `company`(`cnpj`),
     constraint foreign key(`by`) references `user`(`cpf`)
 )Engine=InnoDB;

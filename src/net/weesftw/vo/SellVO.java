@@ -8,7 +8,7 @@ import net.weesftw.view.Main;
 public class SellVO 
 {
 	private int id;
-	private PeopleVO cpf;
+	private ClientVO cpf;
 	private CompanyVO cnpj;
 	private CartVO cart;
 	private String observation;
@@ -16,7 +16,7 @@ public class SellVO
 	private Timestamp timestamp;
 	private Status status;
 	
-	public SellVO(int id, CartVO cart, UserVO by, PeopleVO cpf, CompanyVO cnpj, String observation, Timestamp timestamp, Status status) 
+	public SellVO(int id, CartVO cart, UserVO by, ClientVO cpf, CompanyVO cnpj, String observation, Timestamp timestamp, Status status) 
 	{
 		this.id = id;
 		this.cart = cart;
@@ -36,7 +36,7 @@ public class SellVO
 		this.observation = observation;
 	}
 	
-	public SellVO(CartVO cart, PeopleVO cpf, String observation) 
+	public SellVO(CartVO cart, ClientVO cpf, String observation) 
 	{
 		this.cart = cart;
 		this.by = Main.instance.getAuth().getUser();
@@ -49,7 +49,7 @@ public class SellVO
 		return id;
 	}
 
-	public PeopleVO getPeople() 
+	public ClientVO getPeople() 
 	{
 		return cpf;
 	}

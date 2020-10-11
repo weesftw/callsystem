@@ -8,4 +8,4 @@ public final class Control
 	{
 		new Login();
 	}
-}
+}	

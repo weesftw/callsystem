@@ -18,14 +18,14 @@ public class Label extends JLabel
 		super(args);
 	}
 	
-	public Label(ImagePath path, int width, int height)
-	{				
-		setIcon(new ImageIcon(new ImageIcon(this.getClass().getResource(path.toString())).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH)));
-	}
-	
 	public Label()
 	{
 		
+	}
+	
+	public void loadImage(ImagePath path, int width, int height)
+	{				
+		setIcon(new ImageIcon(new ImageIcon(this.getClass().getResource(path.toString())).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH)));
 	}
 	
 	public void loadImage(String url, int width, int height)
