@@ -33,7 +33,7 @@ create table if not exists `client`
 	constraint primary key(`cpf`)
 )Engine=InnoDB;
 
-insert into `people` value ('1', 'Admin', '', '', 'admin@admin.com', '', 'MALE', '', null); 
+insert into `client` value ('1', 'Admin', '', '', 'admin@admin.com', '', 'MALE', '', null); 
 
 create table if not exists `user`
 (

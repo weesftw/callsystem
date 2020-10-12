@@ -1,6 +1,5 @@
 package net.weesftw.model;
 
-import java.awt.Dimension;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
@@ -17,7 +16,5 @@ public class ComboBox<T> extends JComboBox<T>
 	public ComboBox(Vector<T> items)
 	{
 		super(items);
-		
-		setPreferredSize(new Dimension(0, 15));
 	}
 }

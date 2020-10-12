@@ -13,7 +13,7 @@ public class ProviderAbstractTable extends AbstractTableModel
 	
 	private List<ProviderVO> list = new ProviderDAO().list();
 	
-	private String[] columnIndex = {"ID", "Name", "Freight", "Phone"};
+	private String[] columnIndex = {"ID", "Nome", "Frete", "Telefone"};
 	
 	@Override
 	public int getRowCount() 

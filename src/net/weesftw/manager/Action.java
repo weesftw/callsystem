@@ -19,6 +19,7 @@ import net.weesftw.constraint.Department;
 import net.weesftw.constraint.Gender;
 import net.weesftw.constraint.ImagePath;
 import net.weesftw.constraint.Message;
+import net.weesftw.constraint.Regex;
 import net.weesftw.constraint.Status;
 import net.weesftw.dao.CartDAO;
 import net.weesftw.dao.CompanyDAO;
@@ -32,7 +33,10 @@ import net.weesftw.exception.CepNotFoundException;
 import net.weesftw.model.DesktopPane;
 import net.weesftw.view.Account;
 import net.weesftw.view.Client;
+import net.weesftw.view.ClientOpen;
 import net.weesftw.view.ClientTable;
+import net.weesftw.view.Company;
+import net.weesftw.view.CompanyTable;
 import net.weesftw.view.Login;
 import net.weesftw.view.Main;
 import net.weesftw.view.Product;
@@ -68,8 +72,8 @@ public class Action implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		Main m = Main.getInstance();
 		String action = e.getActionCommand();
-		Main m = Main.instance;
 		DesktopPane d = m != null ? m.getDesktop() : null;
 		
 		if(ui instanceof Login)
@@ -92,9 +96,9 @@ public class Action implements ActionListener
 						ClientDAO pd = new ClientDAO();
 						ClientVO p = pd.searchByUser(user);
 						
-						c.dispose();
-						
 						new Main(p, us);
+						
+						c.dispose();
 					}
 					else
 					{
@@ -119,6 +123,7 @@ public class Action implements ActionListener
 			String date = c.getDate().getText();
 			Gender gender = Gender.valueOf(c.getGender().getSelectedItem().toString());
 			String zipCode = c.getZipCode().getText();
+			String city = c.getCity().getText();
 			String img = c.getImg().getUrl();
 			
 			if(action.equals(c.getChoose().getActionCommand()))
@@ -136,7 +141,7 @@ public class Action implements ActionListener
 			{
 				ClientDAO pd = new ClientDAO();
 				
-				if(!(cpf.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || date.isEmpty() || gender == null || zipCode.isEmpty() || img == null))
+				if(!(cpf.isEmpty() && firstName.isEmpty() && lastName.isEmpty() && phoneNumber.isEmpty() && email.isEmpty() && date.isEmpty() && gender == null && zipCode.isEmpty() && img == null && city.isEmpty()))
 				{
 					if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
 					{
@@ -176,7 +181,7 @@ public class Action implements ActionListener
 					catch (ParserConfigurationException | SAXException | IOException ex) 
 					{
 						ex.printStackTrace();
-					}	
+					}
 				}
 				else
 				{					
@@ -184,8 +189,79 @@ public class Action implements ActionListener
 				}
 			}
 			else
+			{				
+				if(!c.getUI().isVisible())
+				{
+					d.add(c);
+					c.getUI().setVisible(true);
+				}
+				else
+				{
+					c.getUI().moveToFront();
+				}
+			}
+		}
+		else if(ui instanceof Company)
+		{
+			Company c = ((Company) ui);
+			
+			ClientDAO cdd = new ClientDAO();
+			
+			String cnpj = c.getCnpj().getText();
+			String name = c.getName().getText();
+			ClientVO owner = cdd.read(c.getOwner().getText());
+			String zipCode = c.getZipCode().getText();
+			
+			if(action.equals(c.getSubmit().getActionCommand()))
 			{
-				d.add(new Client());
+				if(!(cnpj.isEmpty() && name.isEmpty() && owner == null && zipCode.isEmpty()))
+				{
+					if(cnpj.matches(Regex.CNPJ) && name.matches(Regex.NAME) && zipCode.matches(Regex.CEP))
+					{
+						try 
+						{
+							CepAPI cep = new CepAPI(zipCode);
+							CompanyDAO cd = new CompanyDAO();
+							
+							if(cep != null)
+							{
+								cd.create(new CompanyVO(cnpj, name, owner, zipCode));
+								
+								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(name));
+								
+								c.getUI().dispose();	
+							}
+						}
+						catch(CepNotFoundException ex)
+						{
+							JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
+						}
+						catch (ParserConfigurationException | SAXException | IOException e1) 
+						{
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+				}
+			}
+			else
+			{
+				if(!c.getUI().isVisible())
+				{
+					d.add(c);
+					c.getUI().setVisible(true);
+				}
+				else
+				{
+					c.getUI().moveToFront();
+				}
 			}
 		}
 		else if(ui instanceof Ticket)
@@ -269,7 +345,15 @@ public class Action implements ActionListener
 			}
 			else
 			{				
-				d.add(new Ticket());
+				if(!t.getUI().isVisible())
+				{
+					d.add(t);
+					t.getUI().setVisible(true);
+				}
+				else
+				{
+					t.getUI().moveToFront();
+				}
 			}
 		}
 		else if(ui instanceof User)
@@ -373,12 +457,30 @@ public class Action implements ActionListener
 			}
 			else
 			{
-				d.add(new User());
+				if(!u.getUI().isVisible())
+				{
+					d.add(u);
+					u.getUI().setVisible(true);
+				}
+				else
+				{
+					u.getUI().moveToFront();
+				}
 			}
 		}
 		else if(ui instanceof Account)
 		{			
-			d.add(new Account());
+			Account i = Account.getInstance();
+			
+			if(!i.getUI().isVisible())
+			{
+				d.add(i);
+				i.getUI().setVisible(true);
+			}
+			else
+			{
+				i.getUI().moveToFront();
+			}
 		}
 		else if(ui instanceof TicketTable)
 		{
@@ -432,13 +534,17 @@ public class Action implements ActionListener
 					t.getSorter().setRowFilter(null);
 				}
 			}
-			else if(action.equals(t.getRefresh().getActionCommand()))
-			{
-				t.getAt().fireTableDataChanged();
-			}
 			else
 			{
-				d.add(new TicketTable());			
+				if(!t.getUI().isVisible())
+				{
+					d.add(t);
+					t.getUI().setVisible(true);
+				}
+				else
+				{
+					t.getUI().moveToFront();
+				}		
 			}
 		}
 		else if(ui instanceof TicketOpen)
@@ -539,7 +645,15 @@ public class Action implements ActionListener
 			}
 			else
 			{
-				d.add(new Product());
+				if(!p.getUI().isVisible())
+				{
+					d.add(p);
+					p.getUI().setVisible(true);
+				}
+				else
+				{
+					p.getUI().moveToFront();
+				}
 			}
 		}
 		else if(ui instanceof Provider)
@@ -584,7 +698,15 @@ public class Action implements ActionListener
 			}
 			else
 			{
-				d.add(new Provider());
+				if(!p.getUI().isVisible())
+				{
+					d.add(p);
+					p.getUI().setVisible(true);
+				}
+				else
+				{
+					p.getUI().moveToFront();
+				}
 			}
 		}
 		else if(ui instanceof ClientTable)
@@ -624,13 +746,17 @@ public class Action implements ActionListener
 					t.getSorter().setRowFilter(null);
 				}
 			}
-			else if(action.equals(t.getRefresh().getActionCommand()))
-			{
-				t.getAt().fireTableDataChanged();
-			}
 			else
 			{
-				d.add(new ClientTable());				
+				if(!t.getUI().isVisible())
+				{
+					d.add(t);
+					t.getUI().setVisible(true);
+				}
+				else
+				{
+					t.getUI().moveToFront();
+				}			
 			}
 		}
 		else if(ui instanceof ProductTable)
@@ -665,14 +791,17 @@ public class Action implements ActionListener
 					t.getSorter().setRowFilter(null);
 				}
 			}
-			else if(action.equals(t.getRefresh().getActionCommand()))
-			{
-				t.getAt().setList(new ProductDAO().list());
-				t.getAt().fireTableDataChanged();
-			}
 			else
 			{
-				d.add(new ProductTable());
+				if(!t.getUI().isVisible())
+				{
+					d.add(t);
+					t.getUI().setVisible(true);
+				}
+				else
+				{
+					t.getUI().moveToFront();
+				}
 			}
 		}
 		else if(ui instanceof ProviderTable)
@@ -707,13 +836,62 @@ public class Action implements ActionListener
 					t.getSorter().setRowFilter(null);
 				}
 			}
-			else if(action.equals(t.getRefresh().getActionCommand()))
+			else
 			{
-				t.getAt().fireTableDataChanged();
+				if(!t.getUI().isVisible())
+				{
+					d.add(t);
+					t.getUI().setVisible(true);
+				}
+				else
+				{
+					t.getUI().moveToFront();
+				}
+			}
+		}
+		else if(ui instanceof CompanyTable)
+		{
+			CompanyTable t = ((CompanyTable) ui);
+			
+			if(action.equals(t.getSearch().getActionCommand()))
+			{				
+				String cnpj = t.getId().getText();
+				String name = t.getName().getText();
+				String owner = t.getOwner().getText();
+				String zipCode = t.getZipCode().getText();
+				
+				if(!cnpj.isEmpty())
+				{					
+					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cnpj), 0));
+				}
+				else if(!name.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + name, 1));
+				}
+				else if(!owner.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + owner, 3));
+				}
+				else if(!zipCode.isEmpty())
+				{
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + zipCode, 7));
+				}
+				else
+				{
+					t.getSorter().setRowFilter(null);
+				}
 			}
 			else
 			{
-				d.add(new ProviderTable());
+				if(!t.getUI().isVisible())
+				{
+					d.add(t);
+					t.getUI().setVisible(true);
+				}
+				else
+				{
+					t.getUI().moveToFront();
+				}
 			}
 		}
 		else if(ui instanceof UserTable)
@@ -738,13 +916,17 @@ public class Action implements ActionListener
 					t.getSorter().setRowFilter(null);
 				}
 			}
-			else if(action.equals(t.getRefresh().getActionCommand()))
-			{
-				t.getAt().fireTableDataChanged();
-			}
 			else
 			{
-				d.add(new UserTable());
+				if(!t.getUI().isVisible())
+				{
+					d.add(t);
+					t.getUI().setVisible(true);
+				}
+				else
+				{
+					t.getUI().moveToFront();
+				}
 			}
 		}
 		else if(ui instanceof Sale)
@@ -923,7 +1105,89 @@ public class Action implements ActionListener
 			}
 			else
 			{
-				d.add(new Sale());
+				if(!s.getUI().isVisible())
+				{
+					d.add(s);
+					s.getUI().setVisible(true);
+				}
+				else
+				{
+					s.getUI().moveToFront();
+				}
+			}
+		}
+		else if(ui instanceof ClientOpen)
+		{
+			ClientOpen c = ((ClientOpen) ui);
+			
+			String cpf = c.getCpf().getText();
+			String firstName = c.getFirstName().getText();
+			String lastName = c.getLastName().getText();
+			String phone = c.getPhone().getText();
+			String email = c.getEmail().getText();
+			String date = c.getDateBorn().getText();
+			Gender gender = Gender.valueOf(c.getGender().getSelectedItem().toString());
+			String zipCode = c.getZipCode().getText();
+			String city = c.getCity().getText();
+			Object img = c.getImg();
+			
+			if(action.equals(c.getZipCode().getText()))
+			{
+				if(zipCode.matches(Regex.CEP))
+				{
+					try
+					{
+						CepAPI cep = new CepAPI(zipCode);
+						
+						c.getNeighborhood().setText(cep.getBairro());
+						c.getAddress().setText(cep.getLogradouro());
+						c.getCity().setText(cep.getLocalidade());
+						c.getState().setText(cep.getUf());
+					}
+					catch(CepNotFoundException ex)
+					{
+						JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
+					}
+					catch (ParserConfigurationException | SAXException | IOException ex) 
+					{
+						ex.printStackTrace();
+					}
+				}
+				else
+				{					
+					JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
+				}
+			}
+			else if(action.equals(c.getSubmit().getActionCommand()))
+			{
+				ClientDAO cd = new ClientDAO();
+				
+				if(!(cpf.isEmpty() && firstName.isEmpty() && lastName.isEmpty() && phone.isEmpty() && email.isEmpty() && date.isEmpty() && gender == null && zipCode.isEmpty() && img == null && city.isEmpty()))
+				{
+					if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
+					{
+						if(img != null)
+						{
+							cd.update(new ClientVO(cpf, firstName, lastName, phone, email, date, gender, zipCode, (String) img));							
+						}
+						else
+						{
+							cd.update(new ClientVO(cpf, firstName, lastName, phone, email, date, gender, zipCode, (byte[]) img));
+						}
+						
+						JOptionPane.showMessageDialog(null, Message.UPDATE.get(firstName));
+						
+						c.getUI().dispose();						
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+				}
 			}
 		}
 	}

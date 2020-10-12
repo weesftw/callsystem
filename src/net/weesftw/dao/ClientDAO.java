@@ -122,18 +122,9 @@ public class ClientDAO implements DataAcess<ClientVO>
 	public boolean update(ClientVO p) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("update `client` set `firstName` = ?, `lastName` = ?, `phoneNumber` = ?, `email` = ?, `dateBorn` = ?, `zipCode` = ?, `photo` = ? where `cpf` = ?");
-				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-				FileInputStream file = new FileInputStream(p.getPath()))
-		{
-			int img = file.read();
-			
-			while(img != -1)
-			{
-				buffer.write(img);
-				img = file.read();
-			}
-			
+				PreparedStatement stmt = d.con.prepareStatement("update `client` set `firstName` = ?, `lastName` = ?, `phoneNumber` = ?, `email` = ?, `dateBorn` = ?, `gender` = ?, `zipCode` = ? where `cpf` = ?");
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream())
+		{			
 			stmt.setString(1, p.getFirstName());
 			stmt.setString(2, p.getLastName());
 			stmt.setString(3, p.getPhoneNumber());
@@ -141,8 +132,7 @@ public class ClientDAO implements DataAcess<ClientVO>
 			stmt.setString(5, p.getDate());
 			stmt.setString(6, p.getGender().toString());
 			stmt.setString(7, p.getZipCode());
-			stmt.setBytes(8, buffer.toByteArray());
-			stmt.setString(9, p.getCpf());
+			stmt.setString(8, p.getCpf());
 			
 			stmt.execute();
 			

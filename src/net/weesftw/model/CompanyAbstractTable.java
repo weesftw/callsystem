@@ -4,16 +4,16 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.weesftw.dao.ProductDAO;
-import net.weesftw.vo.ProductVO;
+import net.weesftw.dao.CompanyDAO;
+import net.weesftw.vo.CompanyVO;
 
-public class ProductAbstractTable extends AbstractTableModel
+public class CompanyAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private List<ProductVO> list = new ProductDAO().list();
+	private List<CompanyVO> list = new CompanyDAO().list();
 	
-	private String[] columnIndex = {"ID", "Nome", "Preco", "Fornecedor"};
+	private String[] columnIndex = {"CNPJ", "Nome", "Responsavel", "CEP"};
 	
 	@Override
 	public int getRowCount() 
@@ -35,24 +35,24 @@ public class ProductAbstractTable extends AbstractTableModel
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) 
-	{
+	{		
 		switch(columnIndex)
 		{
 		case 0:
-			return list.get(rowIndex).getId();
+			return list.get(rowIndex).getCnpj();
 		case 1:
 			return list.get(rowIndex).getName();
 		case 2:
-			return list.get(rowIndex).getPrice();
+			return list.get(rowIndex).getOwner();
 		case 3:
-			return list.get(rowIndex).getProvider().getName();
+			return list.get(rowIndex).getZipCode();
 		default:
 			return null;
 		}
 	}
 	
-	public void setList(List<ProductVO> list)
+	public List<?> getList()
 	{
-		this.list = list;
+		return list;
 	}
 }

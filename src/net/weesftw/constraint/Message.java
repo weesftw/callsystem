@@ -2,7 +2,7 @@ package net.weesftw.constraint;
 
 public enum Message 
 {
-	ERROR, INVALID, SUCCESSFULLY, INVALID_ARGUMENTS, FIELDS_EMPTY, USERNAME_NOT_FOUND, AUTHENTICATED_FAILED, AUTHENTICATED, NOT_EXISTS,
+	ERROR, INVALID, SUCCESSFULLY, UPDATE, INVALID_ARGUMENTS, FIELDS_EMPTY, USERNAME_NOT_FOUND, AUTHENTICATED_FAILED, AUTHENTICATED, NOT_EXISTS,
 	NOT_FOUND, EXISTS, TICKET_UPDATED, SOLUTION_EMPTY, CHECKOUT_EMPTY, PURCHASE;
 	
 	public String get(String args)
@@ -39,6 +39,8 @@ public enum Message
 			return "Compra realizada com sucesso.";
 		case INVALID:
 			return args + " invalido.";
+		case UPDATE:
+			return args + " atualizado com sucesso.";
 		default:
 			break;
 		}

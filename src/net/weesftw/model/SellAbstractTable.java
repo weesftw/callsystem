@@ -13,7 +13,7 @@ public class SellAbstractTable extends AbstractTableModel
 	
 	private List<CartVO> list = new ArrayList<CartVO>();
 	
-	private String[] columnIndex = {"Amount", "Product", "Provider", "Unit Price", "Subtotal"};
+	private String[] columnIndex = {"Qntd", "Produto", "Fornecedor", "Preco Unit.", "Subtotal"};
 	
 	@Override
 	public int getRowCount() 

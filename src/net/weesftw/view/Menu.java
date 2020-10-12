@@ -17,44 +17,48 @@ public final class Menu extends UI<JMenuBar>
 		JMenu edit = new JMenu("View");
 		JMenu info = new JMenu("Info");
 		
-		JMenuItem client = new JMenuItem("Client");
-		client.addActionListener(new Action(new Client()));
+		JMenuItem client = new JMenuItem("Client");		
+		client.addActionListener(new Action(Client.getInstance()));
+		
+		JMenuItem company = new JMenuItem("Company");		
+		company.addActionListener(new Action(Company.getInstance()));
 		
 		JMenuItem product = new JMenuItem("Product");
-		product.addActionListener(new Action(new Product()));
+		product.addActionListener(new Action(Product.getInstance()));
 		
 		JMenuItem provider = new JMenuItem("Provider");
-		provider.addActionListener(new Action(new Provider()));
+		provider.addActionListener(new Action(Provider.getInstance()));
 		
 		JMenuItem ticket = new JMenuItem("Ticket");
-		ticket.addActionListener(new Action(new Ticket()));
+		ticket.addActionListener(new Action(Ticket.getInstance()));
 		
 		JMenuItem user = new JMenuItem("User");
-		user.addActionListener(new Action(new User()));
+		user.addActionListener(new Action(User.getInstance()));
 		
 		JMenuItem clientTable = new JMenuItem("Client");
-		clientTable.addActionListener(new Action(new ClientTable()));
+		clientTable.addActionListener(new Action(ClientTable.getInstance()));
 		
 		JMenuItem ticketTable = new JMenuItem("Ticket");
-		ticketTable.addActionListener(new Action(new TicketTable()));
+		ticketTable.addActionListener(new Action(TicketTable.getInstance()));
 		
 		JMenuItem productTable = new JMenuItem("Product");
-		productTable.addActionListener(new Action(new ProductTable()));
+		productTable.addActionListener(new Action(ProductTable.getInstance()));
 		
 		JMenuItem providerTable = new JMenuItem("Provider");
-		providerTable.addActionListener(new Action(new ProviderTable()));
+		providerTable.addActionListener(new Action(ProviderTable.getInstance()));
 		
 		JMenuItem sale = new JMenuItem("Sale");
-		sale.addActionListener(new Action(new Sale()));
+		sale.addActionListener(new Action(Sale.getInstance()));
 		
 		JMenuItem userTable = new JMenuItem("User");
-		userTable.addActionListener(new Action(new UserTable()));
+		userTable.addActionListener(new Action(UserTable.getInstance()));
 		
 		JMenuItem account = new JMenuItem("Account");
-		account.addActionListener(new Action(new Account()));
+		account.addActionListener(new Action(Account.getInstance()));
 		
 		file.add(fileMenu);
 		fileMenu.add(client);
+		fileMenu.add(company);
 		fileMenu.add(product);
 		fileMenu.add(provider);
 		fileMenu.add(sale);

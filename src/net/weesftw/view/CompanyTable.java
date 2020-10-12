@@ -12,7 +12,7 @@ import javax.swing.table.TableRowSorter;
 import net.weesftw.manager.Action;
 import net.weesftw.manager.MouseAction;
 import net.weesftw.model.Button;
-import net.weesftw.model.ProviderAbstractTable;
+import net.weesftw.model.CompanyAbstractTable;
 import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
@@ -20,26 +20,26 @@ import net.weesftw.model.ScrollPane;
 import net.weesftw.model.Table;
 import net.weesftw.model.TextField;
 
-public class ProviderTable extends UI<InternalFrame>
+public class CompanyTable extends UI<InternalFrame>
 {
-	private static ProviderTable instance;
+	private static CompanyTable instance;
 	
 	private TableRowSorter<TableModel> sorter;
-	private ProviderAbstractTable at;
+	private CompanyAbstractTable at;
 	private Button search;
-	private TextField id, name, phoneNumber, freight;
+	private TextField id, name, owner, zipCode;
 	
-	private ProviderTable() 
+	private CompanyTable() 
 	{
-		super(new InternalFrame("Provider", false, true, false, true));
+		super(new InternalFrame("Product", false, true, false, true));
 		
-		at = new ProviderAbstractTable();
+		at = new CompanyAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
 		search = new Button("Search");
 		id = new TextField(15);
 		name = new TextField(15);
-		freight = new TextField(15);
-		phoneNumber = new TextField(15);
+		owner = new TextField(15);
+		zipCode = new TextField(15);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
 		Table t = new Table(at);
@@ -66,17 +66,17 @@ public class ProviderTable extends UI<InternalFrame>
 			}
 		}
 		
-		p.setComponent(new Label("ID: "));
+		p.setComponent(new Label("CNPJ: "));
 		p.setComponent(id, 1, 0);
 		
 		p.setComponent(new Label("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
 		
-		p.setComponent(new Label("Frete: "), 0, 1);
-		p.setComponent(freight, 1, 1);
+		p.setComponent(new Label("Responsavel: "), 0, 1);
+		p.setComponent(owner, 1, 1);
 		
-		p.setComponent(new Label("Fornecedor: "), 2, 1);
-		p.setComponent(phoneNumber, 3, 1);
+		p.setComponent(new Label("CEP: "), 2, 1);
+		p.setComponent(zipCode, 3, 1);
 		
 		p.setComponent(search, 3, 2);
 		search.addActionListener(new Action(this));
@@ -88,9 +88,9 @@ public class ProviderTable extends UI<InternalFrame>
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	
-	public static ProviderTable getInstance()
+	public static CompanyTable getInstance()
 	{
-		return instance != null ? instance : new ProviderTable(); 
+		return instance != null ? instance : new CompanyTable(); 
 	}
 
 	public TableRowSorter<TableModel> getSorter() 
@@ -98,7 +98,7 @@ public class ProviderTable extends UI<InternalFrame>
 		return sorter;
 	}
 
-	public ProviderAbstractTable getAt()
+	public CompanyAbstractTable getAt()
 	{
 		return at;
 	}
@@ -107,8 +107,8 @@ public class ProviderTable extends UI<InternalFrame>
 	{
 		return search;
 	}
-
-	public TextField getId() 
+	
+	public TextField getCpf() 
 	{
 		return id;
 	}
@@ -118,13 +118,18 @@ public class ProviderTable extends UI<InternalFrame>
 		return name;
 	}
 
-	public TextField getPhone() 
+	public TextField getOwner() 
 	{
-		return phoneNumber;
+		return owner;
 	}
 
-	public TextField getFreight() 
+	public TextField getZipCode() 
 	{
-		return freight;
+		return zipCode;
+	}
+
+	public TextField getId() 
+	{
+		return id;
 	}
 }

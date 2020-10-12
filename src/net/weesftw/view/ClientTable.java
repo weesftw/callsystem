@@ -25,15 +25,16 @@ import net.weesftw.model.TextField;
 
 public class ClientTable extends UI<InternalFrame>
 {
-	private TableRowSorter<TableModel> sorter;
+	private static ClientTable instance;
 	
+	private TableRowSorter<TableModel> sorter;
 	private ClientAbstractTable at;
-	private Button search, refresh;
+	private Button search;
 	private ComboBox<?> gender;
 	private TextField cpf, name, phone, zipCode;
 	private JCheckBox priority;
 	
-	public ClientTable() 
+	private ClientTable() 
 	{
 		super(new InternalFrame("Client", false, true, false, true));
 		
@@ -41,7 +42,6 @@ public class ClientTable extends UI<InternalFrame>
 		sorter = new TableRowSorter<TableModel>(at);
 		gender = new ComboBox<Gender>(Gender.values());
 		search = new Button("Search");
-		refresh = new Button("Refresh");
 		cpf = new TextField(15);
 		name = new TextField(15);
 		phone = new TextField(15);
@@ -77,21 +77,18 @@ public class ClientTable extends UI<InternalFrame>
 		p.setComponent(new Label("CPF: "));
 		p.setComponent(cpf, 1, 0);
 		
-		p.setComponent(new Label("Name: "), 2, 0);
+		p.setComponent(new Label("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
 		
-		p.setComponent(new Label("Phone: "), 0, 1);
+		p.setComponent(new Label("Telefone: "), 0, 1);
 		p.setComponent(phone, 1, 1);
 		
-		p.setComponent(new Label("Zip Code: "), 2, 1);
+		p.setComponent(new Label("CEP: "), 2, 1);
 		p.setComponent(zipCode, 3, 1);
 		
-		p.setComponent(new Label("Gender: "), 0, 3);
+		p.setComponent(new Label("Genero: "), 0, 3);
 		p.setComponent(gender, 1, 3);
 		gender.setBackground(Color.WHITE);
-		
-		p.setComponent(refresh, 1, 4);
-		refresh.addActionListener(new Action(this));
 		
 		p.setComponent(search, 3, 4);
 		search.addActionListener(new Action(this));
@@ -101,7 +98,11 @@ public class ClientTable extends UI<InternalFrame>
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ui.setVisible(true);
+	}
+	
+	public static ClientTable getInstance()
+	{
+		return instance != null ? instance : new ClientTable(); 
 	}
 
 	public TableRowSorter<TableModel> getSorter() 
@@ -147,10 +148,5 @@ public class ClientTable extends UI<InternalFrame>
 	public JCheckBox getPriority() 
 	{
 		return priority;
-	}
-
-	public Button getRefresh() 
-	{
-		return refresh;
 	}
 }

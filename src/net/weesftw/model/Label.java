@@ -12,6 +12,7 @@ public class Label extends JLabel
 	private static final long serialVersionUID = 1L;
 	
 	private String url;
+	private byte[] b;
 	
 	public Label(String args)
 	{
@@ -39,12 +40,19 @@ public class Label extends JLabel
 	{
 		if(b != null)
 		{
-			setIcon(new ImageIcon(new ImageIcon(b).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH)));						
+			this.b = b;
+			
+			setIcon(new ImageIcon(new ImageIcon(b).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH)));
 		}
 	}
 	
 	public String getUrl()
 	{
 		return url;
+	}
+	
+	public byte[] getByte()
+	{
+		return b;
 	}
 }

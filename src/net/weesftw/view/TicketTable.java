@@ -25,15 +25,16 @@ import net.weesftw.model.TextField;
 
 public class TicketTable extends UI<InternalFrame>
 {
-	private TableRowSorter<TableModel> sorter;
+	private static TicketTable instance;
 	
+	private TableRowSorter<TableModel> sorter;
 	private TicketAbstractTable at;
-	private Button btn, refresh;
+	private Button btn;
 	private ComboBox<?> status;
 	private TextField id, title, client, company, user, date;
 	private JCheckBox priority;
 	
-	public TicketTable() 
+	private TicketTable() 
 	{
 		super(new InternalFrame("Ticket", false, true, false, true));
 		
@@ -41,7 +42,6 @@ public class TicketTable extends UI<InternalFrame>
 		sorter = new TableRowSorter<TableModel>(at);
 		status = new ComboBox<Status>(Status.values());
 		btn = new Button("Search");
-		refresh = new Button("Refresh");
 		id = new TextField(15);
 		title = new TextField(15);
 		client = new TextField(15);
@@ -79,27 +79,24 @@ public class TicketTable extends UI<InternalFrame>
 		p.setComponent(new Label("ID: "));
 		p.setComponent(id, 1, 0);
 		
-		p.setComponent(new Label("Title: "), 2, 0);
+		p.setComponent(new Label("Titulo: "), 2, 0);
 		p.setComponent(title, 3, 0);
 		
-		p.setComponent(new Label("Client: "), 0, 1);
+		p.setComponent(new Label("Cliente: "), 0, 1);
 		p.setComponent(client, 1, 1);
 		
-		p.setComponent(new Label("Company: "), 2, 1);
+		p.setComponent(new Label("Empresa: "), 2, 1);
 		p.setComponent(company, 3, 1);
 		
-		p.setComponent(new Label("User: "), 0, 2);
+		p.setComponent(new Label("Usuario: "), 0, 2);
 		p.setComponent(user, 1, 2);
 		
-		p.setComponent(new Label("Date: "), 2, 2);
+		p.setComponent(new Label("Data: "), 2, 2);
 		p.setComponent(date, 3, 2);
 		
 		p.setComponent(new Label("Status: "), 0, 3);
 		p.setComponent(status, 1, 3);
 		status.setBackground(Color.WHITE);
-		
-		p.setComponent(refresh, 1, 4);
-		refresh.addActionListener(new Action(this));
 		
 		p.setComponent(priority, 3, 3);
 		
@@ -111,7 +108,11 @@ public class TicketTable extends UI<InternalFrame>
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ui.setVisible(true);
+	}
+	
+	public static TicketTable getInstance()
+	{
+		return instance != null ? instance : new TicketTable(); 
 	}
 
 	public TicketAbstractTable getAt() 
@@ -167,10 +168,5 @@ public class TicketTable extends UI<InternalFrame>
 	public TableRowSorter<TableModel> getSorter() 
 	{
 		return sorter;
-	}
-
-	public Button getRefresh() 
-	{
-		return refresh;
 	}
 }

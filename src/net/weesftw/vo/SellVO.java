@@ -31,7 +31,7 @@ public class SellVO
 	public SellVO(CartVO cart, CompanyVO cnpj, String observation) 
 	{
 		this.cart = cart;
-		this.by = Main.instance.getAuth().getUser();
+		this.by = Main.getInstance().getAuth().getUser();
 		this.cnpj = cnpj;
 		this.observation = observation;
 	}
@@ -39,7 +39,7 @@ public class SellVO
 	public SellVO(CartVO cart, ClientVO cpf, String observation) 
 	{
 		this.cart = cart;
-		this.by = Main.instance.getAuth().getUser();
+		this.by = Main.getInstance().getAuth().getUser();
 		this.cpf = cpf;
 		this.observation = observation;
 	}

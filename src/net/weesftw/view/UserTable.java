@@ -21,20 +21,20 @@ import net.weesftw.model.UserAbstractTable;
 
 public class UserTable extends UI<InternalFrame>
 {
-	private TableRowSorter<TableModel> sorter;
+	private static UserTable instance;
 	
+	private TableRowSorter<TableModel> sorter;
 	private UserAbstractTable at;
-	private Button search, refresh;
+	private Button search;
 	private TextField cpf, username;
 	
-	public UserTable() 
+	private UserTable() 
 	{
 		super(new InternalFrame("User", false, true, false, true));
 		
 		at = new UserAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
 		search = new Button("Search");
-		refresh = new Button("Refresh");
 		cpf = new TextField(15);
 		username = new TextField(15);
 		
@@ -61,11 +61,8 @@ public class UserTable extends UI<InternalFrame>
 		p.setComponent(new Label("CPF: "));
 		p.setComponent(cpf, 1, 0);
 		
-		p.setComponent(new Label("Username: "), 2, 0);
+		p.setComponent(new Label("Usuario: "), 2, 0);
 		p.setComponent(username, 3, 0);
-		
-		p.setComponent(refresh, 1, 1);
-		refresh.addActionListener(new Action(this));
 		
 		p.setComponent(search, 3, 1);
 		search.addActionListener(new Action(this));
@@ -75,7 +72,11 @@ public class UserTable extends UI<InternalFrame>
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ui.setVisible(true);
+	}
+	
+	public static UserTable getInstance()
+	{
+		return instance != null ? instance : new UserTable(); 
 	}
 
 	public TableRowSorter<TableModel> getSorter() 
@@ -101,10 +102,5 @@ public class UserTable extends UI<InternalFrame>
 	public TextField getUsername() 
 	{
 		return username;
-	}
-
-	public Button getRefresh() 
-	{
-		return refresh;
 	}
 }

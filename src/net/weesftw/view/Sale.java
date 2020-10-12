@@ -21,6 +21,8 @@ import net.weesftw.model.TextField;
 
 public class Sale extends UI<InternalFrame>
 {
+	private static Sale instance;
+	
 	private SellAbstractTable at;
 	private Button add, submit;
 	private JCheckBox c;
@@ -28,7 +30,7 @@ public class Sale extends UI<InternalFrame>
 	private TextField cpf, name, phone, zipCode, address, neighborhood, city, state, id, amount, product, price;
 	private TextArea observation;
 	
-	public Sale() 
+	private Sale() 
 	{
 		super(new InternalFrame("Sale", false, true, false, true));
 		
@@ -71,7 +73,7 @@ public class Sale extends UI<InternalFrame>
 		p2.setComponent(c, 2, 0);
 		c.addActionListener(new Action(this));
 		
-		p2.setComponent(new Label("Name: "), 0, 1);
+		p2.setComponent(new Label("Nome: "), 0, 1);
 		p2.setComponent(name, 1, 1);
 		name.setEditable(false);
 		
@@ -79,23 +81,23 @@ public class Sale extends UI<InternalFrame>
 		p2.setComponent(phone, 3, 1);
 		phone.setEditable(false);
 		
-		p2.setComponent(new Label("Zip Code: "), 0, 2);
+		p2.setComponent(new Label("CEP: "), 0, 2);
 		p2.setComponent(zipCode, 1, 2);
 		zipCode.setEditable(false);
 		
-		p2.setComponent(new Label("Address: "), 2, 2);
+		p2.setComponent(new Label("Rua: "), 2, 2);
 		p2.setComponent(address, 3, 2);
 		address.setEditable(false);
 		
-		p2.setComponent(new Label("Neighborhood: "), 0, 3);
+		p2.setComponent(new Label("Bairro: "), 0, 3);
 		p2.setComponent(neighborhood, 1, 3);
 		neighborhood.setEditable(false);
 		
-		p2.setComponent(new Label("City: "), 2, 3);
+		p2.setComponent(new Label("Cidade: "), 2, 3);
 		p2.setComponent(city, 3, 3);
 		city.setEditable(false);
 		
-		p2.setComponent(new Label("State: "), 0, 4);
+		p2.setComponent(new Label("Estado: "), 0, 4);
 		p2.setComponent(state, 1, 4);
 		state.setEditable(false);
 		
@@ -103,16 +105,16 @@ public class Sale extends UI<InternalFrame>
 		p3.setComponent(id, 1, 0);
 		id.addActionListener(new Action(this));
 		
-		p3.setComponent(new Label("Product: "), 0, 1);
+		p3.setComponent(new Label("Produto: "), 0, 1);
 		p3.setComponent(product, 1, 1);
 		product.setBackground(Color.WHITE);
 		product.setEditable(false);
 		
-		p3.setComponent(new Label("Amount: "), 2, 0);
+		p3.setComponent(new Label("Quantidade: "), 2, 0);
 		p3.setComponent(amount, 3, 0);
 		amount.setText("1");
 		
-		p3.setComponent(new Label("Price: "), 2, 1);
+		p3.setComponent(new Label("Preco: "), 2, 1);
 		p3.setComponent(price, 3, 1);
 		price.setBackground(Color.WHITE);
 		price.setText("R$: ");
@@ -131,7 +133,11 @@ public class Sale extends UI<InternalFrame>
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ui.setVisible(true);
+	}
+	
+	public static Sale getInstance()
+	{
+		return instance != null ? instance : new Sale(); 
 	}
 
 	public SellAbstractTable getAt() 

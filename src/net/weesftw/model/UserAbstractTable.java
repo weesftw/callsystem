@@ -13,7 +13,7 @@ public class UserAbstractTable extends AbstractTableModel
 	
 	private List<UserVO> list = new UserDAO().list();
 	
-	private String[] columnIndex = {"CPF", "Username"};
+	private String[] columnIndex = {"CPF", "Usuario"};
 	
 	@Override
 	public int getRowCount() 

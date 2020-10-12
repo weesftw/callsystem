@@ -19,12 +19,14 @@ import net.weesftw.vo.ProviderVO;
 
 public class Product extends UI<InternalFrame>
 {
+	private static Product instance;
+	
 	private Button choose, submit;
 	private ComboBox<?> provider;
 	private Label img;
 	private TextField name, price, weight, length, width, height;
 	
-	public Product() 
+	private Product() 
 	{
 		super(new InternalFrame("Product", false, true, false, true));
 		
@@ -56,26 +58,26 @@ public class Product extends UI<InternalFrame>
 		p.setComponent(choose, 0, 1);
 		choose.addActionListener(new Action(this));
 		
-		p2.setComponent(new Label("Name : "));
+		p2.setComponent(new Label("Nome : "));
 		p2.setComponent(name, 1, 0);
 				
-		p2.setComponent(new Label("Weight (kg): "), 2, 0);
+		p2.setComponent(new Label("Peso (kg): "), 2, 0);
 		p2.setComponent(weight, 3, 0);
 		
-		p2.setComponent(new Label("Price: "), 0, 1);
+		p2.setComponent(new Label("Preco: "), 0, 1);
 		p2.setComponent(price, 1, 1);
 		
-		p2.setComponent(new Label("Length (cm): "), 2, 1);
+		p2.setComponent(new Label("Comprimento (cm): "), 2, 1);
 		p2.setComponent(length, 3, 1);
 		
-		p2.setComponent(new Label("Provider: "), 0, 2);
+		p2.setComponent(new Label("Fornecedor: "), 0, 2);
 		p2.setComponent(provider, 1, 2);
 		provider.setBackground(Color.WHITE);
 		
-		p2.setComponent(new Label("Width (cm): "), 2, 2);
+		p2.setComponent(new Label("Largura (cm): "), 2, 2);
 		p2.setComponent(width, 3, 2);
 		
-		p2.setComponent(new Label("Height (cm): "), 2, 3);
+		p2.setComponent(new Label("Altura (cm): "), 2, 3);
 		p2.setComponent(height, 3, 3);
 		
 		p2.setComponent(submit, 3, 4);
@@ -86,7 +88,11 @@ public class Product extends UI<InternalFrame>
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ui.setVisible(true);
+	}
+	
+	public static Product getInstance()
+	{
+		return instance != null ? instance : new Product(); 
 	}
 
 	public Button getChoose() 

@@ -22,20 +22,20 @@ import net.weesftw.model.TextField;
 
 public class ProductTable extends UI<InternalFrame>
 {
-	private TableRowSorter<TableModel> sorter;
+	private static ProductTable instance;
 	
+	private TableRowSorter<TableModel> sorter;
 	private ProductAbstractTable at;
-	private Button search, refresh;
+	private Button search;
 	private TextField id, name, price, provider;
 	
-	public ProductTable() 
+	private ProductTable() 
 	{
 		super(new InternalFrame("Product", false, true, false, true));
 		
 		at = new ProductAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
 		search = new Button("Search");
-		refresh = new Button("Refresh");
 		id = new TextField(15);
 		name = new TextField(15);
 		price = new TextField(15);
@@ -60,26 +60,23 @@ public class ProductTable extends UI<InternalFrame>
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{
-			if(i != 1)
+			if(i != 1 || i != 2 || i != 3)
 			{
-				t.getColumnModel().getColumn(i).setCellRenderer(r);				
+				t.getColumnModel().getColumn(i).setCellRenderer(r);
 			}
 		}
 		
 		p.setComponent(new Label("ID: "));
 		p.setComponent(id, 1, 0);
 		
-		p.setComponent(new Label("Name: "), 2, 0);
+		p.setComponent(new Label("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
 		
-		p.setComponent(new Label("Price: "), 0, 1);
+		p.setComponent(new Label("Preco: "), 0, 1);
 		p.setComponent(price, 1, 1);
 		
-		p.setComponent(new Label("Provider: "), 2, 1);
+		p.setComponent(new Label("Fornecedor: "), 2, 1);
 		p.setComponent(provider, 3, 1);
-		
-		p.setComponent(refresh, 1, 2);
-		refresh.addActionListener(new Action(this));
 		
 		p.setComponent(search, 3, 2);
 		search.addActionListener(new Action(this));
@@ -89,7 +86,11 @@ public class ProductTable extends UI<InternalFrame>
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ui.setVisible(true);
+	}
+	
+	public static ProductTable getInstance()
+	{
+		return instance != null ? instance : new ProductTable(); 
 	}
 
 	public TableRowSorter<TableModel> getSorter() 
@@ -130,10 +131,5 @@ public class ProductTable extends UI<InternalFrame>
 	public TextField getId() 
 	{
 		return id;
-	}
-
-	public Button getRefresh() 
-	{
-		return refresh;
 	}
 }

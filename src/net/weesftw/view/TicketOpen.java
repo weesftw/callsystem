@@ -21,7 +21,7 @@ import net.weesftw.model.TextField;
 import net.weesftw.vo.TicketVO;
 
 public class TicketOpen extends UI<Dialog> 
-{
+{	
 	private Button submit;
 	private ComboBox<?> status;
 	private TextArea description, solution;
@@ -32,7 +32,7 @@ public class TicketOpen extends UI<Dialog>
 	{
 		super(new Dialog("Ticket: " + t.getId(), true));
 		
-		boolean privilege = Main.instance.getAuth().isPrivilege();
+		boolean privilege = Main.getInstance().getAuth().isPrivilege();
 		SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
 		Panel p = new Panel("Ticket Detail", 4, 4, 4, 4);
 		
@@ -42,7 +42,7 @@ public class TicketOpen extends UI<Dialog>
 		
 		status = new ComboBox<Status>(Status.values());
 		status.setSelectedItem(t.getStatus());
-		status.setEnabled(status.getSelectedItem() != Status.CLOSED ? true : false);
+		status.setEnabled((status.getSelectedItem() != Status.CLOSED && privilege) ? true : false);
 		
 		timestamp = new TextField(15);
 		timestamp.setText(d.format(new Date(t.getTimestamp().getTime())));
@@ -67,7 +67,7 @@ public class TicketOpen extends UI<Dialog>
 		description.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
 		company = new TextField(15);
-		company.setText(t.getCompany().getName());
+		company.setText(t.getCompany() != null ? t.getCompany().getName() : "");
 		company.setEditable(false);
 		
 		client = new TextField(15);
@@ -78,9 +78,9 @@ public class TicketOpen extends UI<Dialog>
 		user.setText(t.getUser().getUsername());
 		user.setEditable(false);
 		
-		priority = new JCheckBox("Priority");
+		priority = new JCheckBox("Prioridade");
 		priority.setSelected(t.isPriority());
-		priority.setEnabled(status.getSelectedItem() != Status.CLOSED ? true : false);
+		priority.setEnabled((status.getSelectedItem() != Status.CLOSED && privilege) ? true : false);
 		
 		solution = new TextArea(1, 1);
 		solution.setText(t.getSolution());

@@ -23,7 +23,7 @@ public class TicketVO
 	{
 		this.title = title;
 		this.client = client;
-		this.user = Main.instance.getAuth().getUser();
+		this.user = Main.getInstance().getAuth().getUser();
 		this.description = description;
 		this.category = category;
 		this.product = product;
@@ -34,7 +34,7 @@ public class TicketVO
 	{
 		this.title = title;
 		this.company = company;
-		this.user = Main.instance.getAuth().getUser();
+		this.user = Main.getInstance().getAuth().getUser();
 		this.description = description;
 		this.category = category;
 		this.product = product;

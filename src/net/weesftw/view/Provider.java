@@ -15,11 +15,13 @@ import net.weesftw.model.TextField;
 
 public class Provider extends UI<InternalFrame> 
 {
+	private static Provider instance;
+	
 	private Button submit;
 	private TextField name, freight, zipCode;
 	private JFormattedTextField phoneNumber;
 	
-	public Provider() 
+	private Provider() 
 	{
 		super(new InternalFrame("Provider", false, true, false, true));
 		
@@ -39,16 +41,16 @@ public class Provider extends UI<InternalFrame>
 			e.printStackTrace();
 		}
 		
-		p.setComponent(new Label("Name: "));
+		p.setComponent(new Label("Nome: "));
 		p.setComponent(name, 1, 0);
 		
-		p.setComponent(new Label("Freight"), 0, 1);
+		p.setComponent(new Label("Frete"), 0, 1);
 		p.setComponent(freight, 1, 1);
 		
-		p.setComponent(new Label("Zip Code: "), 0, 2);
+		p.setComponent(new Label("CEP: "), 0, 2);
 		p.setComponent(zipCode, 1, 2);
 		
-		p.setComponent(new Label("Phone Number:"), 0, 3);
+		p.setComponent(new Label("Telefone:"), 0, 3);
 		p.setComponent(phoneNumber, 1, 3);
 		
 		p.setComponent(submit, 1, 4);
@@ -58,7 +60,11 @@ public class Provider extends UI<InternalFrame>
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ui.setVisible(true);
+	}
+	
+	public static Provider getInstance()
+	{
+		return instance != null ? instance : new Provider(); 
 	}
 
 	public Button getSubmit() 

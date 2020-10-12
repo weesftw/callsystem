@@ -21,6 +21,8 @@ import net.weesftw.model.TextField;
 
 public class User extends UI<InternalFrame>
 {
+	private static User instance;
+	
 	private Button submit;
 	private Button choose;
 	private ComboBox<Gender> gender;
@@ -29,7 +31,7 @@ public class User extends UI<InternalFrame>
 	private JFormattedTextField phoneNumber;
 	private Label img;
 	
-	public User()
+	private User()
 	{
 		super(new InternalFrame("User", false, true, false, true));
 		
@@ -71,55 +73,55 @@ public class User extends UI<InternalFrame>
 		p2.setComponent(choose, 0, 1);
 		choose.addActionListener(new Action(this));
 		
-		p.setComponent(new Label("Username: "), 0, 1);
+		p.setComponent(new Label("Usuario: "), 0, 1);
 		p.setComponent(user, 1, 1);
 		
-		p.setComponent(new Label("Password: "), 0, 2);
+		p.setComponent(new Label("Senha: "), 0, 2);
 		p.setComponent(passwd, 1, 2);
 		
-		p.setComponent(new Label("Department: "), 0, 3);
+		p.setComponent(new Label("Departamento: "), 0, 3);
 		p.setComponent(department, 1, 3);
 		department.setBackground(Color.WHITE);
 		
-		p3.setComponent(new Label("Zip Code: "));
+		p3.setComponent(new Label("CEP: "));
 		p3.setComponent(zipCode, 1, 0);
 		zipCode.addActionListener(new Action(this));
 		
-		p3.setComponent(new Label("Neighborhood: "), 2, 0);
+		p3.setComponent(new Label("Bairro: "), 2, 0);
 		p3.setComponent(neighborhood, 3, 0);
 		neighborhood.setEditable(false);
 		
-		p3.setComponent(new Label("Address: "), 0, 1);
+		p3.setComponent(new Label("Rua: "), 0, 1);
 		p3.setComponent(address, 1, 1);
 		address.setEditable(false);
 		
-		p3.setComponent(new Label("City: "), 2, 1);
+		p3.setComponent(new Label("Cidade: "), 2, 1);
 		p3.setComponent(city, 3, 1);
 		city.setEditable(false);
 		
-		p3.setComponent(new Label("State: "), 0, 2);
+		p3.setComponent(new Label("Estado: "), 0, 2);
 		p3.setComponent(state, 1, 2);
 		state.setEditable(false);
 		
 		p3.setComponent(new Label("CPF: "), 2, 2);
 		p3.setComponent(cpf, 3, 2);
 		
-		p3.setComponent(new Label("First Name: "), 0, 3);
+		p3.setComponent(new Label("Nome: "), 0, 3);
 		p3.setComponent(firstName, 1, 3);
 		
-		p3.setComponent(new Label("Last Name: "), 2, 3);
+		p3.setComponent(new Label("Sobrenome: "), 2, 3);
 		p3.setComponent(lastName, 3, 3);
 		
-		p3.setComponent(new Label("Phone: "), 0, 4);
+		p3.setComponent(new Label("Telefone: "), 0, 4);
 		p3.setComponent(phoneNumber, 1, 4);
 		
 		p3.setComponent(new Label("E-mail: "), 2, 4);
 		p3.setComponent(email, 3, 4);
 		
-		p3.setComponent(new Label("Birth: "), 0, 5);
+		p3.setComponent(new Label("Data de Nascimento: "), 0, 5);
 		p3.setComponent(date, 1, 5);
 		
-		p3.setComponent(new Label("Gender: "), 2, 5);
+		p3.setComponent(new Label("Genero: "), 2, 5);
 		p3.setComponent(gender, 3, 5);
 		gender.setBackground(Color.WHITE);
 		
@@ -132,7 +134,11 @@ public class User extends UI<InternalFrame>
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ui.setVisible(true);
+	}
+	
+	public static User getInstance()
+	{
+		return instance != null ? instance : new User(); 
 	}
 	
 	public Button getSubmit() 

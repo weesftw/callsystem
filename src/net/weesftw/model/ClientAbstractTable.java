@@ -13,7 +13,7 @@ public class ClientAbstractTable extends AbstractTableModel
 	
 	private List<ClientVO> list = new ClientDAO().list();
 	
-	private String[] columnIndex = {"CPF", "Name", "Phone", "Email", "Birth", "Gender", "Zip Code"};
+	private String[] columnIndex = {"CPF", "Nome", "Telefone", "Email", "Data de Nascimento", "Genero", "CEP"};
 	
 	@Override
 	public int getRowCount() 

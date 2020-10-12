@@ -12,7 +12,7 @@ import net.weesftw.vo.UserVO;
 
 public final class Main extends UI<Frame>
 {
-	public static Main instance;
+	private static Main instance;
 	
 	private DesktopPane d;
 	private Authenticate a;
@@ -23,17 +23,22 @@ public final class Main extends UI<Frame>
 		
 		Container c = ui.getContentPane();
 		
-		a = new Authenticate(p, vs);
 		instance = this;
+		a = new Authenticate(p, vs);
 		
 		c.add(d = new DesktopPane());
 		
-		ui.setSize(1024, 650);
+		ui.setSize(1024, 768);
 		ui.setResizable(false);
 		ui.setLocationRelativeTo(null);
 		ui.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		ui.setJMenuBar(new Menu().getUI());
 		ui.setVisible(true);
+	}
+	
+	public static Main getInstance()
+	{
+		return instance;
 	}
 	
 	public DesktopPane getDesktop()
