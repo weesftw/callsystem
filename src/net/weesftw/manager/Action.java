@@ -141,24 +141,32 @@ public class Action implements ActionListener
 			{
 				ClientDAO pd = new ClientDAO();
 				
-				if(!(cpf.isEmpty() && firstName.isEmpty() && lastName.isEmpty() && phoneNumber.isEmpty() && email.isEmpty() && date.isEmpty() && gender == null && zipCode.isEmpty() && img == null && city.isEmpty()))
+				if(img != null)
 				{
-					if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
-					{
-						pd.create(new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
-						
-						JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(firstName));
-						
-						c.getUI().dispose();						
+					if(!(cpf.isEmpty() && firstName.isEmpty() && lastName.isEmpty() && phoneNumber.isEmpty() && email.isEmpty() && date.isEmpty() && gender == null && zipCode.isEmpty() && city.isEmpty()))
+					{					
+						if(cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
+						{
+							pd.create(new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
+							
+							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(firstName));
+							
+							c.clear();
+							c.getUI().dispose();
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+						JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+					JOptionPane.showMessageDialog(null, Message.IMAGE_INVALID.get(null));
 				}
 			}
 			else if(action.equals(c.getZipCode().getText()))
@@ -216,7 +224,7 @@ public class Action implements ActionListener
 			{
 				if(!(cnpj.isEmpty() && name.isEmpty() && owner == null && zipCode.isEmpty()))
 				{
-					if(cnpj.matches(Regex.CNPJ) && name.matches(Regex.NAME) && zipCode.matches(Regex.CEP))
+					if(cnpj.matches(Regex.CNPJ) && zipCode.matches(Regex.CEP))
 					{
 						try 
 						{
@@ -739,7 +747,7 @@ public class Action implements ActionListener
 				}
 				else if(!gender.isEmpty())
 				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + gender, 7));
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + gender, 5));
 				}
 				else
 				{
@@ -756,7 +764,7 @@ public class Action implements ActionListener
 				else
 				{
 					t.getUI().moveToFront();
-				}			
+				}
 			}
 		}
 		else if(ui instanceof ProductTable)

@@ -28,7 +28,7 @@ create table if not exists `client`
     `dateBorn` char(10) not null,
     `gender` enum('FEMALE', 'MALE'),
 	`zipCode` varchar(10) not null,
-    `photo` blob,
+    `photo` longblob,
 
 	constraint primary key(`cpf`)
 )Engine=InnoDB;

@@ -4,14 +4,13 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.weesftw.dao.UserDAO;
 import net.weesftw.vo.UserVO;
 
 public class UserAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private List<UserVO> list = new UserDAO().list();
+	private List<UserVO> list;
 	
 	private String[] columnIndex = {"CPF", "Usuario"};
 	

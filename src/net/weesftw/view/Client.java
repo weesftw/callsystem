@@ -25,7 +25,7 @@ public class Client extends UI<InternalFrame>
 	private Button submit, choose;
 	private ComboBox<Gender> gender;
 	private Label img;
-	private TextField cnpj, name, owner, cpf, firstName, lastName, email, zipCode, zipCodeEmployee, date, address, city, state, neighborhood;
+	private TextField cpf, firstName, lastName, email, zipCode, zipCodeEmployee, date, address, city, state, neighborhood;
 	private JFormattedTextField phoneNumber;
 	
 	private Client()
@@ -39,8 +39,6 @@ public class Client extends UI<InternalFrame>
 		submit = new Button("Submit");
 		choose = new Button("Choose");
 		img = new Label();
-		cnpj = new TextField(15);
-		name = new TextField(15);
 		zipCode = new TextField(3);
 		zipCodeEmployee = new TextField(15);
 		neighborhood = new TextField(15);
@@ -127,6 +125,22 @@ public class Client extends UI<InternalFrame>
 		return instance != null ? instance : new Client(); 
 	}
 	
+	public void clear()
+	{
+		neighborhood.setText("");
+		zipCode.setText("");
+		address.setText("");
+		city.setText("");
+		state.setText("");
+		cpf.setText("");
+		firstName.setText("");
+		lastName.setText("");
+		phoneNumber.setText("");
+		email.setText("");
+		date.setText("");
+		img.loadImage(ImagePath.ICON, 120, 120);
+	}
+	
 	public Button getSubmit() 
 	{
 		return submit;
@@ -145,21 +159,6 @@ public class Client extends UI<InternalFrame>
 	public Label getImg() 
 	{
 		return img;
-	}
-
-	public TextField getCnpj() 
-	{
-		return cnpj;
-	}
-
-	public TextField getName() 
-	{
-		return name;
-	}
-
-	public TextField getOwner() 
-	{
-		return owner;
 	}
 
 	public TextField getCpf() 

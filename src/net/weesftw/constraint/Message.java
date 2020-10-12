@@ -2,7 +2,7 @@ package net.weesftw.constraint;
 
 public enum Message 
 {
-	ERROR, INVALID, SUCCESSFULLY, UPDATE, INVALID_ARGUMENTS, FIELDS_EMPTY, USERNAME_NOT_FOUND, AUTHENTICATED_FAILED, AUTHENTICATED, NOT_EXISTS,
+	ERROR, INVALID, IMAGE_INVALID, SUCCESSFULLY, UPDATE, INVALID_ARGUMENTS, FIELDS_EMPTY, USERNAME_NOT_FOUND, AUTHENTICATED_FAILED, AUTHENTICATED, NOT_EXISTS,
 	NOT_FOUND, EXISTS, TICKET_UPDATED, SOLUTION_EMPTY, CHECKOUT_EMPTY, PURCHASE;
 	
 	public String get(String args)
@@ -41,6 +41,8 @@ public enum Message
 			return args + " invalido.";
 		case UPDATE:
 			return args + " atualizado com sucesso.";
+		case IMAGE_INVALID:
+			return "É necessário colocar uma imagem.";
 		default:
 			break;
 		}

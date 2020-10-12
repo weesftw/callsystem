@@ -32,7 +32,7 @@ public class MouseAction extends MouseAdapter
 			{
 				Table ta = (Table) e.getSource();
 				
-				int value = (int) ta.getValueAt(ta.getSelectedRow(), 0);
+				int value = ta.getSelectedRow();
 				TicketVO tv = (TicketVO) t.getAt().getList().get(value != 1 ? value - 1 : 0);
 				
 				new TicketOpen(tv);
@@ -46,8 +46,8 @@ public class MouseAction extends MouseAdapter
 			{
 				Table ta = (Table) e.getSource();
 				
-				//String value = (String) ta.getValueAt(ta.getSelectedRow(), 0);
-				ClientVO p = (ClientVO) t.getAt().getList().get(0);
+				int value = ta.getSelectedRow();
+				ClientVO p = (ClientVO) t.getAt().getList().get(value);
 				
 				new ClientOpen(p);
 			}

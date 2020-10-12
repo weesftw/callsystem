@@ -4,14 +4,13 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.weesftw.dao.ClientDAO;
 import net.weesftw.vo.ClientVO;
 
 public class ClientAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private List<ClientVO> list = new ClientDAO().list();
+	private List<ClientVO> list;
 	
 	private String[] columnIndex = {"CPF", "Nome", "Telefone", "Email", "Data de Nascimento", "Genero", "CEP"};
 	
@@ -60,5 +59,10 @@ public class ClientAbstractTable extends AbstractTableModel
 	public List<?> getList()
 	{
 		return list;
+	}
+	
+	public void setList(List<ClientVO> list)
+	{
+		this.list = list;
 	}
 }
