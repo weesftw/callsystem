@@ -17,7 +17,7 @@ public class UserAbstractTable extends AbstractTableModel
 	@Override
 	public int getRowCount() 
 	{				
-		return list.size();
+		return UserVO.LIST.size();
 	}
 	
 	@Override
@@ -38,9 +38,9 @@ public class UserAbstractTable extends AbstractTableModel
 		switch(columnIndex)
 		{
 		case 0:
-			return list.get(rowIndex).getCpf();
+			return UserVO.LIST.get(rowIndex).getCpf();
 		case 1:
-			return list.get(rowIndex).getUsername();
+			return UserVO.LIST.get(rowIndex).getUsername();
 		default:
 			return null;
 		}
@@ -48,6 +48,6 @@ public class UserAbstractTable extends AbstractTableModel
 	
 	public List<?> getList()
 	{
-		return list;
+		return UserVO.LIST;
 	}
 }

@@ -1,10 +1,15 @@
 package net.weesftw.vo;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.weesftw.constraint.Department;
+import net.weesftw.dao.UserDAO;
 
 public class UserVO 
 {
-	private String cpf, username, passwd;
+	public static final List<UserVO> LIST = new UserDAO().list();
+        
+        private String cpf, username, passwd;
 	private Department department;
 	
 	public UserVO(String cpf, String username, String passwd, Department department)

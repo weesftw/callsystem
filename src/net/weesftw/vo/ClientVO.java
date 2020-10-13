@@ -1,9 +1,14 @@
 package net.weesftw.vo;
 
 import net.weesftw.constraint.Gender;
-
+import java.util.ArrayList;
+import java.util.List;
+import net.weesftw.dao.ClientDAO;
+       
 public class ClientVO 
-{	
+{
+        public static final List<ClientVO> LIST = new ClientDAO().list(); 
+      
 	private String cpf, firstName, lastName, phoneNumber, email, zipCode, date, path;
 	private Gender gender;
 	private byte[] b;
