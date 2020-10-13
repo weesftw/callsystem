@@ -1,7 +1,12 @@
 package net.weesftw.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductVO 
 {
+	public static List<ProductVO> LIST = new ArrayList<>(); 
+	
 	private int id;
 	private String name, path, price, weight, length, width, height;
 	private ProviderVO provider;

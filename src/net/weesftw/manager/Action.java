@@ -96,6 +96,8 @@ public class Action implements ActionListener
 						ClientDAO pd = new ClientDAO();
 						ClientVO p = pd.searchByUser(user);
 						
+						Reload.populate();
+						
 						new Main(p, us);
 						
 						c.dispose();
@@ -147,12 +149,17 @@ public class Action implements ActionListener
 					{					
 						if(cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
 						{
-							pd.create(new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
+							ClientVO cv = new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img);
+							
+							pd.create(cv);
+							ClientVO.LIST.add(cv);
 							
 							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(firstName));
 							
 							c.clear();
 							c.getUI().dispose();
+							
+							Reload.refresh();
 						}
 						else
 						{
@@ -233,11 +240,16 @@ public class Action implements ActionListener
 							
 							if(cep != null)
 							{
-								cd.create(new CompanyVO(cnpj, name, owner, zipCode));
+								CompanyVO cv = new CompanyVO(cnpj, name, owner, zipCode);
+								
+								cd.create(cv);
+								CompanyVO.LIST.add(cv);
 								
 								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(name));
 								
 								c.getUI().dispose();	
+								
+								Reload.refresh();
 							}
 						}
 						catch(CepNotFoundException ex)
@@ -306,12 +318,16 @@ public class Action implements ActionListener
 						{
 							if(company.getCnpj().matches(Regex.CNPJ))
 							{
-	
-								td.create(new TicketVO(title, company, description, category, product, priority));
+								TicketVO tv = new TicketVO(title, company, description, category, product, priority);
+								
+								td.create(tv);
+								TicketVO.LIST.add(tv);
 								
 								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Ticket"));
 								
 								t.getUI().dispose();
+								
+								Reload.refresh();
 							}
 							else
 							{
@@ -397,43 +413,55 @@ public class Action implements ActionListener
 				UserDAO ud = new UserDAO();
 				ClientDAO pd = new ClientDAO();
 				
-				if(!(cpf.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || date.isEmpty() || gender == null || zipCode.isEmpty() || img.isEmpty() && !cpf.isEmpty() && !username.isEmpty() && !passwd.isEmpty() && department == null))
+				if(img != null)
 				{
-					if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
+					if(!(cpf.isEmpty() && firstName.isEmpty() && lastName.isEmpty() && phoneNumber.isEmpty() && email.isEmpty() && date.isEmpty() && gender == null && zipCode.isEmpty() && !cpf.isEmpty() && !username.isEmpty() && !passwd.isEmpty() && department == null))
 					{
-						if(ud.searchByUser(username) == null)
+						if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
 						{
-							if(pd.read(cpf) != null)
+							if(ud.searchByUser(username) == null)
 							{
-								ud.create(new UserVO(cpf, username, passwd, department));
-								
-								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("User"));
-								
-								u.getUI().dispose();															
+								if(pd.read(cpf) != null)
+								{
+									UserVO uv = new UserVO(cpf, username, passwd, department);
+									
+									ud.create(uv);
+									UserVO.LIST.add(uv);
+									
+									JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("User"));
+									
+									u.getUI().dispose();
+									
+									Reload.refresh();
+								}
+								else
+								{
+									pd.create(new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
+									ud.create(new UserVO(cpf, username, passwd, department));
+									
+									JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("User"));
+									
+									u.getUI().dispose();	
+								}
 							}
 							else
 							{
-								pd.create(new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
-								ud.create(new UserVO(cpf, username, passwd, department));
-								
-								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("User"));
-								
-								u.getUI().dispose();	
+								JOptionPane.showMessageDialog(null, Message.EXISTS.get(username));
 							}
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, Message.EXISTS.get(username));
+							JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+						JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+					JOptionPane.showMessageDialog(null, Message.IMAGE_INVALID.get(null));
 				}
 			}
 			else if(action.equals(u.getZipCode().getText()))
@@ -629,12 +657,17 @@ public class Action implements ActionListener
 					if(provider != null)
 					{
 						if(price.matches(Regex.PRICE) && weight.matches(Regex.KG) && length.matches(Regex.CM) && width.matches(Regex.CM) && height.matches(Regex.CM))
-						{						
-							pdd.create(new ProductVO(provider, name, price, path, weight, length, width, height));		
+						{
+							ProductVO pv = new ProductVO(provider, name, price, path, weight, length, width, height);
+							
+							pdd.create(pv);
+							ProductVO.LIST.add(pv);
 							
 							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Produto"));
 							
 							p.getUI().dispose();
+							
+							Reload.refresh();
 						}
 						else
 						{
@@ -683,11 +716,16 @@ public class Action implements ActionListener
 					{
 						if(pd.searchByName(name) == null)
 						{
-							pd.create(new ProviderVO(name, zipCode, phoneNumber, freight));
+							ProviderVO pv = new ProviderVO(name, zipCode, phoneNumber, freight);
+							
+							pd.create(pv);
+							ProviderVO.LIST.add(pv);
 							
 							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Fornecedor"));
 							
-							p.getUI().dispose();							
+							p.getUI().dispose();						
+							
+							Reload.refresh();
 						}
 						else
 						{

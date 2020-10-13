@@ -1,7 +1,12 @@
 package net.weesftw.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProviderVO 
 {
+	public static List<ProviderVO> LIST = new ArrayList<>(); 
+	
 	private int id;
 	private String name, zipCode, phoneNumber, freight;
 	

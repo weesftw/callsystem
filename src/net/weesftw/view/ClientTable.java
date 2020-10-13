@@ -68,7 +68,7 @@ public class ClientTable extends UI<InternalFrame>
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{
-			if(i != 1)
+			if(i != 1 || i != 3)
 			{
 				t.getColumnModel().getColumn(i).setCellRenderer(r);				
 			}

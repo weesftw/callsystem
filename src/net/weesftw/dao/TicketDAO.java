@@ -18,6 +18,26 @@ import net.weesftw.vo.UserVO;
 
 public class TicketDAO implements DataAcess<TicketVO>
 {
+	public int getTicketOpen()
+	{
+		try(Database d = new Database();
+				PreparedStatement stmt = d.con.prepareStatement("select count(`id`) from `ticket` where `status` = 'Open'"))
+		{
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next())
+			{
+				return rs.getInt(1);
+			}
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
 	@Override
 	public boolean create(TicketVO e) 
 	{

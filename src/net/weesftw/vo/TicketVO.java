@@ -1,13 +1,17 @@
 package net.weesftw.vo;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.weesftw.constraint.Category;
 import net.weesftw.constraint.Status;
 import net.weesftw.view.Main;
 
 public class TicketVO 
-{	
+{
+	public static List<TicketVO> LIST = new ArrayList<>(); 
+	
 	private int id;
 	private String title, description, solution;
 	private ClientVO client;

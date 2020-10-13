@@ -10,8 +10,6 @@ public class UserAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private List<UserVO> list;
-	
 	private String[] columnIndex = {"CPF", "Usuario"};
 	
 	@Override

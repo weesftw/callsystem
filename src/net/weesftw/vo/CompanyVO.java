@@ -1,7 +1,12 @@
 package net.weesftw.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CompanyVO 
 {
+	public static List<CompanyVO> LIST = new ArrayList<>(); 
+	
 	private String cnpj, name, zipCode;
 	private ClientVO owner;
 	
