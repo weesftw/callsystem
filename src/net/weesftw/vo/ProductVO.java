@@ -5,20 +5,31 @@ import java.util.List;
 
 public class ProductVO 
 {
-	public static List<ProductVO> LIST = new ArrayList<>(); 
+	public static List<ProductVO> list = new ArrayList<>(); 
 	
-	private int id;
-	private String name, path, price, weight, length, width, height;
+	private String id, name, path, price, weight, length, width, height;
 	private ProviderVO provider;
 	private byte[] photo;
 	
-	public ProductVO(int id, ProviderVO provider, String name, String price, byte[] photo, String weight, String length, String width, String height) 
+	public ProductVO(String id, ProviderVO provider, String name, String price, byte[] photo, String weight, String length, String width, String height) 
 	{
 		this.id = id;
 		this.provider = provider;
 		this.name = name;
 		this.price = price;
 		this.photo = photo;
+		this.weight = weight;
+		this.length = length;
+		this.width = width;
+		this.height = height;
+	}
+	
+	public ProductVO(String id, ProviderVO provider, String name, String price, String weight, String length, String width, String height) 
+	{
+		this.id = id;
+		this.provider = provider;
+		this.name = name;
+		this.price = price;
 		this.weight = weight;
 		this.length = length;
 		this.width = width;
@@ -37,7 +48,7 @@ public class ProductVO
 		this.height = height;
 	}
 	
-	public int getId() 
+	public String getId() 
 	{
 		return id;
 	}

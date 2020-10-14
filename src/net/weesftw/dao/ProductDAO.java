@@ -28,7 +28,7 @@ public class ProductDAO implements DataAcess<ProductVO>
 			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
+				String id = rs.getString(1);
 				String name = rs.getString(2);
 				String price = rs.getString(3);
 				String weight = rs.getString(4);
@@ -71,7 +71,7 @@ public class ProductDAO implements DataAcess<ProductVO>
 			stmt.setString(4, e.getLength());
 			stmt.setString(5, e.getWidth());
 			stmt.setString(6, e.getHeight());
-			stmt.setInt(7, e.getProvider().getId());
+			stmt.setString(7, e.getProvider().getCnpj());
 			stmt.setBytes(8, buffer.toByteArray());
 			
 			stmt.execute();
@@ -100,7 +100,7 @@ public class ProductDAO implements DataAcess<ProductVO>
 			
 			while(rs.next())
 			{
-				int id1 = rs.getInt(1);
+				String id1 = rs.getString(1);
 				String name = rs.getString(2);
 				String price = rs.getString(3);
 				String weight = rs.getString(4);
@@ -143,9 +143,9 @@ public class ProductDAO implements DataAcess<ProductVO>
 			stmt.setString(4, e.getLength());
 			stmt.setString(5, e.getWidth());
 			stmt.setString(6, e.getHeight());
-			stmt.setInt(7, e.getProvider().getId());
+			stmt.setString(7, e.getProvider().getCnpj());
 			stmt.setBytes(8, buffer.toByteArray());
-			stmt.setInt(9, e.getId());
+			stmt.setString(9, e.getId());
 			
 			stmt.execute();
 			
@@ -165,7 +165,7 @@ public class ProductDAO implements DataAcess<ProductVO>
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("delete from `product` where `id` = ?"))
 		{
-			stmt.setInt(1, e.getId());
+			stmt.setString(1, e.getId());
 			
 			stmt.execute();
 			
@@ -193,7 +193,7 @@ public class ProductDAO implements DataAcess<ProductVO>
 			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
+				String id = rs.getString(1);
 				String name = rs.getString(2);
 				String price = rs.getString(3);
 				String weight = rs.getString(4);

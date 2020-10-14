@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CompanyVO 
 {
-	public static List<CompanyVO> LIST = new ArrayList<>(); 
+	public static List<CompanyVO> list = new ArrayList<>(); 
 	
 	private String cnpj, name, zipCode;
 	private ClientVO owner;

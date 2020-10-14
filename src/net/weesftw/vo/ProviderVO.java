@@ -5,31 +5,23 @@ import java.util.List;
 
 public class ProviderVO 
 {
-	public static List<ProviderVO> LIST = new ArrayList<>(); 
+	public static List<ProviderVO> list = new ArrayList<>(); 
 	
-	private int id;
-	private String name, zipCode, phoneNumber, freight;
+	private String cnpj, name, zipCode, phoneNumber, freight, category;
 	
-	public ProviderVO(int id, String name, String zipCode, String phoneNumber, String freight) 
+	public ProviderVO(String cnpj, String name, String zipCode, String phoneNumber, String freight, String category) 
 	{
-		this.id = id;
+		this.cnpj = cnpj;
 		this.name = name;
 		this.zipCode = zipCode;
 		this.phoneNumber = phoneNumber;
 		this.freight = freight;
-	}
-	
-	public ProviderVO(String name, String zipCode, String phoneNumber, String freight) 
-	{
-		this.name = name;
-		this.zipCode = zipCode;
-		this.phoneNumber = phoneNumber;
-		this.freight = freight;
+		this.category = category;
 	}
 
-	public int getId() 
+	public String getCnpj() 
 	{
-		return id;
+		return cnpj;
 	}
 	
 	public String getName() 
@@ -50,5 +42,10 @@ public class ProviderVO
 	public String getFreight() 
 	{
 		return freight;
+	}
+
+	public String getCategory() 
+	{
+		return category;
 	}
 }

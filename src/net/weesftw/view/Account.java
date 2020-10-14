@@ -23,7 +23,7 @@ public class Account extends UI<InternalFrame>
 		p.setComponent(
 				new Label("<html><h1>Logado como: " + auth.getUser().getUsername() + " </h1>\n"
 						+ "	<hr>"
-						+ "	<p>Bem vindo " + auth.getPeople().getFirstName() + "<br/>\n"
+						+ "	<p style='text-align: justify;'>Bem vindo " + auth.getPeople().getFirstName() + "<br/>\n"
 						+ "	Você possui " + td.getTicketOpen() + " chamados para serem analisados.<br><br>\n"
 						+ "	Seus privilégios são: <br/>"
 						+ auth.getUser().getDepartment().getDescription() + " </p></html>")

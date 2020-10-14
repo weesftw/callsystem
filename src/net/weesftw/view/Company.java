@@ -50,6 +50,14 @@ public class Company extends UI<InternalFrame>
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	
+	public void clear()
+	{
+		cnpj.setText("");
+		name.setText("");
+		owner.setText("");
+		zipCode.setText("");
+	}
+	
 	public static Company getInstance()
 	{
 		return instance != null ? instance : new Company(); 

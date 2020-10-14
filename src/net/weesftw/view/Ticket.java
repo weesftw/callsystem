@@ -94,6 +94,16 @@ public class Ticket extends UI<InternalFrame>
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	
+	public void clear()
+	{
+		company.setText("");
+		category.setSelectedIndex(0);
+		product.setSelectedIndex(0);
+		pj.setSelected(false);;
+		description.setText("");
+		priority.setSelected(false);
+	}
+	
 	public static Ticket getInstance()
 	{
 		return instance != null ? instance : new Ticket(); 

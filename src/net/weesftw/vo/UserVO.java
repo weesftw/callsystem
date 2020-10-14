@@ -7,7 +7,7 @@ import net.weesftw.constraint.Department;
 
 public class UserVO 
 {
-	public static List<UserVO> LIST = new ArrayList<>();
+	public static List<UserVO> list = new ArrayList<>();
         
 	private String cpf, username, passwd;
 	private Department department;

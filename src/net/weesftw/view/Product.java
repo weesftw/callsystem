@@ -94,6 +94,18 @@ public class Product extends UI<InternalFrame>
 	{
 		return instance != null ? instance : new Product(); 
 	}
+	
+	public void clear()
+	{
+		name.setText("");
+		price.setText("");
+		weight.setText("");
+		length.setText("");
+		width.setText("");
+		height.setText("");
+		provider.setSelectedIndex(0);
+		img.loadImage(ImagePath.ICON, 120, 120);
+	}
 
 	public Button getChoose() 
 	{

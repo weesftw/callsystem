@@ -18,7 +18,7 @@ public class CartDAO implements DataAcess<CartVO>
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("insert into `cart` (`product`, `amount`) value (?, ?)"))
 		{
-			stmt.setInt(1, e.getProduct().getId());
+			stmt.setString(1, e.getProduct().getId());
 			stmt.setString(2, e.getAmount());
 			
 			stmt.execute();

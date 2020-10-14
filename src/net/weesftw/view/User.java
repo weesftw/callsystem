@@ -136,6 +136,26 @@ public class User extends UI<InternalFrame>
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	
+	public void clear()
+	{
+		cpf.setText("");
+		firstName.setText("");
+		lastName.setText("");
+		phoneNumber.setText("");
+		email.setText("");
+		date.setText("");
+		gender.setSelectedIndex(0);;
+		zipCode.setText("");
+		neighborhood.setText("");
+		address.setText("");
+		city.setText("");
+		state.setText("");
+		user.setText("");
+		passwd.setText("");
+		department.setSelectedIndex(0);
+		img.loadImage(ImagePath.ICON, 120, 120);
+	}
+	
 	public static User getInstance()
 	{
 		return instance != null ? instance : new User(); 

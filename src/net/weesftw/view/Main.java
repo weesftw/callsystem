@@ -21,10 +21,10 @@ public final class Main extends UI<Frame>
 	{
 		super(new Frame("Call System | Open your ticket."), true);
 		
-		Container c = ui.getContentPane();
+		Container c = ui.getContentPane();		
 		
 		instance = this;
-		a = new Authenticate(p, vs);
+		a = new Authenticate(p, vs);	
 		
 		c.add(d = new DesktopPane());
 		

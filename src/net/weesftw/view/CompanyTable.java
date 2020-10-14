@@ -31,7 +31,7 @@ public class CompanyTable extends UI<InternalFrame>
 	
 	private CompanyTable() 
 	{
-		super(new InternalFrame("Product", false, true, false, true));
+		super(new InternalFrame("Company", false, true, false, true));
 		
 		at = new CompanyAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);

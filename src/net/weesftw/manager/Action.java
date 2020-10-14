@@ -17,13 +17,12 @@ import org.xml.sax.SAXException;
 import net.weesftw.constraint.Category;
 import net.weesftw.constraint.Department;
 import net.weesftw.constraint.Gender;
-import net.weesftw.constraint.ImagePath;
 import net.weesftw.constraint.Message;
 import net.weesftw.constraint.Regex;
 import net.weesftw.constraint.Status;
 import net.weesftw.dao.CartDAO;
-import net.weesftw.dao.CompanyDAO;
 import net.weesftw.dao.ClientDAO;
+import net.weesftw.dao.CompanyDAO;
 import net.weesftw.dao.ProductDAO;
 import net.weesftw.dao.ProviderDAO;
 import net.weesftw.dao.SellDAO;
@@ -36,12 +35,15 @@ import net.weesftw.view.Client;
 import net.weesftw.view.ClientOpen;
 import net.weesftw.view.ClientTable;
 import net.weesftw.view.Company;
+import net.weesftw.view.CompanyOpen;
 import net.weesftw.view.CompanyTable;
 import net.weesftw.view.Login;
 import net.weesftw.view.Main;
 import net.weesftw.view.Product;
+import net.weesftw.view.ProductOpen;
 import net.weesftw.view.ProductTable;
 import net.weesftw.view.Provider;
+import net.weesftw.view.ProviderOpen;
 import net.weesftw.view.ProviderTable;
 import net.weesftw.view.Sale;
 import net.weesftw.view.Ticket;
@@ -51,8 +53,8 @@ import net.weesftw.view.UI;
 import net.weesftw.view.User;
 import net.weesftw.view.UserTable;
 import net.weesftw.vo.CartVO;
-import net.weesftw.vo.CompanyVO;
 import net.weesftw.vo.ClientVO;
+import net.weesftw.vo.CompanyVO;
 import net.weesftw.vo.ProductVO;
 import net.weesftw.vo.ProviderVO;
 import net.weesftw.vo.SellVO;
@@ -152,7 +154,7 @@ public class Action implements ActionListener
 							ClientVO cv = new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img);
 							
 							pd.create(cv);
-							ClientVO.LIST.add(cv);
+							ClientVO.list.add(cv);
 							
 							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(firstName));
 							
@@ -243,10 +245,11 @@ public class Action implements ActionListener
 								CompanyVO cv = new CompanyVO(cnpj, name, owner, zipCode);
 								
 								cd.create(cv);
-								CompanyVO.LIST.add(cv);
+								CompanyVO.list.add(cv);
 								
 								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(name));
 								
+								c.clear();
 								c.getUI().dispose();	
 								
 								Reload.refresh();
@@ -321,10 +324,11 @@ public class Action implements ActionListener
 								TicketVO tv = new TicketVO(title, company, description, category, product, priority);
 								
 								td.create(tv);
-								TicketVO.LIST.add(tv);
+								TicketVO.list.add(tv);
 								
 								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Ticket"));
 								
+								t.clear();
 								t.getUI().dispose();
 								
 								Reload.refresh();
@@ -426,10 +430,11 @@ public class Action implements ActionListener
 									UserVO uv = new UserVO(cpf, username, passwd, department);
 									
 									ud.create(uv);
-									UserVO.LIST.add(uv);
+									UserVO.list.add(uv);
 									
 									JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("User"));
 									
+									u.clear();
 									u.getUI().dispose();
 									
 									Reload.refresh();
@@ -661,10 +666,11 @@ public class Action implements ActionListener
 							ProductVO pv = new ProductVO(provider, name, price, path, weight, length, width, height);
 							
 							pdd.create(pv);
-							ProductVO.LIST.add(pv);
+							ProductVO.list.add(pv);
 							
 							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Produto"));
 							
+							p.clear();
 							p.getUI().dispose();
 							
 							Reload.refresh();
@@ -705,24 +711,27 @@ public class Action implements ActionListener
 			{
 				ProviderDAO pd = new ProviderDAO();
 				
+				String cnpj = p.getCnpj().getText();
 				String name = p.getName().getText();
 				String freight = p.getFreight().getText();
 				String zipCode = p.getZipCode().getText();
 				String phoneNumber = p.getPhoneNumber().getText();
+				String category = p.getCategory().getText();
 				
-				if(!name.isEmpty() && !freight.isEmpty() && !zipCode.isEmpty() && !phoneNumber.isEmpty())
+				if(!name.isEmpty() && !freight.isEmpty() && !zipCode.isEmpty() && !phoneNumber.isEmpty() && !category.isEmpty())
 				{
-					if(name.matches(Regex.NAME) && freight.matches(Regex.PRICE) && zipCode.matches(Regex.CEP) && phoneNumber.matches(Regex.PHONE))
+					if(cnpj.matches(Regex.CNPJ) && freight.matches(Regex.PRICE) && zipCode.matches(Regex.CEP) && phoneNumber.matches(Regex.PHONE))
 					{
-						if(pd.searchByName(name) == null)
+						if(pd.read(cnpj) == null)
 						{
-							ProviderVO pv = new ProviderVO(name, zipCode, phoneNumber, freight);
+							ProviderVO pv = new ProviderVO(cnpj, name, zipCode, phoneNumber, freight, category);
 							
 							pd.create(pv);
-							ProviderVO.LIST.add(pv);
+							ProviderVO.list.add(pv);
 							
 							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Fornecedor"));
 							
+							p.clear();
 							p.getUI().dispose();						
 							
 							Reload.refresh();
@@ -1094,15 +1103,12 @@ public class Action implements ActionListener
 					if(!(cpf.isEmpty() && id.isEmpty() && amount.isEmpty() && product.isEmpty() && price.isEmpty()))
 					{
 						if(cpf.matches(Regex.CPF) && id.matches(Regex.NUMBER) && amount.matches(Regex.NUMBER))
-						{
-							s.getId().setText("");
-							s.getAmount().setText("1");
-							s.getProduct().setText("");
-							s.getPrice().setText("R$: ");
-							s.getImg().loadImage(ImagePath.ICON, 100, 100);
+						{							
+							CartVO.list.add(new CartVO(amount, pv));
 							
-							s.getAt().getList().add(new CartVO(amount, pv));
-							s.getAt().fireTableDataChanged();
+							s.clearAfterInsert();
+							
+							Reload.refresh();
 						}
 						else
 						{
@@ -1125,14 +1131,18 @@ public class Action implements ActionListener
 				ProductVO p = pd.read(s.getId().getText());
 				CartVO cart = new CartVO(amount, p);
 				
-				if(!s.getAt().getList().isEmpty())
+				if(!CartVO.list.isEmpty())
 				{
 					if(!se)
 					{
 						CompanyVO company = cdd.read(cpf);
 						
 						cd.create(cart);
-						sd.create(new SellVO(cart, company, observation));				
+						sd.create(new SellVO(cart, company, observation));
+						
+						s.clear();
+						
+						Reload.refresh();
 					}
 					else
 					{
@@ -1140,6 +1150,10 @@ public class Action implements ActionListener
 						
 						cd.create(cart);
 						sd.create(new SellVO(cart, client, observation));
+						
+						s.clear();
+						
+						Reload.refresh();
 					}
 					
 					JOptionPane.showMessageDialog(null, Message.PURCHASE.get(null));	
@@ -1177,7 +1191,7 @@ public class Action implements ActionListener
 			String city = c.getCity().getText();
 			Object img = c.getImg();
 			
-			if(action.equals(c.getZipCode().getText()))
+			if(action.equals(zipCode))
 			{
 				if(zipCode.matches(Regex.CEP))
 				{
@@ -1224,6 +1238,192 @@ public class Action implements ActionListener
 						JOptionPane.showMessageDialog(null, Message.UPDATE.get(firstName));
 						
 						c.getUI().dispose();						
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+				}
+			}
+		}
+		else if(ui instanceof ProviderOpen)
+		{
+			ProviderOpen p = ((ProviderOpen) ui);
+			
+			String cnpj = p.getCnpj().getText();
+			String name = p.getName().getText();
+			String category = p.getCategory().getText();
+			String freight = p.getFreight().getText();
+			String phone = p.getPhone().getText();
+			String zipCode = p.getZipCode().getText();
+			
+			if(action.equals(zipCode))
+			{
+				if(zipCode.matches(Regex.CEP))
+				{
+					try
+					{
+						CepAPI cep = new CepAPI(zipCode);
+						
+						p.getNeighborhood().setText(cep.getBairro());
+						p.getAddress().setText(cep.getLogradouro());
+						p.getCity().setText(cep.getLocalidade());
+						p.getState().setText(cep.getUf());
+					}
+					catch(CepNotFoundException ex)
+					{
+						JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
+					}
+					catch (ParserConfigurationException | SAXException | IOException ex) 
+					{
+						ex.printStackTrace();
+					}
+				}
+				else
+				{					
+					JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
+				}
+			}
+			else if(action.equals(p.getSubmit().getActionCommand()))
+			{
+				ProviderDAO pd = new ProviderDAO();
+				
+				if(!(cnpj.isEmpty() && name.isEmpty() && category.isEmpty() && phone.isEmpty() && freight.isEmpty() && zipCode.isEmpty()))
+				{
+					if(cnpj.matches(Regex.CNPJ) && zipCode.matches(Regex.CEP))
+					{
+						pd.update(new ProviderVO(cnpj, name, zipCode, phone, freight, category));				
+						
+						JOptionPane.showMessageDialog(null, Message.UPDATE.get(name));
+						
+						p.getUI().dispose();
+						
+						Reload.refresh();
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+				}
+			}
+		}
+		else if(ui instanceof CompanyOpen)
+		{
+			CompanyOpen p = ((CompanyOpen) ui);
+			
+			String cnpj = p.getCnpj().getText();
+			String name = p.getName().getText();
+			String owner = p.getOwner().getText();
+			String zipCode = p.getZipCode().getText();
+			
+			if(action.equals(zipCode))
+			{
+				if(zipCode.matches(Regex.CEP))
+				{
+					try
+					{
+						CepAPI cep = new CepAPI(zipCode);
+						
+						p.getNeighborhood().setText(cep.getBairro());
+						p.getAddress().setText(cep.getLogradouro());
+						p.getCity().setText(cep.getLocalidade());
+						p.getState().setText(cep.getUf());
+					}
+					catch(CepNotFoundException ex)
+					{
+						JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
+					}
+					catch (ParserConfigurationException | SAXException | IOException ex) 
+					{
+						ex.printStackTrace();
+					}
+				}
+				else
+				{					
+					JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
+				}
+			}
+			else if(action.equals(p.getSubmit().getActionCommand()))
+			{
+				if(!name.isEmpty())
+				{
+					if(cnpj.matches(Regex.CNPJ) && zipCode.matches(Regex.CEP))
+					{
+						CompanyDAO pd = new CompanyDAO();
+						ClientDAO cd = new ClientDAO();
+						ClientVO cv = cd.read(owner);
+						
+						if(cv != null)
+						{
+							pd.update(new CompanyVO(cnpj, name, cv, zipCode));				
+							
+							JOptionPane.showMessageDialog(null, Message.UPDATE.get(name));
+							
+							p.getUI().dispose();
+							
+							Reload.refresh();							
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(owner));
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+				}
+			}
+		}
+		else if(ui instanceof ProductOpen)
+		{
+			ProductOpen p = ((ProductOpen) ui);
+			
+			String id = p.getId().getText();
+			String name = p.getName().getText();
+			String weight = p.getWeight().getText();
+			String price = p.getPrice().getText();
+			String length = p.getLength().getText();
+			String provider = p.getProvider().getText();
+			String height = p.getHeight().getText();
+			String width = p.getWidth().getText();
+			
+			if(action.equals(p.getSubmit().getActionCommand()))
+			{
+				if(!(id.isEmpty() && name.isEmpty()))
+				{
+					if(weight.matches(Regex.KG) && price.matches(Regex.PRICE) && length.matches(Regex.CM) && height.matches(Regex.CM) && width.matches(Regex.CM))
+					{
+						ProductDAO pd = new ProductDAO();
+						ProviderDAO pdd = new ProviderDAO();
+						ProviderVO pv = pdd.read(provider);
+						
+						if(pv != null)
+						{
+							pd.update(new ProductVO(id, pv, name, price, weight, length, width, height));				
+							
+							JOptionPane.showMessageDialog(null, Message.UPDATE.get(name));
+							
+							p.getUI().dispose();
+							
+							Reload.refresh();							
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(provider));
+						}
 					}
 					else
 					{

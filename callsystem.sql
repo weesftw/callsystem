@@ -74,13 +74,14 @@ insert into `category` (`name`) value ('Support');
 
 create table if not exists `provider`
 (
-	`id` tinyint unsigned not null auto_increment,
+	`cnpj` varchar(18) not null,
 	`name` varchar(120) not null unique,
+    `category` varchar(120) not null,
     `freight` varchar(12) not null,
     `zipCode` varchar(10) not null,
     `phoneNumber` varchar(15) not null,
 
-	constraint primary key(`id`)
+	constraint primary key(`cnpj`)
 )Engine=InnoDB;
 
 create table if not exists `product`
@@ -92,11 +93,11 @@ create table if not exists `product`
 	`length` varchar(6) not null,
 	`width` varchar(6) not null,
 	`height` varchar(6) not null,
-	`provider` tinyint unsigned not null,
+	`provider` varchar(18) not null,
     `photo` longblob,
     
     constraint primary key(`id`),
-	constraint foreign key(`provider`) references `provider`(`id`)
+	constraint foreign key(`provider`) references `provider`(`cnpj`)
 )Engine=InnoDB;
 
 create table if not exists `ticket`

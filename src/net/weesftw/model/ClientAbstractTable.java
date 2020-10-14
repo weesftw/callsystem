@@ -15,7 +15,7 @@ public class ClientAbstractTable extends AbstractTableModel
 	@Override
 	public int getRowCount() 
 	{				
-		return ClientVO.LIST.size();
+		return ClientVO.list.size();
 	}
 	
 	@Override
@@ -36,19 +36,19 @@ public class ClientAbstractTable extends AbstractTableModel
 		switch(columnIndex)
 		{
 		case 0:
-			return ClientVO.LIST.get(rowIndex).getCpf();
+			return ClientVO.list.get(rowIndex).getCpf();
 		case 1:
-			return ClientVO.LIST.get(rowIndex).getFirstName() + " " + ClientVO.LIST.get(rowIndex).getLastName();
+			return ClientVO.list.get(rowIndex).getFirstName() + " " + ClientVO.list.get(rowIndex).getLastName();
 		case 2:
-			return ClientVO.LIST.get(rowIndex).getPhoneNumber();
+			return ClientVO.list.get(rowIndex).getPhoneNumber();
 		case 3:
-			return ClientVO.LIST.get(rowIndex).getEmail();
+			return ClientVO.list.get(rowIndex).getEmail();
 		case 4:
-			return ClientVO.LIST.get(rowIndex).getDate();
+			return ClientVO.list.get(rowIndex).getDate();
 		case 5:
-			return ClientVO.LIST.get(rowIndex).getGender().toString();
+			return ClientVO.list.get(rowIndex).getGender().toString();
 		case 6:
-			return ClientVO.LIST.get(rowIndex).getZipCode();
+			return ClientVO.list.get(rowIndex).getZipCode();
 		default:
 			return null;
 		}
@@ -56,6 +56,6 @@ public class ClientAbstractTable extends AbstractTableModel
 	
 	public List<?> getList()
 	{
-		return ClientVO.LIST;
+		return ClientVO.list;
 	}
 }

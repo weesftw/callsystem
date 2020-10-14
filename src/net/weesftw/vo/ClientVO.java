@@ -7,7 +7,7 @@ import net.weesftw.constraint.Gender;
        
 public class ClientVO 
 {
-	public static List<ClientVO> LIST = new ArrayList<>(); 
+	public static List<ClientVO> list = new ArrayList<>(); 
       
 	private String cpf, firstName, lastName, phoneNumber, email, zipCode, date, path;
 	private Gender gender;

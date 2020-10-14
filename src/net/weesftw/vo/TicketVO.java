@@ -10,7 +10,7 @@ import net.weesftw.view.Main;
 
 public class TicketVO 
 {
-	public static List<TicketVO> LIST = new ArrayList<>(); 
+	public static List<TicketVO> list = new ArrayList<>(); 
 	
 	private int id;
 	private String title, description, solution;

@@ -22,13 +22,14 @@ public class ProviderDAO implements DataAcess<ProviderVO>
 			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
+				String id1 = rs.getString(1);
 				String name = rs.getString(2);
-				String freight = rs.getString(3);
-				String zipCode = rs.getString(4);
-				String phoneNumber = rs.getString(5);
+				String category = rs.getString(3);
+				String freight = rs.getString(4);
+				String zipCode = rs.getString(5);
+				String phoneNumber = rs.getString(6);
 				
-				return new ProviderVO(id, name, zipCode, phoneNumber, freight);
+				return new ProviderVO(id1, name, zipCode, phoneNumber, freight, category);
 			}
 		}
 		catch(SQLException ex)
@@ -43,12 +44,14 @@ public class ProviderDAO implements DataAcess<ProviderVO>
 	public boolean create(ProviderVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("insert into `provider` (`name`, `freight`, `zipCode`, `phoneNumber`) value (?, ?, ?, ?)"))
+				PreparedStatement stmt = d.con.prepareStatement("insert into `provider` (`cnpj`, `name`, `category`, `freight`, `zipCode`, `phoneNumber`) value (?, ?, ?, ?, ?, ?)"))
 		{
-			stmt.setString(1, e.getName());
-			stmt.setString(2, e.getFreight());
-			stmt.setString(3, e.getZipCode());
-			stmt.setString(4, e.getPhoneNumber());
+			stmt.setString(1, e.getCnpj());
+			stmt.setString(2, e.getName());
+			stmt.setString(3, e.getCategory());
+			stmt.setString(4, e.getFreight());
+			stmt.setString(5, e.getZipCode());
+			stmt.setString(6, e.getPhoneNumber());
 			
 			stmt.execute();
 			
@@ -66,7 +69,7 @@ public class ProviderDAO implements DataAcess<ProviderVO>
 	public ProviderVO read(String id) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select * from `provider` where `id` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("select * from `provider` where `cnpj` = ?"))
 		{
 			stmt.setString(1, id);
 			
@@ -74,13 +77,14 @@ public class ProviderDAO implements DataAcess<ProviderVO>
 			
 			while(rs.next())
 			{
-				int id1 = rs.getInt(1);
+				String id1 = rs.getString(1);
 				String name = rs.getString(2);
-				String freight = rs.getString(3);
-				String zipCode = rs.getString(4);
-				String phoneNumber = rs.getString(5);
+				String category = rs.getString(3);
+				String freight = rs.getString(4);
+				String zipCode = rs.getString(5);
+				String phoneNumber = rs.getString(6);
 				
-				return new ProviderVO(id1, name, zipCode, phoneNumber, freight);
+				return new ProviderVO(id1, name, zipCode, phoneNumber, freight, category);
 			}
 		}
 		catch(SQLException ex)
@@ -95,13 +99,14 @@ public class ProviderDAO implements DataAcess<ProviderVO>
 	public boolean update(ProviderVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("update `provider` set `name` = ?, `freight` = ?, `zipCode` = ?, `phoneNumber` = ? where `id` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("update `provider` set `name` = ?, `category` = ?, `freight` = ?, `zipCode` = ?, `phoneNumber` = ? where `cnpj` = ?"))
 		{
 			stmt.setString(1, e.getName());
-			stmt.setString(2, e.getFreight());
-			stmt.setString(3, e.getZipCode());
-			stmt.setString(4, e.getPhoneNumber());
-			stmt.setInt(5, e.getId());
+			stmt.setString(2, e.getCategory());
+			stmt.setString(3, e.getFreight());
+			stmt.setString(4, e.getZipCode());
+			stmt.setString(5, e.getPhoneNumber());
+			stmt.setString(6, e.getCnpj());
 			
 			stmt.execute();
 			
@@ -121,7 +126,7 @@ public class ProviderDAO implements DataAcess<ProviderVO>
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("delete from `provider` where `id` = ?"))
 		{
-			stmt.setInt(1, e.getId());
+			stmt.setString(1, e.getCnpj());
 			
 			stmt.execute();
 			
@@ -147,13 +152,14 @@ public class ProviderDAO implements DataAcess<ProviderVO>
 			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
+				String id1 = rs.getString(1);
 				String name = rs.getString(2);
-				String freight = rs.getString(3);
-				String zipCode = rs.getString(4);
-				String phoneNumber = rs.getString(5);
+				String category = rs.getString(3);
+				String freight = rs.getString(4);
+				String zipCode = rs.getString(5);
+				String phoneNumber = rs.getString(6);
 				
-				l.add(new ProviderVO(id, name, zipCode, phoneNumber, freight));
+				l.add(new ProviderVO(id1, name, zipCode, phoneNumber, freight, category));
 			}
 			
 			return l;

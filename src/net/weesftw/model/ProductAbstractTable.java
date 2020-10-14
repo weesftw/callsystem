@@ -1,24 +1,19 @@
 package net.weesftw.model;
 
-import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
 
-import net.weesftw.dao.ProductDAO;
 import net.weesftw.vo.ProductVO;
 
 public class ProductAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private List<ProductVO> list = new ProductDAO().list();
-	
 	private String[] columnIndex = {"ID", "Nome", "Preco", "Fornecedor"};
 	
 	@Override
 	public int getRowCount() 
 	{				
-		return list.size();
+		return ProductVO.list.size();
 	}
 	
 	@Override
@@ -39,20 +34,15 @@ public class ProductAbstractTable extends AbstractTableModel
 		switch(columnIndex)
 		{
 		case 0:
-			return list.get(rowIndex).getId();
+			return ProductVO.list.get(rowIndex).getId();
 		case 1:
-			return list.get(rowIndex).getName();
+			return ProductVO.list.get(rowIndex).getName();
 		case 2:
-			return list.get(rowIndex).getPrice();
+			return ProductVO.list.get(rowIndex).getPrice();
 		case 3:
-			return list.get(rowIndex).getProvider().getName();
+			return ProductVO.list.get(rowIndex).getProvider().getName();
 		default:
 			return null;
 		}
-	}
-	
-	public void setList(List<ProductVO> list)
-	{
-		this.list = list;
 	}
 }

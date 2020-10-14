@@ -50,8 +50,8 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 			while(rs.next())
 			{
 				String id = rs.getString(1);
-				String name = rs.getString(2);
-				ClientVO owner = pd.read(rs.getString(3));
+				ClientVO owner = pd.read(rs.getString(2));
+				String name = rs.getString(3);
 				String zipCode = rs.getString(4);
 				
 				return new CompanyVO(id, name, owner, zipCode);
@@ -123,8 +123,8 @@ public class CompanyDAO implements DataAcess<CompanyVO>
 			while(rs.next())
 			{
 				String cnpj = rs.getString(1);
-				String name = rs.getString(2);
-				ClientVO owner = pd.read(rs.getString(3));
+				ClientVO owner = pd.read(rs.getString(2));
+				String name = rs.getString(3);
 				String zipCode = rs.getString(4);
 				
 				l.add(new CompanyVO(cnpj, name, owner, zipCode));

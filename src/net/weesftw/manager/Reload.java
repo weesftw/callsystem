@@ -10,6 +10,7 @@ import net.weesftw.view.ClientTable;
 import net.weesftw.view.CompanyTable;
 import net.weesftw.view.ProductTable;
 import net.weesftw.view.ProviderTable;
+import net.weesftw.view.Sale;
 import net.weesftw.view.TicketTable;
 import net.weesftw.view.UserTable;
 import net.weesftw.vo.ClientVO;
@@ -30,12 +31,12 @@ public class Reload
 		TicketDAO td = new TicketDAO();
 		UserDAO ud = new UserDAO();
 		
-		ClientVO.LIST = cd.list();
-		CompanyVO.LIST = cdd.list();
-		ProductVO.LIST = pd.list();
-		ProviderVO.LIST = pdd.list();
-		TicketVO.LIST = td.list();
-		UserVO.LIST = ud.list();
+		ClientVO.list = cd.list();
+		CompanyVO.list = cdd.list();
+		ProductVO.list = pd.list();
+		ProviderVO.list = pdd.list();
+		TicketVO.list = td.list();
+		UserVO.list = ud.list();
 	}
 	
 	public static void refresh()
@@ -44,6 +45,7 @@ public class Reload
 		CompanyTable ctt = CompanyTable.getInstance();
 		ProductTable pt = ProductTable.getInstance();
 		ProviderTable ptt = ProviderTable.getInstance();
+		Sale s = Sale.getInstance();
 		TicketTable tt = TicketTable.getInstance();
 		UserTable ut = UserTable.getInstance();
 		
@@ -51,7 +53,10 @@ public class Reload
 		ctt.getAt().fireTableDataChanged();
 		pt.getAt().fireTableDataChanged();
 		ptt.getAt().fireTableDataChanged();
+		s.getAt().fireTableDataChanged();
 		tt.getAt().fireTableDataChanged();
 		ut.getAt().fireTableDataChanged();
+		
+		populate();
 	}
 }

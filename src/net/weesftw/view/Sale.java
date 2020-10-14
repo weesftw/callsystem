@@ -139,6 +139,33 @@ public class Sale extends UI<InternalFrame>
 	{
 		return instance != null ? instance : new Sale(); 
 	}
+	
+	public void clear()
+	{
+		observation.setText("");
+		cpf.setText("");
+		name.setText("");
+		zipCode.setText("");
+		address.setText("");
+		city.setText("");
+		state.setText("");
+		id.setText("");
+		amount.setText("1");
+		product.setText("");
+		price.setText("R$: ");
+		phone.setText("");
+		neighborhood.setText("");
+		c.setSelected(false);
+	}
+	
+	public void clearAfterInsert()
+	{
+		id.setText("");
+		amount.setText("1");
+		product.setText("");
+		price.setText("R$: ");
+		img.loadImage(ImagePath.ICON, 100, 100);
+	}
 
 	public SellAbstractTable getAt() 
 	{
