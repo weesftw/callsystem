@@ -20,11 +20,14 @@ public class Account extends UI<InternalFrame>
 		TicketDAO td = new TicketDAO();
 		Panel p = new Panel("Your Account", 4, 4, 4, 4);
 		
-		p.setComponent(new Label("Logado como: " + auth.getUser().getUsername()));
-		p.setComponent(new Label("Bem vindo " + auth.getPeople().getFirstName() + "."), 0, 1);
-		p.setComponent(new Label("Você possui " + td.getTicketOpen() + "chamados para serem analisados."), 0, 2);
-		p.setComponent(new Label("Seus privilégios são: "), 0, 3);
-		p.setComponent(new Label(" • " + auth.getUser().getDepartment().getDescription()), 0, 4);
+		p.setComponent(
+				new Label("<html><h1>Logado como: " + auth.getUser().getUsername() + " </h1>\n"
+						+ "	<hr>"
+						+ "	<p>Bem vindo " + auth.getPeople().getFirstName() + "<br/>\n"
+						+ "	Você possui " + td.getTicketOpen() + " chamados para serem analisados.<br><br>\n"
+						+ "	Seus privilégios são: <br/>"
+						+ auth.getUser().getDepartment().getDescription() + " </p></html>")
+				);
 		
 		ui.add(p);
 		
