@@ -117,7 +117,6 @@ public class Sale extends UI<InternalFrame>
 		p3.setComponent(new Label("Preco: "), 2, 1);
 		p3.setComponent(price, 3, 1);
 		price.setBackground(Color.WHITE);
-		price.setText("R$: ");
 		price.setEditable(false);
 		
 		p3.setComponent(add, 1, 3);

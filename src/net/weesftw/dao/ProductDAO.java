@@ -125,18 +125,8 @@ public class ProductDAO implements DataAcess<ProductVO>
 	public boolean update(ProductVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("update `product` set `name` = ?, `price` = ?, `weight` = ?, `length` = ?, `width` = ?, `height` = ?, `provider` = ?, `photo` = ? where `id` = ?");
-				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-				FileInputStream file = new FileInputStream(e.getPath()))
-		{
-			int img = file.read();
-			
-			while(img != -1)
-			{
-				buffer.write(img);
-				img = file.read();
-			}
-			
+				PreparedStatement stmt = d.con.prepareStatement("update `product` set `name` = ?, `price` = ?, `weight` = ?, `length` = ?, `width` = ?, `height` = ?, `provider` = ? where `id` = ?"))
+		{			
 			stmt.setString(1, e.getName());
 			stmt.setString(2, e.getPrice());
 			stmt.setString(3, e.getWeight());
@@ -144,14 +134,13 @@ public class ProductDAO implements DataAcess<ProductVO>
 			stmt.setString(5, e.getWidth());
 			stmt.setString(6, e.getHeight());
 			stmt.setString(7, e.getProvider().getCnpj());
-			stmt.setBytes(8, buffer.toByteArray());
-			stmt.setString(9, e.getId());
+			stmt.setString(8, e.getId());
 			
 			stmt.execute();
 			
 			return true;
 		}
-		catch(SQLException | IOException ex)
+		catch(SQLException ex)
 		{
 			ex.printStackTrace();
 		}

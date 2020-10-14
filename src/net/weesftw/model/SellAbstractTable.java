@@ -31,8 +31,7 @@ public class SellAbstractTable extends AbstractTableModel
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) 
 	{
-		double subtotal = Double.parseDouble(CartVO.list.get(rowIndex).getProduct().getPrice()) * Double.parseDouble(CartVO.list.get(rowIndex).getAmount());
-		double total =+ subtotal;
+		double subtotal =+ Double.parseDouble(CartVO.list.get(rowIndex).getProduct().getPrice()) * Double.parseDouble(CartVO.list.get(rowIndex).getAmount());
 		
 		switch(columnIndex)
 		{
@@ -45,7 +44,7 @@ public class SellAbstractTable extends AbstractTableModel
 		case 3:
 			return CartVO.list.get(rowIndex).getProduct().getPrice();
 		case 4:
-			return total;
+			return subtotal;
 		default:
 			return null;
 		}

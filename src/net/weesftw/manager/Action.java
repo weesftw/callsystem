@@ -1013,13 +1013,13 @@ public class Action implements ActionListener
 			
 			ProductDAO pd = new ProductDAO();
 			
-			ProductVO product = pd.read(s.getProduct().getText());
-			String observation = s.getObservation().getText();
-			String amount = s.getAmount().getText();
-			String price = s.getPrice().getText();
-			boolean se = s.getC().isSelected();
-			String cpf = s.getCpf().getText();
 			String id = s.getId().getText();
+			ProductVO product = pd.read(id);
+			String cpf = s.getCpf().getText();
+			boolean se = s.getC().isSelected();
+			String price = s.getPrice().getText();
+			String amount = s.getAmount().getText();
+			String observation = s.getObservation().getText();
 			
 			if(action.equals(s.getC().getActionCommand()))
 			{
@@ -1104,7 +1104,7 @@ public class Action implements ActionListener
 				{
 					s.getImg().loadImage(product.getPhoto(), 100, 100);
 					s.getProduct().setText(product.getName());
-					s.getPrice().setText(price.concat(product.getPrice()));
+					s.getPrice().setText(product.getPrice());
 				}
 				else
 				{
@@ -1145,30 +1145,24 @@ public class Action implements ActionListener
 					
 					if(!se)
 					{
-						CompanyDAO cd = new CompanyDAO();
-						CompanyVO company = cd.read(cpf);
-						
-						cd.create(company);
-						sd.create(new SellVO(cart, company, observation));
-						
-						s.clear();
-						
-						Reload.refresh();
-					}
-					else
-					{
 						ClientDAO cd = new ClientDAO();
 						ClientVO client = cd.read(cpf);
 						
-						cd.create(client);
-						sd.create(new SellVO(cart, client, observation));
+						sd.create(new SellVO(cart, client, observation));						
+					}
+					else
+					{
+						CompanyDAO cd = new CompanyDAO();
+						CompanyVO company = cd.read(cpf);
 						
-						s.clear();
-						
-						Reload.refresh();
+						sd.create(new SellVO(cart, company, observation));
 					}
 					
-					JOptionPane.showMessageDialog(null, Message.PURCHASE.get(null));	
+					JOptionPane.showMessageDialog(null, Message.PURCHASE.get(null));
+					
+					s.clear();
+					
+					Reload.refresh();
 				}
 				else
 				{

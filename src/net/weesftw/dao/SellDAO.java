@@ -21,11 +21,11 @@ public class SellDAO implements DataAcess<SellVO>
 	public boolean create(SellVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("insert into `sell` (`cart`, `by`, `client`, `observation` value (?, ?, ?, ?, ?)"))
+				PreparedStatement stmt = d.con.prepareStatement("insert into `sell` (`cart`, `by`, `client`, `observation`) value (?, ?, ?, ?)"))
 		{
 			stmt.setString(1, e.getCart().getId());
 			stmt.setString(2, e.getBy().getUsername());
-			stmt.setString(3, !e.getCompany().getCnpj().isEmpty() ? e.getCompany().getCnpj() : e.getPeople().getCpf());
+			stmt.setString(3, e.getCompany() != null ? e.getCompany().getCnpj() : e.getPeople().getCpf());
 			stmt.setString(4, e.getObservation());
 			
 			stmt.execute();

@@ -82,7 +82,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 			
 			while(rs.next())
 			{
-				int id1 = rs.getInt(1);
+				String id1 = rs.getString(1);
 				String title = rs.getString(2);
 				ClientVO client = pdd.read(rs.getString(3));
 				CompanyVO company = cd.read(rs.getString(4));
@@ -115,7 +115,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 			stmt.setString(1, e.getSolution());
 			stmt.setBoolean(2, e.isPriority());
 			stmt.setString(3, e.getStatus().name());
-			stmt.setInt(4, e.getId());
+			stmt.setString(4, e.getId());
 			
 			stmt.execute();
 			
@@ -152,7 +152,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
+				String id = rs.getString(1);
 				String title = rs.getString(2);
 				ClientVO client = pdd.read(rs.getString(3));
 				CompanyVO company = cd.read(rs.getString(4));
