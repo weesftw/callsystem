@@ -35,10 +35,9 @@ public class TicketAbstractTable extends AbstractTableModel
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) 
 	{
+		String b = TicketVO.list.get(rowIndex).isPriority() ? "*" : "";
 		SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
 		CompanyVO cv = TicketVO.list.get(rowIndex).getCompany();
-		
-		String b = TicketVO.list.get(rowIndex).isPriority() ? "✓" : "";
 		
 		switch(columnIndex)
 		{

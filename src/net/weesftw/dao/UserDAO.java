@@ -158,7 +158,7 @@ public class UserDAO implements DataAcess<UserVO>
 		List<UserVO> l = new ArrayList<UserVO>();
 		
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id`"))
+				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id` where `user`.`cpf` != 1"))
 		{
 			ResultSet rs = stmt.executeQuery();
 			

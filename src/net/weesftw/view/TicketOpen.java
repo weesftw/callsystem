@@ -27,10 +27,13 @@ public class TicketOpen extends UI<Dialog>
 	private TextArea description, solution;
 	private TextField id, timestamp, product, category, title, company, client, user;
 	private JCheckBox priority;
+	private TicketVO t;
 	
 	public TicketOpen(TicketVO t) 
 	{
 		super(new Dialog("Ticket: " + t.getId(), true));
+		
+		this.t = t;
 		
 		boolean privilege = Main.getInstance().getAuth().isPrivilege();
 		SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
@@ -208,5 +211,10 @@ public class TicketOpen extends UI<Dialog>
 	public JCheckBox getPriority() 
 	{
 		return priority;
+	}
+
+	public TicketVO getT() 
+	{
+		return t;
 	}	
 }

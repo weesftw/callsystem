@@ -12,8 +12,7 @@ public class TicketVO
 {
 	public static List<TicketVO> list = new ArrayList<>(); 
 	
-	private int id;
-	private String title, description, solution;
+	private String id, title, description, solution;
 	private ClientVO client;
 	private CompanyVO company;
 	private Timestamp time;
@@ -45,7 +44,7 @@ public class TicketVO
 		this.priority = priority;
 	}
 	
-	public TicketVO(int id, String title, ClientVO client, CompanyVO company, UserVO user, String description, String solution, Timestamp time, Category category, ProductVO product, Status status, boolean priority) 
+	public TicketVO(String id, String title, ClientVO client, CompanyVO company, UserVO user, String description, String solution, Timestamp time, Category category, ProductVO product, Status status, boolean priority) 
 	{
 		this.id = id;
 		this.title = title;
@@ -61,7 +60,7 @@ public class TicketVO
 		this.priority = priority;
 	}
 
-	public int getId() 
+	public String getId() 
 	{
 		return id;
 	}

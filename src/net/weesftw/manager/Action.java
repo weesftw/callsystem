@@ -20,7 +20,6 @@ import net.weesftw.constraint.Gender;
 import net.weesftw.constraint.Message;
 import net.weesftw.constraint.Regex;
 import net.weesftw.constraint.Status;
-import net.weesftw.dao.CartDAO;
 import net.weesftw.dao.ClientDAO;
 import net.weesftw.dao.CompanyDAO;
 import net.weesftw.dao.ProductDAO;
@@ -127,7 +126,6 @@ public class Action implements ActionListener
 			String date = c.getDate().getText();
 			Gender gender = Gender.valueOf(c.getGender().getSelectedItem().toString());
 			String zipCode = c.getZipCode().getText();
-			String city = c.getCity().getText();
 			String img = c.getImg().getUrl();
 			
 			if(action.equals(c.getChoose().getActionCommand()))
@@ -138,19 +136,16 @@ public class Action implements ActionListener
 				{
 					c.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
 				}
-				
-				return;
 			}
 			else if(action.equals(c.getSubmit().getActionCommand()))
-			{
-				ClientDAO pd = new ClientDAO();
-				
+			{				
 				if(img != null)
 				{
-					if(!(cpf.isEmpty() && firstName.isEmpty() && lastName.isEmpty() && phoneNumber.isEmpty() && email.isEmpty() && date.isEmpty() && gender == null && zipCode.isEmpty() && city.isEmpty()))
+					if(!(phoneNumber.isEmpty()))
 					{					
 						if(cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
 						{
+							ClientDAO pd = new ClientDAO();
 							ClientVO cv = new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img);
 							
 							pd.create(cv);
@@ -222,16 +217,14 @@ public class Action implements ActionListener
 		{
 			Company c = ((Company) ui);
 			
-			ClientDAO cdd = new ClientDAO();
-			
 			String cnpj = c.getCnpj().getText();
 			String name = c.getName().getText();
-			ClientVO owner = cdd.read(c.getOwner().getText());
+			String owner = c.getOwner().getText();
 			String zipCode = c.getZipCode().getText();
 			
 			if(action.equals(c.getSubmit().getActionCommand()))
 			{
-				if(!(cnpj.isEmpty() && name.isEmpty() && owner == null && zipCode.isEmpty()))
+				if(!(name.isEmpty() && zipCode.isEmpty()))
 				{
 					if(cnpj.matches(Regex.CNPJ) && zipCode.matches(Regex.CEP))
 					{
@@ -239,20 +232,29 @@ public class Action implements ActionListener
 						{
 							CepAPI cep = new CepAPI(zipCode);
 							CompanyDAO cd = new CompanyDAO();
+							ClientDAO cdd = new ClientDAO();
+							ClientVO cv = cdd.read(owner);
 							
-							if(cep != null)
+							if(cv != null)
 							{
-								CompanyVO cv = new CompanyVO(cnpj, name, owner, zipCode);
-								
-								cd.create(cv);
-								CompanyVO.list.add(cv);
-								
-								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(name));
-								
-								c.clear();
-								c.getUI().dispose();	
-								
-								Reload.refresh();
+								if(cep != null)
+								{
+									CompanyVO cvv = new CompanyVO(cnpj, name, cv, zipCode);
+									
+									cd.create(cvv);
+									CompanyVO.list.add(cvv);
+									
+									JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(name));
+									
+									c.clear();
+									c.getUI().dispose();	
+									
+									Reload.refresh();
+								}
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(owner));
 							}
 						}
 						catch(CepNotFoundException ex)
@@ -291,6 +293,14 @@ public class Action implements ActionListener
 		{
 			Ticket t = ((Ticket) ui);
 			
+			boolean priority = t.getPriority().isSelected() ? true : false;
+			Category category = Category.valueOf(t.getCategory().getSelectedItem().toString());
+			String product = t.getProduct().getSelectedItem().toString();
+			String client = t.getClient().getText();
+			String title = t.getTitle().getText();
+			String company = t.getCompany().getText();
+			String description = t.getDescription().getText();
+			
 			if(action.equals(t.getPj().getActionCommand()))
 			{
 				t.getCompany().setEditable(t.getPj().isSelected() ? true : false);
@@ -299,29 +309,60 @@ public class Action implements ActionListener
 				t.getClient().setText("");				
 			}
 			else if(action.equals(t.getSubmit().getActionCommand()))
-			{
-				TicketDAO td = new TicketDAO();
-				ClientDAO pd = new ClientDAO();
-				CompanyDAO cd = new CompanyDAO();
-				ProductDAO pdd = new ProductDAO();
-				
-				Category category = Category.valueOf(t.getCategory().getSelectedItem().toString());
-				ProductVO product = pdd.searchByName(t.getProduct().getSelectedItem().toString());
-				boolean priority = t.getPriority().isSelected() ? true : false;
-				ClientVO client = pd.read(t.getClient().getText());
-				String title = t.getTitle().getText();
-				CompanyVO company = cd.read(t.getCompany().getText());
-				String description = t.getDescription().getText();
-				
-				if(category != null && product != null && !title.isEmpty() && !description.isEmpty())
+			{				
+				if(!title.isEmpty() && !description.isEmpty())
 				{
+					TicketDAO td = new TicketDAO();
+					ClientDAO pd = new ClientDAO();
+					CompanyDAO cd = new CompanyDAO();
+					ProductDAO pdd = new ProductDAO();
+					
+					CompanyVO cv = cd.read(company);
+					ProductVO pv = pdd.searchByName(product);
+					ClientVO cvv = pd.read(client);
+					
 					if(t.getPj().isSelected())
 					{
-						if(company != null)
+						if(cv != null)
 						{
-							if(company.getCnpj().matches(Regex.CNPJ))
+							if(pv != null)
 							{
-								TicketVO tv = new TicketVO(title, company, description, category, product, priority);
+								if(cvv != null)
+								{
+									TicketVO tv = new TicketVO(title, cv, description, category, pv, priority);
+									
+									td.create(tv);
+									TicketVO.list.add(tv);
+									
+									JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Ticket"));
+									
+									t.clear();
+									t.getUI().dispose();
+									
+									Reload.refresh();
+								}
+								else
+								{
+									JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(client));
+								}
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(product));
+							}
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(company));
+						}
+					}
+					else
+					{
+						if(pv != null)
+						{
+							if(cvv != null)
+							{
+								TicketVO tv = new TicketVO(title, cvv, description, category, pv, priority);
 								
 								td.create(tv);
 								TicketVO.list.add(tv);
@@ -335,34 +376,12 @@ public class Action implements ActionListener
 							}
 							else
 							{
-								JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+								JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(client));
 							}
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(t.getCompany().getText()));
-						}
-					}
-					else
-					{
-						if(client != null)
-						{
-							if(client.getCpf().matches(Regex.CPF))
-							{							
-								td.create(new TicketVO(title, client, description, category, product, priority));
-								
-								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Ticket"));
-								
-								t.getUI().dispose();
-							}
-							else
-							{
-								JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
-							}
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(t.getClient().getText()));
+							JOptionPane.showMessageDialog(null, Message.NOT_FOUND.get(product));
 						}
 					}
 				}
@@ -394,11 +413,11 @@ public class Action implements ActionListener
 			String phoneNumber = u.getPhoneNumber().getText();
 			String email = u.getEmail().getText();
 			String date = u.getDate().getText();
-			Gender gender = Gender.valueOf(u.getGender().getSelectedItem().toString());
 			String zipCode = u.getZipCode().getText();
 			String img = u.getImg().getUrl();
 			String username = u.getUser().getText();
 			String passwd = u.getPasswd().getText();
+			Gender gender = Gender.valueOf(u.getGender().getSelectedItem().toString());
 			Department department = Department.valueOf(u.getDepartment().getSelectedItem().toString());
 			
 			if(action.equals(u.getChoose().getActionCommand()))
@@ -409,28 +428,28 @@ public class Action implements ActionListener
 				{
 					u.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
 				}
-				
-				return;
 			}
 			else if(action.equals(u.getSubmit().getActionCommand()))
 			{
-				UserDAO ud = new UserDAO();
-				ClientDAO pd = new ClientDAO();
-				
 				if(img != null)
 				{
-					if(!(cpf.isEmpty() && firstName.isEmpty() && lastName.isEmpty() && phoneNumber.isEmpty() && email.isEmpty() && date.isEmpty() && gender == null && zipCode.isEmpty() && !cpf.isEmpty() && !username.isEmpty() && !passwd.isEmpty() && department == null))
+					if(!(phoneNumber.isEmpty() && username.isEmpty() && passwd.isEmpty()))
 					{
 						if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
 						{
-							if(ud.searchByUser(username) == null)
+							UserDAO ud = new UserDAO();
+							ClientDAO pd = new ClientDAO();			
+							UserVO uv = ud.searchByUser(username);
+							ClientVO cv = pd.read(cpf);
+							
+							if(uv == null)
 							{
-								if(pd.read(cpf) != null)
+								if(cv != null)
 								{
-									UserVO uv = new UserVO(cpf, username, passwd, department);
+									UserVO uvv = new UserVO(cpf, username, passwd, department);
 									
-									ud.create(uv);
-									UserVO.list.add(uv);
+									ud.create(uvv);
+									UserVO.list.add(uvv);
 									
 									JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("User"));
 									
@@ -527,17 +546,17 @@ public class Action implements ActionListener
 		{
 			TicketTable t = ((TicketTable) ui);
 			
+			String id = t.getId().getText();
+			String title = t.getTitle().getText();
+			String client = t.getClient().getText();
+			String company = t.getCompany().getText();
+			String user = t.getUser().getText();
+			String date = t.getDate().getText();
+			String priority = t.getPriority().isSelected() ? "*" : "";
+			String status = t.getStatus().getSelectedItem().toString();
+			
 			if(action.equals(t.getBtn().getActionCommand()))
 			{				
-				String id = t.getId().getText();
-				String title = t.getTitle().getText();
-				String client = t.getClient().getText();
-				String company = t.getCompany().getText();
-				String user = t.getUser().getText();
-				String date = t.getDate().getText();
-				String priority = t.getPriority().isSelected() ? "✓" : "";
-				String status = t.getStatus().getSelectedItem().toString();
-				
 				if(!id.isEmpty())
 				{					
 					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(id), 0));
@@ -592,34 +611,34 @@ public class Action implements ActionListener
 		{
 			TicketOpen t = ((TicketOpen) ui);
 			
+			TicketVO tv = t.getT();			
+			
+			Status status = Status.valueOf(t.getStatus().getSelectedItem().toString());
+			Category category = Category.valueOf(t.getCategory().getText());
+			Timestamp time = new Timestamp(System.currentTimeMillis());
+			String description = t.getDescription().getText();
+			boolean priority = t.getPriority().isSelected();
+			String solution = t.getSolution().getText();
+			ProductVO product = tv.getProduct();
+			CompanyVO company = tv.getCompany();
+			ClientVO client = tv.getClient();
+			String title = tv.getTitle();
+			UserVO user = tv.getUser();
+			String id = tv.getId();
+			
 			if(action.equals(t.getSubmit().getActionCommand()))
 			{
 				TicketDAO td = new TicketDAO();
-				ProductDAO pd = new ProductDAO();
-				ClientDAO pdd = new ClientDAO();
-				CompanyDAO cd = new CompanyDAO();
-				UserDAO ud = new UserDAO();
 				
-				int id = Integer.valueOf(t.getId().getText());
-				Status status = Status.valueOf(t.getStatus().getSelectedItem().toString());
-				ProductVO product = pd.searchByName(t.getProduct().getText());
-				boolean priority = t.getPriority().isSelected();
-				Category category = Category.valueOf(t.getCategory().getText());
-				String title = t.getTitle().getText();
-				String description = t.getDescription().getText();
-				CompanyVO company = cd.read(t.getCompany().getText());
-				ClientVO client = pdd.read(t.getClient().getText());
-				UserVO user = ud.searchByUser(t.getUser().getText());
-				String solution = t.getSolution().getText();
-				Timestamp time = new Timestamp(System.currentTimeMillis());
-				
-				if(!(solution.isEmpty()))
+				if(!solution.isEmpty())
 				{
 					td.update(new TicketVO(id, title, client, company, user, description, solution, time, category, product, status, priority));
 					
 					JOptionPane.showMessageDialog(null, Message.TICKET_UPDATED.get(t.getTitle().getText()));
 					
 					t.getUI().dispose();
+					
+					Reload.refresh();
 				}
 				else
 				{
@@ -630,9 +649,6 @@ public class Action implements ActionListener
 		else if(ui instanceof Product)
 		{
 			Product p = ((Product) ui);
-			
-			ProviderDAO pd = new ProviderDAO();
-			ProductDAO pdd = new ProductDAO();
 			
 			String name = p.getName().getText();
 			String price = p.getPrice().getText();
@@ -650,44 +666,51 @@ public class Action implements ActionListener
 				{
 					p.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
 				}
-				
-				return;
 			}
 			else if(action.equals(p.getSubmit().getActionCommand()))
 			{
-				if(!name.isEmpty() && !price.isEmpty() && path != null && !weight.isEmpty() && !length.isEmpty() && !width.isEmpty() && !height.isEmpty())
+				if(path != null)
 				{
-					ProviderVO provider = pd.searchByName(p.getProvider().getSelectedItem().toString());
-					
-					if(provider != null)
+					if(!name.isEmpty())
 					{
-						if(price.matches(Regex.PRICE) && weight.matches(Regex.KG) && length.matches(Regex.CM) && width.matches(Regex.CM) && height.matches(Regex.CM))
+						ProviderDAO pd = new ProviderDAO();
+						ProviderVO provider = pd.searchByName(p.getProvider().getSelectedItem().toString());
+						
+						if(provider != null)
 						{
-							ProductVO pv = new ProductVO(provider, name, price, path, weight, length, width, height);
-							
-							pdd.create(pv);
-							ProductVO.list.add(pv);
-							
-							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Produto"));
-							
-							p.clear();
-							p.getUI().dispose();
-							
-							Reload.refresh();
+							if(price.matches(Regex.PRICE) && weight.matches(Regex.KG) && length.matches(Regex.CM) && width.matches(Regex.CM) && height.matches(Regex.CM))
+							{
+								ProductDAO pdd = new ProductDAO();
+								ProductVO pv = new ProductVO(provider, name, price, path, weight, length, width, height);
+								
+								pdd.create(pv);
+								ProductVO.list.add(pv);
+								
+								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Produto"));
+								
+								p.clear();
+								p.getUI().dispose();
+								
+								Reload.refresh();
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+							}
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+							JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get("Provedor"));
 						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get("Provedor"));
+						JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+					JOptionPane.showMessageDialog(null, Message.IMAGE_INVALID.get(null));
 				}
 			}
 			else
@@ -988,20 +1011,15 @@ public class Action implements ActionListener
 		{
 			Sale s = ((Sale) ui);
 			
-			boolean se = s.getC().isSelected();
-			
-			CartDAO cd = new CartDAO();
-			SellDAO sd = new SellDAO();
 			ProductDAO pd = new ProductDAO();
-			CompanyDAO cdd = new CompanyDAO();
-			ClientDAO pdd = new ClientDAO();
 			
-			String amount = s.getAmount().getText();
-			String cpf = s.getCpf().getText();
+			ProductVO product = pd.read(s.getProduct().getText());
 			String observation = s.getObservation().getText();
-			String id = s.getId().getText();
-			String product = s.getProduct().getText();
+			String amount = s.getAmount().getText();
 			String price = s.getPrice().getText();
+			boolean se = s.getC().isSelected();
+			String cpf = s.getCpf().getText();
+			String id = s.getId().getText();
 			
 			if(action.equals(s.getC().getActionCommand()))
 			{
@@ -1020,7 +1038,8 @@ public class Action implements ActionListener
 			{
 				if(!se)
 				{
-					ClientVO p = new ClientDAO().read(cpf);
+					ClientDAO cd = new ClientDAO();
+					ClientVO p = cd.read(cpf);
 					
 					if(p != null)
 					{
@@ -1080,14 +1099,12 @@ public class Action implements ActionListener
 				}
 			}
 			else if(action.equals(s.getId().getText()))
-			{
-				ProductVO p = pd.read(s.getId().getText());
-				
-				if(p != null)
+			{				
+				if(product != null)
 				{
-					s.getImg().loadImage(p.getPhoto(), 100, 100);
-					s.getProduct().setText(p.getName());
-					s.getPrice().setText(price.concat(p.getPrice()));
+					s.getImg().loadImage(product.getPhoto(), 100, 100);
+					s.getProduct().setText(product.getName());
+					s.getPrice().setText(price.concat(product.getPrice()));
 				}
 				else
 				{
@@ -1096,34 +1113,25 @@ public class Action implements ActionListener
 			}
 			else if(action.equals(s.getAdd().getActionCommand()))
 			{
-				ProductVO pv = pd.read(s.getId().getText());
-				
-				if(pv != null)
+				if(product != null)
 				{
-					if(!(cpf.isEmpty() && id.isEmpty() && amount.isEmpty() && product.isEmpty() && price.isEmpty()))
-					{
-						if(cpf.matches(Regex.CPF) && id.matches(Regex.NUMBER) && amount.matches(Regex.NUMBER))
-						{							
-							CartVO.list.add(new CartVO(amount, pv));
-							
-							s.clearAfterInsert();
-							
-							Reload.refresh();
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
-						}
+					if(cpf.matches(Regex.CPF) && id.matches(Regex.NUMBER) && amount.matches(Regex.NUMBER) && price.matches(Regex.PRICE))
+					{							
+						CartVO.list.add(new CartVO(amount, product));
+						
+						s.clearAfterInsert();
+						
+						Reload.refresh();
 					}
 					else
-						
 					{
-						JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 					}
 				}
 				else
+					
 				{
-					JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get("Produto"));
+					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 				}
 			}
 			else if(action.equals(s.getSubmit().getActionCommand()))
@@ -1133,11 +1141,14 @@ public class Action implements ActionListener
 				
 				if(!CartVO.list.isEmpty())
 				{
+					SellDAO sd = new SellDAO();
+					
 					if(!se)
 					{
-						CompanyVO company = cdd.read(cpf);
+						CompanyDAO cd = new CompanyDAO();
+						CompanyVO company = cd.read(cpf);
 						
-						cd.create(cart);
+						cd.create(company);
 						sd.create(new SellVO(cart, company, observation));
 						
 						s.clear();
@@ -1146,9 +1157,10 @@ public class Action implements ActionListener
 					}
 					else
 					{
-						ClientVO client = pdd.read(cpf);
+						ClientDAO cd = new ClientDAO();
+						ClientVO client = cd.read(cpf);
 						
-						cd.create(cart);
+						cd.create(client);
 						sd.create(new SellVO(cart, client, observation));
 						
 						s.clear();
@@ -1188,7 +1200,6 @@ public class Action implements ActionListener
 			String date = c.getDateBorn().getText();
 			Gender gender = Gender.valueOf(c.getGender().getSelectedItem().toString());
 			String zipCode = c.getZipCode().getText();
-			String city = c.getCity().getText();
 			Object img = c.getImg();
 			
 			if(action.equals(zipCode))
@@ -1222,22 +1233,17 @@ public class Action implements ActionListener
 			{
 				ClientDAO cd = new ClientDAO();
 				
-				if(!(cpf.isEmpty() && firstName.isEmpty() && lastName.isEmpty() && phone.isEmpty() && email.isEmpty() && date.isEmpty() && gender == null && zipCode.isEmpty() && img == null && city.isEmpty()))
-				{
-					if(cpf.matches(Regex.CPF) && (firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME)) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
+				if(img != null)
+				{					
+					if(cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
 					{
-						if(img != null)
-						{
-							cd.update(new ClientVO(cpf, firstName, lastName, phone, email, date, gender, zipCode, (String) img));							
-						}
-						else
-						{
-							cd.update(new ClientVO(cpf, firstName, lastName, phone, email, date, gender, zipCode, (byte[]) img));
-						}
+						cd.update(new ClientVO(cpf, firstName, lastName, phone, email, date, gender, zipCode, (String) img));							
 						
 						JOptionPane.showMessageDialog(null, Message.UPDATE.get(firstName));
 						
-						c.getUI().dispose();						
+						c.getUI().dispose();
+						
+						Reload.refresh();
 					}
 					else
 					{
@@ -1246,7 +1252,7 @@ public class Action implements ActionListener
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+					cd.update(new ClientVO(cpf, firstName, lastName, phone, email, date, gender, zipCode, (byte[]) img));
 				}
 			}
 		}
@@ -1289,13 +1295,12 @@ public class Action implements ActionListener
 				}
 			}
 			else if(action.equals(p.getSubmit().getActionCommand()))
-			{
-				ProviderDAO pd = new ProviderDAO();
-				
-				if(!(cnpj.isEmpty() && name.isEmpty() && category.isEmpty() && phone.isEmpty() && freight.isEmpty() && zipCode.isEmpty()))
+			{				
+				if(!(name.isEmpty() && category.isEmpty()))
 				{
-					if(cnpj.matches(Regex.CNPJ) && zipCode.matches(Regex.CEP))
+					if(cnpj.matches(Regex.CNPJ) && zipCode.matches(Regex.CEP) && freight.matches(Regex.PRICE) && phone.matches(Regex.PHONE))
 					{
+						ProviderDAO pd = new ProviderDAO();
 						pd.update(new ProviderVO(cnpj, name, zipCode, phone, freight, category));				
 						
 						JOptionPane.showMessageDialog(null, Message.UPDATE.get(name));
@@ -1357,12 +1362,12 @@ public class Action implements ActionListener
 				{
 					if(cnpj.matches(Regex.CNPJ) && zipCode.matches(Regex.CEP))
 					{
-						CompanyDAO pd = new CompanyDAO();
 						ClientDAO cd = new ClientDAO();
 						ClientVO cv = cd.read(owner);
 						
 						if(cv != null)
 						{
+							CompanyDAO pd = new CompanyDAO();
 							pd.update(new CompanyVO(cnpj, name, cv, zipCode));				
 							
 							JOptionPane.showMessageDialog(null, Message.UPDATE.get(name));
@@ -1402,16 +1407,16 @@ public class Action implements ActionListener
 			
 			if(action.equals(p.getSubmit().getActionCommand()))
 			{
-				if(!(id.isEmpty() && name.isEmpty()))
+				if(!name.isEmpty())
 				{
 					if(weight.matches(Regex.KG) && price.matches(Regex.PRICE) && length.matches(Regex.CM) && height.matches(Regex.CM) && width.matches(Regex.CM))
 					{
-						ProductDAO pd = new ProductDAO();
 						ProviderDAO pdd = new ProviderDAO();
 						ProviderVO pv = pdd.read(provider);
 						
 						if(pv != null)
 						{
+							ProductDAO pd = new ProductDAO();
 							pd.update(new ProductVO(id, pv, name, price, weight, length, width, height));				
 							
 							JOptionPane.showMessageDialog(null, Message.UPDATE.get(name));
