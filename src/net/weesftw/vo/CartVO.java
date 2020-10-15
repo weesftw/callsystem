@@ -9,16 +9,16 @@ public class CartVO
 	
 	private String id, amount;
 	private ProductVO product;
-	
-	public CartVO(String id, String amount, ProductVO product)
+		
+	public CartVO(String amount, ProductVO product)
 	{
-		this.id = id;
 		this.amount = amount;
 		this.product = product;
 	}
 	
-	public CartVO(String amount, ProductVO product)
+	public CartVO(String id, String amount, ProductVO product)
 	{
+		this.id = id;
 		this.amount = amount;
 		this.product = product;
 	}

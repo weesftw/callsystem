@@ -73,6 +73,49 @@ public class User extends UI<InternalFrame>
 		p2.setComponent(choose, 0, 1);
 		choose.addActionListener(new Action(this));
 		
+		p3.setComponent(new Label("CPF: "));
+		p3.setComponent(cpf, 0, 1);
+		cpf.setEditable(false);
+		
+		p3.setComponent(new Label("Nome: "), 0, 2);
+		p3.setComponent(firstName, 0, 3);
+		
+		p3.setComponent(new Label("Sobrenome: "), 0, 4);
+		p3.setComponent(lastName, 0, 5);
+		
+		p3.setComponent(new Label("Telefone: "), 0, 6);
+		p3.setComponent(phoneNumber, 0, 7);
+		
+		p3.setComponent(new Label("E-mail: "), 0, 8);
+		p3.setComponent(email, 0, 9);
+		
+		p3.setComponent(new Label("Data de Nascimento: "), 0, 10);
+		p3.setComponent(date, 0, 11);
+		
+		p3.setComponent(new Label("Genero: "), 0, 12);
+		p3.setComponent(gender, 0, 13);
+		gender.setBackground(Color.WHITE);
+		
+		p3.setComponent(new Label("CEP: "), 1, 0);
+		p3.setComponent(zipCode, 1, 1);
+		zipCode.addActionListener(new Action(this));
+		
+		p3.setComponent(new Label("Bairro: "), 1, 2);
+		p3.setComponent(neighborhood, 1, 3);
+		neighborhood.setEditable(false);
+		
+		p3.setComponent(new Label("Rua: "), 1, 4);
+		p3.setComponent(address, 1, 5);
+		address.setEditable(false);
+		
+		p3.setComponent(new Label("Cidade: "), 1, 6);
+		p3.setComponent(city, 1, 7);
+		city.setEditable(false);
+		
+		p3.setComponent(new Label("Estado: "), 1, 8);
+		p3.setComponent(state, 1, 9);
+		state.setEditable(false);
+		
 		p.setComponent(new Label("Usuario: "), 0, 1);
 		p.setComponent(user, 1, 1);
 		
@@ -83,54 +126,12 @@ public class User extends UI<InternalFrame>
 		p.setComponent(department, 1, 3);
 		department.setBackground(Color.WHITE);
 		
-		p3.setComponent(new Label("CEP: "));
-		p3.setComponent(zipCode, 1, 0);
-		zipCode.addActionListener(new Action(this));
-		
-		p3.setComponent(new Label("Bairro: "), 2, 0);
-		p3.setComponent(neighborhood, 3, 0);
-		neighborhood.setEditable(false);
-		
-		p3.setComponent(new Label("Rua: "), 0, 1);
-		p3.setComponent(address, 1, 1);
-		address.setEditable(false);
-		
-		p3.setComponent(new Label("Cidade: "), 2, 1);
-		p3.setComponent(city, 3, 1);
-		city.setEditable(false);
-		
-		p3.setComponent(new Label("Estado: "), 0, 2);
-		p3.setComponent(state, 1, 2);
-		state.setEditable(false);
-		
-		p3.setComponent(new Label("CPF: "), 2, 2);
-		p3.setComponent(cpf, 3, 2);
-		
-		p3.setComponent(new Label("Nome: "), 0, 3);
-		p3.setComponent(firstName, 1, 3);
-		
-		p3.setComponent(new Label("Sobrenome: "), 2, 3);
-		p3.setComponent(lastName, 3, 3);
-		
-		p3.setComponent(new Label("Telefone: "), 0, 4);
-		p3.setComponent(phoneNumber, 1, 4);
-		
-		p3.setComponent(new Label("E-mail: "), 2, 4);
-		p3.setComponent(email, 3, 4);
-		
-		p3.setComponent(new Label("Data de Nascimento: "), 0, 5);
-		p3.setComponent(date, 1, 5);
-		
-		p3.setComponent(new Label("Genero: "), 2, 5);
-		p3.setComponent(gender, 3, 5);
-		gender.setBackground(Color.WHITE);
-		
 		p.setComponent(submit, 1, 4);
 		submit.addActionListener(new Action(this));
 		
 		ui.add(p2, BorderLayout.WEST);
 		ui.add(p3);
-		ui.add(p, BorderLayout.EAST);
+		ui.add(p, BorderLayout.SOUTH);
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

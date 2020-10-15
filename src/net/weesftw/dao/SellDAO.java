@@ -9,7 +9,6 @@ import java.util.List;
 
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Database;
-import net.weesftw.vo.CartVO;
 import net.weesftw.vo.CompanyVO;
 import net.weesftw.vo.ClientVO;
 import net.weesftw.vo.SellVO;
@@ -17,18 +16,51 @@ import net.weesftw.vo.UserVO;
 
 public class SellDAO implements DataAcess<SellVO> 
 {
+	public String getIdByClient(String args)
+	{
+		try(Database d = new Database();
+				PreparedStatement stmt = d.con.prepareStatement("select `id` from `sell` where `client` = ?"))
+		{
+			stmt.setString(1, args);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next())
+			{
+				return rs.getString(1);
+			}
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	@Override
 	public boolean create(SellVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("insert into `sell` (`cart`, `by`, `client`, `observation`) value (?, ?, ?, ?)"))
-		{
-			stmt.setString(1, e.getCart().getId());
-			stmt.setString(2, e.getBy().getUsername());
-			stmt.setString(3, e.getCompany() != null ? e.getCompany().getCnpj() : e.getPeople().getCpf());
-			stmt.setString(4, e.getObservation());
-			
-			stmt.execute();
+				PreparedStatement stmt = d.con.prepareStatement("insert into `sell` (`by`, `client`, `observation`) value (?, ?, ?)");
+				PreparedStatement stmt2 = d.con.prepareStatement("insert into `sell` (`by`, `company`, `observation`) value (?, ?, ?)"))
+		{			
+			if(e.getCompany() != null)
+			{
+				stmt2.setString(1, e.getBy().getUsername());
+				stmt2.setString(2, e.getCompany().getCnpj());
+				stmt2.setString(3, e.getObservation());
+				
+				stmt2.execute();
+			}
+			else
+			{
+				stmt.setString(1, e.getBy().getUsername());
+				stmt.setString(2, e.getPeople().getCpf());
+				stmt.setString(3, e.getObservation());
+				
+				stmt.execute();
+			}
 			
 			return true;
 		}
@@ -50,7 +82,6 @@ public class SellDAO implements DataAcess<SellVO>
 			
 			ResultSet rs = stmt.executeQuery();
 			
-			CartDAO cd = new CartDAO();
 			UserDAO ud = new UserDAO();
 			ClientDAO pd = new ClientDAO();
 			CompanyDAO cod = new CompanyDAO();
@@ -58,7 +89,6 @@ public class SellDAO implements DataAcess<SellVO>
 			while(rs.next())
 			{
 				int id = rs.getInt(1);
-				CartVO cart = cd.read(rs.getString(2));
 				UserVO by = ud.read(rs.getString(3));
 				CompanyVO cnpj = null;
 				ClientVO cpf = null;
@@ -78,7 +108,7 @@ public class SellDAO implements DataAcess<SellVO>
 				String observation = rs.getString(6);
 				Status status = Status.valueOf(rs.getString(7).toUpperCase());
 				
-				return new SellVO(id, cart, by, cpf, cnpj, observation, timestamp, status);
+				return new SellVO(id, by, cpf, cnpj, observation, timestamp, status);
 			}
 		}
 		catch(SQLException ex)
@@ -126,7 +156,6 @@ public class SellDAO implements DataAcess<SellVO>
 		{
 			ResultSet rs = stmt.executeQuery();
 			
-			CartDAO cd = new CartDAO();
 			UserDAO ud = new UserDAO();
 			ClientDAO pd = new ClientDAO();
 			CompanyDAO cod = new CompanyDAO();
@@ -134,7 +163,6 @@ public class SellDAO implements DataAcess<SellVO>
 			while(rs.next())
 			{
 				int id = rs.getInt(1);
-				CartVO cart = cd.read(rs.getString(2));
 				UserVO by = ud.read(rs.getString(3));
 				CompanyVO cnpj = null;
 				ClientVO cpf = null;
@@ -154,7 +182,7 @@ public class SellDAO implements DataAcess<SellVO>
 				String observation = rs.getString(6);
 				Status status = Status.valueOf(rs.getString(7).toUpperCase());
 				
-				l.add(new SellVO(id, cart, by, cpf, cnpj, observation, timestamp, status));
+				l.add(new SellVO(id, by, cpf, cnpj, observation, timestamp, status));
 			}
 			
 			return l;

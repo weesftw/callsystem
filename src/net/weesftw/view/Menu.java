@@ -7,7 +7,9 @@ import javax.swing.JMenuItem;
 import net.weesftw.manager.Action;
 
 public final class Menu extends UI<JMenuBar>
-{	
+{
+	private JMenuItem user;
+	
 	public Menu()
 	{
 		super(new JMenuBar());
@@ -32,8 +34,8 @@ public final class Menu extends UI<JMenuBar>
 		JMenuItem ticket = new JMenuItem("Ticket");
 		ticket.addActionListener(new Action(Ticket.getInstance()));
 		
-		JMenuItem user = new JMenuItem("User");
-		user.addActionListener(new Action(User.getInstance()));
+		user = new JMenuItem("User");
+		user.addActionListener(new Action(this));
 		
 		JMenuItem clientTable = new JMenuItem("Client");
 		clientTable.addActionListener(new Action(ClientTable.getInstance()));
@@ -80,5 +82,10 @@ public final class Menu extends UI<JMenuBar>
 		ui.add(file);
 		ui.add(edit);
 		ui.add(info);
+	}
+
+	public JMenuItem getUser() 
+	{
+		return user;
 	}
 }

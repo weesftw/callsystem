@@ -40,6 +40,7 @@ import net.weesftw.view.CompanyOpen;
 import net.weesftw.view.CompanyTable;
 import net.weesftw.view.Login;
 import net.weesftw.view.Main;
+import net.weesftw.view.Menu;
 import net.weesftw.view.Product;
 import net.weesftw.view.ProductOpen;
 import net.weesftw.view.ProductTable;
@@ -144,25 +145,33 @@ public class Action implements ActionListener
 				if(img != null)
 				{
 					if(!(phoneNumber.isEmpty()))
-					{					
-						if(cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
+					{
+						ClientDAO pd = new ClientDAO();
+						ClientVO cl = pd.read(cpf);
+						
+						if(cl == null)
 						{
-							ClientDAO pd = new ClientDAO();
-							ClientVO cv = new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img);
-							
-							pd.create(cv);
-							ClientVO.list.add(cv);
-							
-							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(firstName));
-							
-							c.clear();
-							c.getUI().dispose();
-							
-							Reload.refresh();
+							if(cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
+							{
+								ClientVO cv = new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img);
+								
+								pd.create(cv);
+								
+								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(firstName));
+								
+								c.clear();
+								c.getUI().dispose();
+								
+								Reload.refresh();
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+							}
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+							JOptionPane.showMessageDialog(null, Message.EXISTS.get(firstName));
 						}
 					}
 					else
@@ -431,6 +440,21 @@ public class Action implements ActionListener
 					u.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
 				}
 			}
+			else if(action.equals(u.getCpf().getText()))
+			{
+				ClientDAO pd = new ClientDAO();
+				ClientVO cl = pd.read(cpf);
+				
+				if(cpf != null)
+				{
+					u.getFirstName().setText(cl.getFirstName());
+					u.getLastName().setText(cl.getLastName());
+					u.getPhoneNumber().setText(cl.getPhoneNumber());
+					u.getEmail().setText(cl.getEmail());
+					u.getDate().setText(cl.getDate());
+					u.getImg().loadImage(cl.getByte(), 120, 120);
+				}
+			}
 			else if(action.equals(u.getSubmit().getActionCommand()))
 			{
 				if(img != null)
@@ -527,6 +551,48 @@ public class Action implements ActionListener
 				else
 				{
 					u.getUI().moveToFront();
+				}
+			}
+		}
+		else if(ui instanceof Menu)
+		{
+			Menu me = ((Menu) ui);
+			
+			if(action.equals(me.getUser().getActionCommand()))
+			{
+				String args = JOptionPane.showInputDialog("CPF: ");
+				
+				if(args != null)
+				{
+					if(args.matches(Regex.CPF))
+					{
+						UserDAO ud = new UserDAO();
+						UserVO c = ud.read(args);
+						
+						if(c == null)
+						{
+							User u = User.getInstance();
+							
+							if(!u.getUI().isVisible())
+							{
+								d.add(u);
+								u.getCpf().setText(args);
+								u.getUI().setVisible(true);
+							}
+							else
+							{
+								u.getUI().moveToFront();
+							}
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, Message.EXISTS.get(args));
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, Message.INVALID.get(args));						
+					}
 				}
 			}
 		}
@@ -1147,27 +1213,33 @@ public class Action implements ActionListener
 				}
 			}
 			else if(action.equals(s.getSubmit().getActionCommand()))
-			{
-				ProductVO p = pd.read(s.getId().getText());
-				
+			{				
 				if(!cart.isEmpty())
 				{
 					SellDAO sd = new SellDAO();
 					CartDAO cad = new CartDAO();
+					ClientDAO cd = new ClientDAO();
+					CompanyDAO cdd = new CompanyDAO();
 					
-					if(!se)
+					ClientVO client = cd.read(cpf);
+					CompanyVO company = cdd.read(cpf);
+					
+					for(CartVO cv : cart)
 					{
-						ClientDAO cd = new ClientDAO();
-						ClientVO client = cd.read(cpf);
-						
-						sd.create(new SellVO(cpf, observation));
-					}
-					else
-					{
-						CompanyDAO cd = new CompanyDAO();
-						CompanyVO company = cd.read(cpf);
-						
-						
+						if(!se)
+						{
+							SellVO sv = new SellVO(client, observation);
+							
+							sd.create(sv);
+							cad.create(new CartVO(sd.getIdByClient(cpf), amount, cv.getProduct()));
+						}
+						else
+						{
+							SellVO sv = new SellVO(company, observation);
+							
+							sd.create(sv);
+							cad.create(new CartVO(sd.getIdByClient(cpf), amount, cv.getProduct()));
+						}	
 					}
 					
 					JOptionPane.showMessageDialog(null, Message.PURCHASE.get(null));

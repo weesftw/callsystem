@@ -16,10 +16,11 @@ public class CartDAO implements DataAcess<CartVO>
 	public boolean create(CartVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("insert into `sell cart` (`product`, `amount`) value (?, ?)"))
+				PreparedStatement stmt = d.con.prepareStatement("insert into `sell cart` (`id`, `product`, `amount`) value (?, ?, ?)"))
 		{
-			stmt.setString(1, e.getProduct().getId());
-			stmt.setString(2, e.getAmount());
+			stmt.setString(1, e.getId());
+			stmt.setString(2, e.getProduct().getId());
+			stmt.setString(3, e.getAmount());
 			
 			stmt.execute();
 			

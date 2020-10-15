@@ -11,10 +11,19 @@ public class UserVO
         
 	private String cpf, username, passwd;
 	private Department department;
+	private ClientVO client;
 	
 	public UserVO(String cpf, String username, String passwd, Department department)
 	{
 		this.cpf = cpf;
+		this.username = username;
+		this.passwd = passwd;
+		this.department = department;
+	}
+	
+	public UserVO(ClientVO client, String username, String passwd, Department department)
+	{
+		this.client = client;
 		this.username = username;
 		this.passwd = passwd;
 		this.department = department;
@@ -38,5 +47,10 @@ public class UserVO
 	public Department getDepartment()
 	{
 		return department;
+	}
+	
+	public ClientVO getClient()
+	{
+		return client;
 	}
 }
