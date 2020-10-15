@@ -123,29 +123,28 @@ create table if not exists `ticket`
     constraint foreign key(`product`) references `product`(`id`)
 )Engine=InnoDB;
 
-create table if not exists `cart`
-(
-	`id` int unsigned not null auto_increment,
-	`product` tinyint unsigned not null,
-	`amount` smallint unsigned default 1,
-
-	constraint primary key(`id`, `product`),
-	constraint foreign key(`product`) references `product`(`id`)
-)Engine=InnoDB;
-
 create table if not exists `sell`
 (
 	`id` int unsigned auto_increment,
-	`cart` int unsigned not null,
 	`by` varchar(14) not null,
 	`client` varchar(18),
-	`date` timestamp default current_timestamp,
+	`date` timestamp,
 	`observation` varchar(256),
     `status` enum('Pendent', 'Canceled', 'Complete') default 'Pendent',
 	
 	constraint primary key(`id`),
-	constraint foreign key(`cart`) references `cart`(`id`),
 	constraint foreign key(`client`) references `client`(`cpf`),
     constraint foreign key(`client`) references `company`(`cnpj`),
     constraint foreign key(`by`) references `user`(`cpf`)
+)Engine=InnoDB;
+
+create table if not exists `sell cart`
+(
+	`client` varchar(18),
+	`product` tinyint unsigned not null,
+	`amount` smallint unsigned default 1,
+
+	constraint primary key(`id`, `product`),
+    constraint foreign key(`id`) references `sell`(`id`),
+	constraint foreign key(`product`) references `product`(`id`)
 )Engine=InnoDB;

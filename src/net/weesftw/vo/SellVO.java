@@ -10,16 +10,14 @@ public class SellVO
 	private int id;
 	private ClientVO cpf;
 	private CompanyVO cnpj;
-	private CartVO cart;
 	private String observation;
 	private UserVO by;
 	private Timestamp timestamp;
 	private Status status;
 	
-	public SellVO(int id, CartVO cart, UserVO by, ClientVO cpf, CompanyVO cnpj, String observation, Timestamp timestamp, Status status) 
+	public SellVO(int id, UserVO by, ClientVO cpf, CompanyVO cnpj, String observation, Timestamp timestamp, Status status) 
 	{
 		this.id = id;
-		this.cart = cart;
 		this.by = by;
 		this.cpf = cpf;
 		this.cnpj = cnpj;
@@ -28,17 +26,15 @@ public class SellVO
 		this.status = status;
 	}
 	
-	public SellVO(CartVO cart, CompanyVO cnpj, String observation) 
+	public SellVO(CompanyVO cnpj, String observation) 
 	{
-		this.cart = cart;
 		this.by = Main.getInstance().getAuth().getUser();
 		this.cnpj = cnpj;
 		this.observation = observation;
 	}
 	
-	public SellVO(CartVO cart, ClientVO cpf, String observation) 
+	public SellVO(ClientVO cpf, String observation) 
 	{
-		this.cart = cart;
 		this.by = Main.getInstance().getAuth().getUser();
 		this.cpf = cpf;
 		this.observation = observation;
@@ -57,11 +53,6 @@ public class SellVO
 	public CompanyVO getCompany() 
 	{
 		return cnpj;
-	}
-
-	public CartVO getCart() 
-	{
-		return cart;
 	}
 
 	public String getObservation() 

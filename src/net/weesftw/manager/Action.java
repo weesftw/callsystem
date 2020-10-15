@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -20,6 +21,7 @@ import net.weesftw.constraint.Gender;
 import net.weesftw.constraint.Message;
 import net.weesftw.constraint.Regex;
 import net.weesftw.constraint.Status;
+import net.weesftw.dao.CartDAO;
 import net.weesftw.dao.ClientDAO;
 import net.weesftw.dao.CompanyDAO;
 import net.weesftw.dao.ProductDAO;
@@ -1012,6 +1014,7 @@ public class Action implements ActionListener
 			Sale s = ((Sale) ui);
 			
 			ProductDAO pd = new ProductDAO();
+			List<CartVO> cart = CartVO.list;
 			
 			String id = s.getId().getText();
 			ProductVO product = pd.read(id);
@@ -1116,12 +1119,21 @@ public class Action implements ActionListener
 				if(product != null)
 				{
 					if(cpf.matches(Regex.CPF) && id.matches(Regex.NUMBER) && amount.matches(Regex.NUMBER) && price.matches(Regex.PRICE))
-					{							
-						CartVO.list.add(new CartVO(amount, product));
+					{
+						CartVO c = new CartVO(amount, product);
 						
-						s.clearAfterInsert();
-						
-						Reload.refresh();
+						if(!cart.contains(c))
+						{
+							cart.add(c);
+							
+							s.clearAfterInsert();
+							
+							Reload.refresh();							
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, Message.EXISTS.get(product.getName()));
+						}
 					}
 					else
 					{
@@ -1137,25 +1149,25 @@ public class Action implements ActionListener
 			else if(action.equals(s.getSubmit().getActionCommand()))
 			{
 				ProductVO p = pd.read(s.getId().getText());
-				CartVO cart = new CartVO(amount, p);
 				
-				if(!CartVO.list.isEmpty())
+				if(!cart.isEmpty())
 				{
 					SellDAO sd = new SellDAO();
+					CartDAO cad = new CartDAO();
 					
 					if(!se)
 					{
 						ClientDAO cd = new ClientDAO();
 						ClientVO client = cd.read(cpf);
 						
-						sd.create(new SellVO(cart, client, observation));						
+						sd.create(new SellVO(cpf, observation));
 					}
 					else
 					{
 						CompanyDAO cd = new CompanyDAO();
 						CompanyVO company = cd.read(cpf);
 						
-						sd.create(new SellVO(cart, company, observation));
+						
 					}
 					
 					JOptionPane.showMessageDialog(null, Message.PURCHASE.get(null));

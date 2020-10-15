@@ -18,6 +18,7 @@ import net.weesftw.model.SellAbstractTable;
 import net.weesftw.model.Table;
 import net.weesftw.model.TextArea;
 import net.weesftw.model.TextField;
+import net.weesftw.vo.CartVO;
 
 public class Sale extends UI<InternalFrame>
 {
@@ -155,6 +156,7 @@ public class Sale extends UI<InternalFrame>
 		phone.setText("");
 		neighborhood.setText("");
 		c.setSelected(false);
+		CartVO.list.clear();
 	}
 	
 	public void clearAfterInsert()

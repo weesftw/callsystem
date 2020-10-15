@@ -16,7 +16,7 @@ public class CartDAO implements DataAcess<CartVO>
 	public boolean create(CartVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("insert into `cart` (`product`, `amount`) value (?, ?)"))
+				PreparedStatement stmt = d.con.prepareStatement("insert into `sell cart` (`product`, `amount`) value (?, ?)"))
 		{
 			stmt.setString(1, e.getProduct().getId());
 			stmt.setString(2, e.getAmount());
@@ -37,7 +37,7 @@ public class CartDAO implements DataAcess<CartVO>
 	public CartVO read(String args) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select * from `cart` where `id` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("select * from `sell cart` where `id` = ?"))
 		{
 			stmt.setString(1, args);
 			
@@ -80,7 +80,7 @@ public class CartDAO implements DataAcess<CartVO>
 		List<CartVO> l = new ArrayList<CartVO>();
 		
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select * from `cart`"))
+				PreparedStatement stmt = d.con.prepareStatement("select * from `sell cart`"))
 		{
 			ResultSet rs = stmt.executeQuery();
 			
