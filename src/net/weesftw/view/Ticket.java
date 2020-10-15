@@ -96,6 +96,8 @@ public class Ticket extends UI<InternalFrame>
 	
 	public void clear()
 	{
+		client.setText("");
+		title.setText("");
 		company.setText("");
 		category.setSelectedIndex(0);
 		product.setSelectedIndex(0);

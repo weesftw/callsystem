@@ -5,6 +5,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import net.weesftw.manager.Action;
+import net.weesftw.manager.Authenticate;
 
 public final class Menu extends UI<JMenuBar>
 {
@@ -13,6 +14,8 @@ public final class Menu extends UI<JMenuBar>
 	public Menu()
 	{
 		super(new JMenuBar());
+		
+		Authenticate a = Main.getInstance().getAuth();
 		
 		JMenu file = new JMenu("File");
 		JMenu fileMenu = new JMenu("New");
@@ -26,15 +29,18 @@ public final class Menu extends UI<JMenuBar>
 		company.addActionListener(new Action(Company.getInstance()));
 		
 		JMenuItem product = new JMenuItem("Product");
+		product.setEnabled(a.getUser().getDepartment().isPrivilege() ? true : false);
 		product.addActionListener(new Action(Product.getInstance()));
 		
 		JMenuItem provider = new JMenuItem("Provider");
+		provider.setEnabled(a.getUser().getDepartment().isPrivilege() ? true : false);
 		provider.addActionListener(new Action(Provider.getInstance()));
 		
 		JMenuItem ticket = new JMenuItem("Ticket");
 		ticket.addActionListener(new Action(Ticket.getInstance()));
 		
 		user = new JMenuItem("User");
+		user.setEnabled(a.getUser().getDepartment().isPrivilege() ? true : false);
 		user.addActionListener(new Action(this));
 		
 		JMenuItem clientTable = new JMenuItem("Client");
@@ -56,6 +62,7 @@ public final class Menu extends UI<JMenuBar>
 		sale.addActionListener(new Action(Sale.getInstance()));
 		
 		JMenuItem userTable = new JMenuItem("User");
+		userTable.setEnabled(a.getUser().getDepartment().isPrivilege() ? true : false);
 		userTable.addActionListener(new Action(UserTable.getInstance()));
 		
 		JMenuItem account = new JMenuItem("Account");

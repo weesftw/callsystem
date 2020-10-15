@@ -19,7 +19,7 @@ public class SellDAO implements DataAcess<SellVO>
 	public String getIdByClient(String args)
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select `id` from `sell` where `client` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("select (`id`) from `sell` where `client` = ? order by `id` desc limit 1;"))
 		{
 			stmt.setString(1, args);
 			
@@ -42,25 +42,13 @@ public class SellDAO implements DataAcess<SellVO>
 	public boolean create(SellVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("insert into `sell` (`by`, `client`, `observation`) value (?, ?, ?)");
-				PreparedStatement stmt2 = d.con.prepareStatement("insert into `sell` (`by`, `company`, `observation`) value (?, ?, ?)"))
+				PreparedStatement stmt = d.con.prepareStatement("insert into `sell` (`client`, `by`, `observation`) value (?, ?, ?)"))
 		{			
-			if(e.getCompany() != null)
-			{
-				stmt2.setString(1, e.getBy().getUsername());
-				stmt2.setString(2, e.getCompany().getCnpj());
-				stmt2.setString(3, e.getObservation());
-				
-				stmt2.execute();
-			}
-			else
-			{
-				stmt.setString(1, e.getBy().getUsername());
-				stmt.setString(2, e.getPeople().getCpf());
-				stmt.setString(3, e.getObservation());
-				
-				stmt.execute();
-			}
+			stmt.setString(1, e.getPeople().getCpf());
+			stmt.setString(2, e.getBy().getCpf());
+			stmt.setString(3, e.getObservation());
+			
+			stmt.execute();
 			
 			return true;
 		}

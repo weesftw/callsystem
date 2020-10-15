@@ -216,6 +216,7 @@ public class Action implements ActionListener
 				if(!c.getUI().isVisible())
 				{
 					d.add(c);
+					c.clear();
 					c.getUI().setVisible(true);
 				}
 				else
@@ -292,6 +293,7 @@ public class Action implements ActionListener
 				if(!c.getUI().isVisible())
 				{
 					d.add(c);
+					c.clear();
 					c.getUI().setVisible(true);
 				}
 				else
@@ -406,6 +408,7 @@ public class Action implements ActionListener
 				if(!t.getUI().isVisible())
 				{
 					d.add(t);
+					t.clear();
 					t.getUI().setVisible(true);
 				}
 				else
@@ -546,6 +549,7 @@ public class Action implements ActionListener
 				if(!u.getUI().isVisible())
 				{
 					d.add(u);
+					u.clear();
 					u.getUI().setVisible(true);
 				}
 				else
@@ -1219,27 +1223,24 @@ public class Action implements ActionListener
 					SellDAO sd = new SellDAO();
 					CartDAO cad = new CartDAO();
 					ClientDAO cd = new ClientDAO();
-					CompanyDAO cdd = new CompanyDAO();
+//					CompanyDAO cdd = new CompanyDAO();
 					
 					ClientVO client = cd.read(cpf);
-					CompanyVO company = cdd.read(cpf);
+//					CompanyVO company = cdd.read(cpf);
+					
+					SellVO sv = new SellVO(client, observation);					
+					sd.create(sv);
 					
 					for(CartVO cv : cart)
 					{
 						if(!se)
 						{
-							SellVO sv = new SellVO(client, observation);
-							
-							sd.create(sv);
 							cad.create(new CartVO(sd.getIdByClient(cpf), amount, cv.getProduct()));
 						}
-						else
-						{
-							SellVO sv = new SellVO(company, observation);
-							
-							sd.create(sv);
-							cad.create(new CartVO(sd.getIdByClient(cpf), amount, cv.getProduct()));
-						}	
+//						else
+//						{
+//							cad.create(new CartVO(sd.getIdByClient(cpf), amount, cv.getProduct()));
+//						}	
 					}
 					
 					JOptionPane.showMessageDialog(null, Message.PURCHASE.get(null));
@@ -1258,6 +1259,7 @@ public class Action implements ActionListener
 				if(!s.getUI().isVisible())
 				{
 					d.add(s);
+					s.clear();
 					s.getUI().setVisible(true);
 				}
 				else

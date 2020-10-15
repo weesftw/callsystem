@@ -72,6 +72,7 @@ public class Sale extends UI<InternalFrame>
 		cpf.addActionListener(new Action(this));
 		
 		p2.setComponent(c, 2, 0);
+		c.setEnabled(false);
 		c.addActionListener(new Action(this));
 		
 		p2.setComponent(new Label("Nome: "), 0, 1);
@@ -152,10 +153,11 @@ public class Sale extends UI<InternalFrame>
 		id.setText("");
 		amount.setText("1");
 		product.setText("");
-		price.setText("R$: ");
+		price.setText("");
 		phone.setText("");
 		neighborhood.setText("");
 		c.setSelected(false);
+		cpf.setEditable(true);
 		CartVO.list.clear();
 	}
 	
