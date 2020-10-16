@@ -35,15 +35,6 @@ public class SaleOpen extends UI<Dialog>
 		
 		SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
 		Panel p = new Panel("Cart Detail", 4, 4, 4, 4);
-		String args = null;
-		
-		for(CartVO ca : CartVO.list)
-		{			
-			if(ca.getId().equals(s.getId()))
-			{
-				args += ca.getAmount() + "x " + ca.getProduct() + "\n";
-			}
-		}
 		
 		id = new TextField(15);
 		id.setText(s.getId());
@@ -72,7 +63,7 @@ public class SaleOpen extends UI<Dialog>
 		observation.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
 		product = new TextArea(1, 1);		
-		product.setText(args);
+		product.setText(getArgs());
 		product.setEditable(false);
 		product.setLineWrap(true);
 		product.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -114,6 +105,30 @@ public class SaleOpen extends UI<Dialog>
 		ui.setLocationRelativeTo(null);
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		ui.setVisible(true);
+	}
+	
+	private String getArgs()
+	{
+		String args = "";
+		float price = 0.00F;
+		float freight = 0.00F;
+		
+		for(CartVO ca : CartVO.list)
+		{
+			
+			if(ca.getId().equals(s.getId()))
+			{
+				price += Float.parseFloat(ca.getProduct().getPrice());
+				freight += Float.parseFloat(ca.getProduct().getWeight()) + Float.parseFloat(ca.getProduct().getProvider().getFreight());
+				
+				args += (ca.getAmount() + "x " + ca.getProduct().getName() + " (" + ca.getProduct().getPrice() + ")" + "\n");
+			}
+		}
+		
+		args += "\n\nTotal: R$" + String.format("%.2f", price) + "\n";
+		args += "Frete: R$ " + String.format("%.2f", freight);
+		
+		return args;
 	}
 	
 	public Button getSubmit() 
