@@ -7,11 +7,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.weesftw.constraint.Status;
 import net.weesftw.manager.Database;
-import net.weesftw.vo.CompanyVO;
 import net.weesftw.vo.ClientVO;
 import net.weesftw.vo.SellVO;
+import net.weesftw.vo.SellVO.Status;
 import net.weesftw.vo.UserVO;
 
 public class SellDAO implements DataAcess<SellVO> 
@@ -72,31 +71,17 @@ public class SellDAO implements DataAcess<SellVO>
 			
 			UserDAO ud = new UserDAO();
 			ClientDAO pd = new ClientDAO();
-			CompanyDAO cod = new CompanyDAO();
 			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
-				UserVO by = ud.read(rs.getString(3));
-				CompanyVO cnpj = null;
-				ClientVO cpf = null;
+				String id = rs.getString(1);
+				UserVO by = ud.read(rs.getString(2));
+				ClientVO cpf = pd.read(rs.getString(3));				
+				Timestamp timestamp = rs.getTimestamp(4);
+				String observation = rs.getString(5);
+				Status status = Status.valueOf(rs.getString(6).toUpperCase());
 				
-				String i = rs.getString(4);
-				
-				if(i.length() != 14)
-				{
-					cnpj = cod.read(i);
-				}
-				else
-				{
-					cpf = pd.read(i);
-				}
-				
-				Timestamp timestamp = rs.getTimestamp(5);
-				String observation = rs.getString(6);
-				Status status = Status.valueOf(rs.getString(7).toUpperCase());
-				
-				return new SellVO(id, by, cpf, cnpj, observation, timestamp, status);
+				return new SellVO(id, by, cpf, observation, timestamp, status);
 			}
 		}
 		catch(SQLException ex)
@@ -114,7 +99,7 @@ public class SellDAO implements DataAcess<SellVO>
 				PreparedStatement stmt = d.con.prepareStatement("update `sell` set `status` = ? where `id` = ?"))
 		{
 			stmt.setString(1, e.getStatus().name());
-			stmt.setInt(2, e.getId());
+			stmt.setString(2, e.getId());
 			
 			stmt.execute();
 			
@@ -146,31 +131,17 @@ public class SellDAO implements DataAcess<SellVO>
 			
 			UserDAO ud = new UserDAO();
 			ClientDAO pd = new ClientDAO();
-			CompanyDAO cod = new CompanyDAO();
 			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
-				UserVO by = ud.read(rs.getString(3));
-				CompanyVO cnpj = null;
-				ClientVO cpf = null;
+				String id = rs.getString(1);
+				UserVO by = ud.read(rs.getString(2));
+				ClientVO cpf = pd.read(rs.getString(3));				
+				Timestamp timestamp = rs.getTimestamp(4);
+				String observation = rs.getString(5);
+				Status status = Status.valueOf(rs.getString(6).toUpperCase());
 				
-				String i = rs.getString(4);
-				
-				if(i.length() != 14)
-				{
-					cnpj = cod.read(i);
-				}
-				else
-				{
-					cpf = pd.read(i);
-				}
-				
-				Timestamp timestamp = rs.getTimestamp(5);
-				String observation = rs.getString(6);
-				Status status = Status.valueOf(rs.getString(7).toUpperCase());
-				
-				l.add(new SellVO(id, by, cpf, cnpj, observation, timestamp, status));
+				l.add(new SellVO(id, by, cpf, observation, timestamp, status));
 			}
 			
 			return l;

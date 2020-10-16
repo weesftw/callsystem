@@ -48,6 +48,7 @@ import net.weesftw.view.Provider;
 import net.weesftw.view.ProviderOpen;
 import net.weesftw.view.ProviderTable;
 import net.weesftw.view.Sale;
+import net.weesftw.view.SaleTable;
 import net.weesftw.view.Ticket;
 import net.weesftw.view.TicketOpen;
 import net.weesftw.view.TicketTable;
@@ -1519,6 +1520,21 @@ public class Action implements ActionListener
 				{
 					JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
 				}
+			}
+		}
+		else if(ui instanceof SaleTable)
+		{
+			SaleTable st = ((SaleTable) ui);
+			
+			if(!st.getUI().isVisible())
+			{
+				d.add(st);
+//				st.clear();
+				st.getUI().setVisible(true);
+			}
+			else
+			{
+				st.getUI().moveToFront();
 			}
 		}
 	}

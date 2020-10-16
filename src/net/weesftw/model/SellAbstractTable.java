@@ -1,19 +1,21 @@
 package net.weesftw.model;
 
+import java.text.SimpleDateFormat;
+
 import javax.swing.table.AbstractTableModel;
 
-import net.weesftw.vo.CartVO;
+import net.weesftw.vo.SellVO;
 
 public class SellAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private String[] columnIndex = {"Qntd", "Produto", "Fornecedor", "Preco Unit.", "Subtotal"};
+	private String[] columnIndex = {"ID", "Cliente", "Data", "Por", "Status"};
 	
 	@Override
 	public int getRowCount() 
 	{				
-		return CartVO.list.size();
+		return SellVO.list.size();
 	}
 	
 	@Override
@@ -31,20 +33,20 @@ public class SellAbstractTable extends AbstractTableModel
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) 
 	{
-		double subtotal =+ Double.parseDouble(CartVO.list.get(rowIndex).getProduct().getPrice()) * Double.parseDouble(CartVO.list.get(rowIndex).getAmount());
+		SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
 		
 		switch(columnIndex)
 		{
 		case 0:
-			return CartVO.list.get(rowIndex).getAmount();
+			return SellVO.list.get(rowIndex).getId();
 		case 1:
-			return CartVO.list.get(rowIndex).getProduct().getName();
+			return SellVO.list.get(rowIndex).getPeople().getFirstName() + " " + SellVO.list.get(rowIndex).getPeople().getLastName();
 		case 2:
-			return CartVO.list.get(rowIndex).getProduct().getProvider().getName();
+			return d.format(SellVO.list.get(rowIndex).getTimestamp());
 		case 3:
-			return CartVO.list.get(rowIndex).getProduct().getPrice();
+			return SellVO.list.get(rowIndex).getBy().getUsername();
 		case 4:
-			return subtotal;
+			return SellVO.list.get(rowIndex).getStatus();
 		default:
 			return null;
 		}

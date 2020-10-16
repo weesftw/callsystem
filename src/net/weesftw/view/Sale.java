@@ -14,7 +14,7 @@ import net.weesftw.model.Button;
 import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.SellAbstractTable;
+import net.weesftw.model.CartAbstractTable;
 import net.weesftw.model.Table;
 import net.weesftw.model.TextArea;
 import net.weesftw.model.TextField;
@@ -24,7 +24,7 @@ public class Sale extends UI<InternalFrame>
 {
 	private static Sale instance;
 	
-	private SellAbstractTable at;
+	private CartAbstractTable at;
 	private Button add, submit;
 	private JCheckBox c;
 	private Label cnpj, img, phoneNumber;
@@ -35,7 +35,7 @@ public class Sale extends UI<InternalFrame>
 	{
 		super(new InternalFrame("Sale", false, true, false, true));
 		
-		at = new SellAbstractTable();
+		at = new CartAbstractTable();
 		add = new Button("Insert");
 		submit = new Button("Checkout");
 		c = new JCheckBox("CNPJ");
@@ -170,7 +170,7 @@ public class Sale extends UI<InternalFrame>
 		img.loadImage(ImagePath.ICON, 100, 100);
 	}
 
-	public SellAbstractTable getAt() 
+	public CartAbstractTable getAt() 
 	{
 		return at;
 	}

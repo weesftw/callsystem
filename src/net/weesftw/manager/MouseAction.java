@@ -16,6 +16,8 @@ import net.weesftw.view.ProductOpen;
 import net.weesftw.view.ProductTable;
 import net.weesftw.view.ProviderOpen;
 import net.weesftw.view.ProviderTable;
+import net.weesftw.view.SaleOpen;
+import net.weesftw.view.SaleTable;
 import net.weesftw.view.TicketOpen;
 import net.weesftw.view.TicketTable;
 import net.weesftw.view.UI;
@@ -23,6 +25,7 @@ import net.weesftw.vo.ClientVO;
 import net.weesftw.vo.CompanyVO;
 import net.weesftw.vo.ProductVO;
 import net.weesftw.vo.ProviderVO;
+import net.weesftw.vo.SellVO;
 import net.weesftw.vo.TicketVO;
 
 public class MouseAction extends MouseAdapter
@@ -87,6 +90,15 @@ public class MouseAction extends MouseAdapter
 					ProductVO p = ProductVO.list.get(value);
 					
 					new ProductOpen(p);
+				}
+				else if(ui instanceof SaleTable)
+				{
+					Table ta = (Table) e.getSource();
+					
+					int value = ta.getSelectedRow();
+					SellVO p = SellVO.list.get(value);
+					
+					new SaleOpen(p);
 				}
 			}
 			else

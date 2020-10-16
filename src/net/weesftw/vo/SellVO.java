@@ -1,26 +1,34 @@
 package net.weesftw.vo;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
-import net.weesftw.constraint.Status;
 import net.weesftw.view.Main;
 
 public class SellVO 
 {
-	private int id;
+	public static List<SellVO> list = new ArrayList<>();
+	
+	private String id;
 	private ClientVO cpf;
-	private CompanyVO cnpj;
+//	private CompanyVO cnpj;
 	private String observation;
 	private UserVO by;
 	private Timestamp timestamp;
 	private Status status;
 	
-	public SellVO(int id, UserVO by, ClientVO cpf, CompanyVO cnpj, String observation, Timestamp timestamp, Status status) 
+	public enum Status
+	{
+		PENDENT, CANCELED, COMPLETE;
+	}
+	
+	public SellVO(String id, UserVO by, ClientVO cpf, String observation, Timestamp timestamp, Status status) 
 	{
 		this.id = id;
 		this.by = by;
 		this.cpf = cpf;
-		this.cnpj = cnpj;
+//		this.cnpj = cnpj;
 		this.observation = observation;
 		this.timestamp = timestamp;
 		this.status = status;
@@ -29,7 +37,7 @@ public class SellVO
 	public SellVO(CompanyVO cnpj, String observation) 
 	{
 		this.by = Main.getInstance().getAuth().getUser();
-		this.cnpj = cnpj;
+//		this.cnpj = cnpj;
 		this.observation = observation;
 	}
 	
@@ -40,7 +48,7 @@ public class SellVO
 		this.observation = observation;
 	}
 
-	public int getId() 
+	public String getId() 
 	{
 		return id;
 	}
@@ -50,10 +58,10 @@ public class SellVO
 		return cpf;
 	}
 
-	public CompanyVO getCompany() 
-	{
-		return cnpj;
-	}
+//	public CompanyVO getCompany() 
+//	{
+//		return cnpj;
+//	}
 
 	public String getObservation() 
 	{

@@ -128,6 +128,7 @@ create table if not exists `sell`
 	`id` int unsigned auto_increment,
     `client` varchar(14) not null,
 	`by` varchar(14) not null,
+    `date` timestamp default current_timestamp,
 	`observation` varchar(256),
     `status` enum('Pendent', 'Canceled', 'Complete') default 'Pendent',
 	
@@ -141,7 +142,6 @@ create table if not exists `sell cart`
 	`id` int unsigned not null,
 	`product` tinyint unsigned not null,
 	`amount` smallint unsigned default 1,
-	`date` timestamp default current_timestamp,
     
 	constraint primary key(`id`, `product`),
     constraint foreign key(`id`) references `sell`(`id`),

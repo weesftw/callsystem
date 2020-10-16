@@ -120,9 +120,10 @@ public class ClientOpen extends UI<Dialog>
 		
 		p2.setComponent(submit, 1, 12);
 		submit.addActionListener(new Action(this));
+
 		
 		ui.add(p1, BorderLayout.WEST);
-		ui.add(p2, BorderLayout.EAST);
+		ui.add(p2);
 		
 		ui.pack();
 		ui.setModal(true);

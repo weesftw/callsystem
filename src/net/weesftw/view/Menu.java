@@ -49,6 +49,9 @@ public final class Menu extends UI<JMenuBar>
 		JMenuItem companyTable = new JMenuItem("Company");
 		companyTable.addActionListener(new Action(CompanyTable.getInstance()));
 		
+		JMenuItem saleTable = new JMenuItem("Sale");
+		saleTable.addActionListener(new Action(SaleTable.getInstance()));
+		
 		JMenuItem ticketTable = new JMenuItem("Ticket");
 		ticketTable.addActionListener(new Action(TicketTable.getInstance()));
 		
@@ -81,6 +84,7 @@ public final class Menu extends UI<JMenuBar>
 		edit.add(companyTable);
 		edit.add(productTable);
 		edit.add(providerTable);
+		edit.add(saleTable);
 		edit.add(ticketTable);
 		edit.add(userTable);
 		
