@@ -13,4 +13,5 @@ public final class Regex
 	public static final String CM = "^[0-9]{1,}[.,][0-9]{2}$";
 	public static final String KG = "^[0-9]{1,}[.,][0-9]{1}$";
 	public static final String NUMBER = "^[0-9]{1,}$";
+	public static final String AMOUNT = "^[1-9]{1,}$";
 }

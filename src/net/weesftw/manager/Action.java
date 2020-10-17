@@ -1289,7 +1289,7 @@ public class Action implements ActionListener
 			{
 				if(product != null)
 				{
-					if(cpf.matches(Regex.CPF) && id.matches(Regex.NUMBER) && amount.matches(Regex.NUMBER) && price.matches(Regex.PRICE))
+					if(cpf.matches(Regex.CPF) && id.matches(Regex.NUMBER) && amount.matches(Regex.AMOUNT) && price.matches(Regex.PRICE))
 					{
 						CartVO c = new CartVO(amount, product);
 						
@@ -1336,7 +1336,7 @@ public class Action implements ActionListener
 					{
 						if(!se)
 						{
-							cad.create(new CartVO(sd.getIdByClient(cpf), amount, cv.getProduct()));
+							cad.create(new CartVO(sd.getIdByClient(cpf), cv.getAmount(), cv.getProduct()));
 						}
 //						else
 //						{
