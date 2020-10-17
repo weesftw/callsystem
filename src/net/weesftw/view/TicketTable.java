@@ -12,8 +12,8 @@ import javax.swing.table.TableRowSorter;
 
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Action;
-import net.weesftw.manager.Mouse;
-import net.weesftw.model.AbstractTable;
+import net.weesftw.manager.MouseAction;
+import net.weesftw.model.TicketAbstractTable;
 import net.weesftw.model.Button;
 import net.weesftw.model.ComboBox;
 import net.weesftw.model.InternalFrame;
@@ -25,21 +25,22 @@ import net.weesftw.model.TextField;
 
 public class TicketTable extends UI<InternalFrame>
 {
-	private TableRowSorter<TableModel> sorter;
+	private static TicketTable instance;
 	
-	private AbstractTable at;
+	private TableRowSorter<TableModel> sorter;
+	private TicketAbstractTable at;
 	private Button btn;
 	private ComboBox<?> status;
 	private TextField id, title, client, company, user, date;
 	private JCheckBox priority;
 	
-	public TicketTable() 
+	private TicketTable() 
 	{
 		super(new InternalFrame("Ticket", false, true, false, true));
 		
-		at = new AbstractTable();
+		at = new TicketAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
-		status = new ComboBox<Status>(Status.values(), 50, 15);
+		status = new ComboBox<Status>(Status.values());
 		btn = new Button("Search");
 		id = new TextField(15);
 		title = new TextField(15);
@@ -57,19 +58,19 @@ public class TicketTable extends UI<InternalFrame>
 		r.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		
 		t.setRowSorter(sorter);
-		t.addMouseListener(new Mouse(this));
+		t.setBackground(Color.WHITE);
+		t.addMouseListener(new MouseAction(this));
 		t.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		t.getTableHeader().setReorderingAllowed(false);
 		t.getColumnModel().getColumn(0).setPreferredWidth(50);
 		t.getColumnModel().getColumn(1).setPreferredWidth(120);
-		t.getColumnModel().getColumn(2).setPreferredWidth(90);
-		t.getColumnModel().getColumn(3).setPreferredWidth(90);
-		t.getColumnModel().getColumn(6).setPreferredWidth(50);
-		
+		t.getColumnModel().getColumn(2).setPreferredWidth(100);
+		t.getColumnModel().getColumn(3).setPreferredWidth(100);
+		t.getColumnModel().getColumn(6).setPreferredWidth(70);
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{
-			if(i != 1)
+			if(i != 1 || i != 2 || i != 3 || i != 4)
 			{
 				t.getColumnModel().getColumn(i).setCellRenderer(r);				
 			}
@@ -78,19 +79,19 @@ public class TicketTable extends UI<InternalFrame>
 		p.setComponent(new Label("ID: "));
 		p.setComponent(id, 1, 0);
 		
-		p.setComponent(new Label("Title: "), 2, 0);
+		p.setComponent(new Label("Titulo: "), 2, 0);
 		p.setComponent(title, 3, 0);
 		
-		p.setComponent(new Label("Client: "), 0, 1);
+		p.setComponent(new Label("Cliente: "), 0, 1);
 		p.setComponent(client, 1, 1);
 		
-		p.setComponent(new Label("Company: "), 2, 1);
+		p.setComponent(new Label("Empresa: "), 2, 1);
 		p.setComponent(company, 3, 1);
 		
-		p.setComponent(new Label("User: "), 0, 2);
+		p.setComponent(new Label("Usuario: "), 0, 2);
 		p.setComponent(user, 1, 2);
 		
-		p.setComponent(new Label("Date: "), 2, 2);
+		p.setComponent(new Label("Data: "), 2, 2);
 		p.setComponent(date, 3, 2);
 		
 		p.setComponent(new Label("Status: "), 0, 3);
@@ -107,10 +108,14 @@ public class TicketTable extends UI<InternalFrame>
 		
 		ui.pack();
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ui.setVisible(true);
+	}
+	
+	public static TicketTable getInstance()
+	{
+		return instance != null ? instance : new TicketTable(); 
 	}
 
-	public AbstractTable getAt() 
+	public TicketAbstractTable getAt() 
 	{
 		return at;
 	}

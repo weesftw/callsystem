@@ -1,10 +1,16 @@
 package net.weesftw.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CompanyVO 
 {
-	private String cnpj, name, owner, zipCode;
+	public static List<CompanyVO> list = new ArrayList<>(); 
 	
-	public CompanyVO(String cnpj, String name, String owner, String zipCode)
+	private String cnpj, name, zipCode;
+	private ClientVO owner;
+	
+	public CompanyVO(String cnpj, String name, ClientVO owner, String zipCode)
 	{
 		this.cnpj = cnpj;
 		this.name = name;
@@ -22,7 +28,7 @@ public class CompanyVO
 		return name;
 	}
 
-	public String getOwner() 
+	public ClientVO getOwner() 
 	{
 		return owner;
 	}

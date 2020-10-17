@@ -1,122 +1,123 @@
 package net.weesftw.vo;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.weesftw.constraint.Category;
-import net.weesftw.constraint.Product;
 import net.weesftw.constraint.Status;
+import net.weesftw.view.Main;
 
 public class TicketVO 
-{	
-	private int id;
-	private Status status;
-	private Timestamp timestamp;
-	private Product product;
-	private boolean priority;
+{
+	public static List<TicketVO> list = new ArrayList<>(); 
+	
+	private String id, title, description, solution;
+	private ClientVO client;
+	private CompanyVO company;
+	private Timestamp time;
 	private Category category;
-	private String title, description, company, client, user, solution;
-
-	public TicketVO(int id, Status status, Timestamp timestamp, Product product, boolean priority, Category category, String title, String description, String company, String client, String user, String solution) 
+	private ProductVO product;
+	private Status status;
+	private boolean priority;
+	private UserVO user;
+	
+	public TicketVO(String title, ClientVO client, String description, Category category, ProductVO product, boolean priority)
 	{
-		this.id = id;
-		this.status = status;
-		this.timestamp = timestamp;
+		this.title = title;
+		this.client = client;
+		this.user = Main.getInstance().getAuth().getUser();
+		this.description = description;
+		this.category = category;
 		this.product = product;
 		this.priority = priority;
-		this.category = category;
-		this.title = title;
-		this.description = description;
-		this.company = company;
-		this.client = client;
-		this.user = user;
-		this.solution = solution;
 	}
 	
-	public TicketVO(int id, Status status, Product product, boolean priority, Category category, String title, String description, String company, String client, String user, String solution) 
+	public TicketVO(String title, CompanyVO company, String description, Category category, ProductVO product, boolean priority)
 	{
-		this.id = id;
-		this.status = status;
+		this.title = title;
+		this.company = company;
+		this.user = Main.getInstance().getAuth().getUser();
+		this.description = description;
+		this.category = category;
 		this.product = product;
 		this.priority = priority;
-		this.category = category;
-		this.title = title;
-		this.description = description;
-		this.company = company;
-		this.client = client;
-		this.user = user;
-		this.solution = solution;
 	}
 	
-	public TicketVO(Product product, boolean priority, Category category, String title, String description, String company, String client, String user, String solution) 
+	public TicketVO(String id, String title, ClientVO client, CompanyVO company, UserVO user, String description, String solution, Timestamp time, Category category, ProductVO product, Status status, boolean priority) 
 	{
-		this.product = product;
-		this.priority = priority;
-		this.category = category;
+		this.id = id;
 		this.title = title;
-		this.description = description;
-		this.company = company;
 		this.client = client;
+		this.company = company;
 		this.user = user;
+		this.description = description;
 		this.solution = solution;
+		this.time = time;
+		this.category = category;
+		this.product = product;
+		this.status = status;
+		this.priority = priority;
 	}
 
-	public int getId() 
+	public String getId() 
 	{
 		return id;
 	}
-
-	public Status getStatus() 
-	{
-		return status;
-	}
-
-	public Timestamp getTimestamp() 
-	{
-		return timestamp;
-	}
-
-	public Product getProduct() 
-	{
-		return product;
-	}
-
-	public boolean isPriority() 
-	{
-		return priority;
-	}
-
-	public Category getCategory() 
-	{
-		return category;
-	}
-
+	
 	public String getTitle() 
 	{
 		return title;
 	}
-
-	public String getDescription() 
-	{
-		return description;
-	}
-
-	public String getCompany() 
-	{
-		return company;
-	}
-
-	public String getClient() 
+	
+	public ClientVO getClient() 
 	{
 		return client;
 	}
-
-	public String getUser() 
+	
+	public CompanyVO getCompany()
+	{
+		return company;
+	}
+	
+	public UserVO getUser() 
 	{
 		return user;
 	}
 	
-	public String getSolution()
+	public String getDescription() 
+	{
+		return description;
+	}
+	
+	public String getSolution() 
 	{
 		return solution;
 	}
+	
+	public Timestamp getTimestamp()
+	{
+		return time;
+	}
+	
+	public Category getCategory() 
+	{
+		return category;
+	}
+	
+	public ProductVO getProduct() 
+	{
+		return product;
+	}
+	
+	public Status getStatus() 
+	{
+		return status;
+	}
+	
+	public boolean isPriority() 
+	{
+		
+		return priority;
+	}	
 }

@@ -21,17 +21,21 @@ import net.weesftw.model.TextField;
 import net.weesftw.vo.TicketVO;
 
 public class TicketOpen extends UI<Dialog> 
-{
+{	
 	private Button submit;
 	private ComboBox<?> status;
 	private TextArea description, solution;
 	private TextField id, timestamp, product, category, title, company, client, user;
 	private JCheckBox priority;
+	private TicketVO t;
 	
 	public TicketOpen(TicketVO t) 
 	{
 		super(new Dialog("Ticket: " + t.getId(), true));
 		
+		this.t = t;
+		
+		boolean privilege = Main.getInstance().getAuth().isPrivilege();
 		SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
 		Panel p = new Panel("Ticket Detail", 4, 4, 4, 4);
 		
@@ -41,14 +45,14 @@ public class TicketOpen extends UI<Dialog>
 		
 		status = new ComboBox<Status>(Status.values());
 		status.setSelectedItem(t.getStatus());
-		status.setEnabled(status.getSelectedItem() != Status.CLOSED ? true : false);
+		status.setEnabled((status.getSelectedItem() != Status.CLOSED && privilege) ? true : false);
 		
 		timestamp = new TextField(15);
 		timestamp.setText(d.format(new Date(t.getTimestamp().getTime())));
 		timestamp.setEditable(false);
 		
 		product = new TextField(15);
-		product.setText(t.getProduct().name());
+		product.setText(t.getProduct().getName());
 		product.setEditable(false);
 		
 		category = new TextField(15);
@@ -66,20 +70,20 @@ public class TicketOpen extends UI<Dialog>
 		description.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
 		company = new TextField(15);
-		company.setText(t.getCompany());
+		company.setText(t.getCompany() != null ? t.getCompany().getName() : "");
 		company.setEditable(false);
 		
 		client = new TextField(15);
-		client.setText(t.getClient());
+		client.setText(t.getClient().getFirstName() + " " + t.getClient().getLastName());
 		client.setEditable(false);
 		
 		user = new TextField(15);
-		user.setText(t.getUser());
+		user.setText(t.getUser().getUsername());
 		user.setEditable(false);
 		
-		priority = new JCheckBox("Priority");
+		priority = new JCheckBox("Prioridade");
 		priority.setSelected(t.isPriority());
-		priority.setEnabled(status.getSelectedItem() != Status.CLOSED ? true : false);
+		priority.setEnabled((status.getSelectedItem() != Status.CLOSED && privilege) ? true : false);
 		
 		solution = new TextArea(1, 1);
 		solution.setText(t.getSolution());
@@ -127,8 +131,11 @@ public class TicketOpen extends UI<Dialog>
 		p.setComponent(new Label("Description: "), 0, 5);
 		p.setComponent(s, 0, 6, 100, 150, 2);
 		
-		p.setComponent(new Label("Solution: "), 3, 5);
-		p.setComponent(s2, 3, 6, 100, 150);
+		if(privilege)
+		{
+			p.setComponent(new Label("Solution: "), 3, 5);
+			p.setComponent(s2, 3, 6, 100, 150);			
+		}
 		
 		p.setComponent(submit, 3, 7);
 		
@@ -204,5 +211,10 @@ public class TicketOpen extends UI<Dialog>
 	public JCheckBox getPriority() 
 	{
 		return priority;
+	}
+
+	public TicketVO getT() 
+	{
+		return t;
 	}	
 }

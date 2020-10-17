@@ -26,16 +26,6 @@ public class Panel extends JPanel
 		setLayout(new GridBagLayout());
 	}
 	
-	public Panel()
-	{		
-		gbc = new GridBagConstraints();
-		gbc.insets = new Insets(4, 4, 4, 4);
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.fill = GridBagConstraints.BOTH;
-		
-		setLayout(new GridBagLayout());
-	}
-	
 	public void setComponent(Component c)
 	{
 		gbc.gridx = 0;

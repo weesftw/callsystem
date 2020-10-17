@@ -12,7 +12,7 @@ import net.weesftw.vo.UserVO;
 
 public class UserDAO implements DataAcess<UserVO> 
 {
-	public UserVO search(String username) 
+	public UserVO searchByUser(String username) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id` where `username` = ?"))
@@ -26,7 +26,7 @@ public class UserDAO implements DataAcess<UserVO>
 				String cpf = rs.getString(1);
 				String user = rs.getString(2);
 				String passwd = rs.getString(3);
-				Department department = Department.valueOf(rs.getString(4));
+				Department department = Department.valueOf(rs.getString(4).toUpperCase());
 				
 				return new UserVO(cpf, user, passwd, department);
 			}
@@ -60,7 +60,7 @@ public class UserDAO implements DataAcess<UserVO>
 	}
 	
 	@Override
-	public boolean add(UserVO u) 
+	public boolean create(UserVO u) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("insert into `user` (`cpf`, `username`, `passwd`, `department`) value (?, ?, ?, ?)"))
@@ -83,23 +83,23 @@ public class UserDAO implements DataAcess<UserVO>
 	}
 
 	@Override
-	public UserVO search(UserVO u) 
+	public UserVO read(String cpf) 
 	{
 		try(Database d = new Database(); 
 				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id` where `cpf` = ?"))
 		{
-			stmt.setString(1, u.getCpf());
+			stmt.setString(1, cpf);
 			
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
 			{
-				String cpf = rs.getString(1);
+				String id = rs.getString(1);
 				String username = rs.getString(2);
 				String passwd = rs.getString(3);
-				Department department = Department.valueOf(rs.getString(4));
+				Department department = Department.valueOf(rs.getString(4).toUpperCase());
 				
-				return new UserVO(cpf, username, passwd, department);
+				return new UserVO(id, username, passwd, department);
 			}
 		}
 		catch(SQLException ex)
@@ -133,7 +133,7 @@ public class UserDAO implements DataAcess<UserVO>
 	}
 
 	@Override
-	public boolean remove(UserVO p) 
+	public boolean delete(UserVO p) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("delete from `user` where `cpf` = ?"))
@@ -158,7 +158,7 @@ public class UserDAO implements DataAcess<UserVO>
 		List<UserVO> l = new ArrayList<UserVO>();
 		
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id`"))
+				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id` where `user`.`cpf` != 1"))
 		{
 			ResultSet rs = stmt.executeQuery();
 			
@@ -167,7 +167,7 @@ public class UserDAO implements DataAcess<UserVO>
 				String cpf = rs.getString(1);
 				String username = rs.getString(2);
 				String passwd = rs.getString(3);
-				Department department = Department.valueOf(rs.getString(4));
+				Department department = Department.valueOf(rs.getString(4).toUpperCase());
 				
 				l.add(new UserVO(cpf, username, passwd, department));				
 			}

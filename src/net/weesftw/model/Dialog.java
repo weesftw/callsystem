@@ -10,6 +10,6 @@ public class Dialog extends JDialog
 	
 	public Dialog(String title, boolean modal)
 	{
-		super(Main.instance.getUI(), title, modal);
+		super(Main.getInstance().getUI(), title, modal);
 	}
 }

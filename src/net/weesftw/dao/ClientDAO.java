@@ -10,36 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.weesftw.constraint.Gender;
-import net.weesftw.constraint.Type;
-import net.weesftw.exception.TypeException;
 import net.weesftw.manager.Database;
-import net.weesftw.vo.PeopleVO;
+import net.weesftw.vo.ClientVO;
 
-public class PeopleDAO implements DataAcess<PeopleVO>
+public class ClientDAO implements DataAcess<ClientVO>
 {	
-	public PeopleVO search(Type type, String args) throws TypeException
+	public ClientVO searchByUser(String user)
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select `people`.`cpf`, `people`.`firstName`, `people`.`lastName`, `people`.`phoneNumber`, `people`.`email`, `people`.`dateBorn`, `people`.`gender`, `people`.`zipCode`, `people`.`photo` as `people` from `people` where `people`.`cpf` = ?");
-				PreparedStatement stmt2 = d.con.prepareStatement("select `people`.`cpf`, `people`.`firstName`, `people`.`lastName`, `people`.`phoneNumber`, `people`.`email`, `people`.`dateBorn`, `people`.`gender`, `people`.`zipCode`, `people`.`photo` as `people` from `people` join `user` on `people`.`cpf` = `user`.`cpf` where `user`.`username` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("select `client`.`cpf`, `client`.`firstName`, `client`.`lastName`, `client`.`phoneNumber`, `client`.`email`, `client`.`dateBorn`, `client`.`gender`, `client`.`zipCode`, `client`.`photo` as `client` from `client` join `user` on `client`.`cpf` = `user`.`cpf` where `user`.`username` = ?"))
 		{
-			stmt.setString(1, args);
-			stmt2.setString(1, args);
+			stmt.setString(1, user);
 			
-			ResultSet rs = null;
-			
-			if(type == Type.CPF)
-			{
-				rs = stmt.executeQuery();
-			}
-			else if(type == Type.USERNAME)
-			{
-				rs = stmt2.executeQuery();
-			}
-			else
-			{
-				throw new TypeException();
-			}
+			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
 			{
@@ -53,7 +36,7 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 				String zipCode = rs.getString(8);
 				byte[] b = rs.getBytes(9);
 				
-				return new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, b);
+				return new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, b);
 			}
 		}
 		catch(SQLException ex)
@@ -65,10 +48,10 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 	}
 	
 	@Override
-	public boolean add(PeopleVO p) 
+	public boolean create(ClientVO p) 
 	{
 		try(Database d = new Database(); 
-				PreparedStatement stmt = d.con.prepareStatement("insert into `people` (`cpf`, `firstName`, `lastName`, `phoneNumber`, `email`, `dateBorn`, `gender`, `zipCode`, `photo`) value (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				PreparedStatement stmt = d.con.prepareStatement("insert into `client` (`cpf`, `firstName`, `lastName`, `phoneNumber`, `email`, `dateBorn`, `gender`, `zipCode`, `photo`) value (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 				FileInputStream file = new FileInputStream(p.getPath()))
 		{
@@ -94,41 +77,37 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 			
 			return true;
 		}
-		catch(SQLException ex)
+		catch(SQLException | IOException ex)
 		{
 			ex.printStackTrace();
-		}
-		catch(IOException ex1)
-		{
-			ex1.printStackTrace();
 		}
 		
 		return false;
 	}
 
 	@Override
-	public PeopleVO search(PeopleVO p) 
+	public ClientVO read(String cpf) 
 	{
 		try(Database d = new Database(); 
-				PreparedStatement stmt = d.con.prepareStatement("select * from `people` where cpf = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("select * from `client` where cpf = ?"))
 		{
-			stmt.setString(1, p.getCpf());
+			stmt.setString(1, cpf);
 
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
 			{
-				String cpf = rs.getString(1);
+				String id = rs.getString(1);
 				String firstName = rs.getString(2);
 				String lastName = rs.getString(3);
 				String phoneNumber = rs.getString(4);
 				String email = rs.getString(5);
 				String date = rs.getString(6);
 				Gender gender = Gender.valueOf(rs.getString(7));
-				String zipCode = rs.getString(7);
-				byte[] img = rs.getBytes(9);
+				String zipCode = rs.getString(8);
+				byte[] b = rs.getBytes(9);
 				
-				return new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img);
+				return new ClientVO(id, firstName, lastName, phoneNumber, email, date, gender, zipCode, b);
 			}
 		}
 		catch(SQLException ex)
@@ -140,21 +119,12 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 	}
 
 	@Override
-	public boolean update(PeopleVO p) 
+	public boolean update(ClientVO p) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("update `people` set `firstName` = ?, `lastName` = ?, `phoneNumber` = ?, `email` = ?, `dateBorn` = ?, `zipCode` = ?, `photo` = ? where `cpf` = ?");
-				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-				FileInputStream file = new FileInputStream(p.getPath()))
-		{
-			int img = file.read();
-			
-			while(img != -1)
-			{
-				buffer.write(img);
-				img = file.read();
-			}
-			
+				PreparedStatement stmt = d.con.prepareStatement("update `client` set `firstName` = ?, `lastName` = ?, `phoneNumber` = ?, `email` = ?, `dateBorn` = ?, `gender` = ?, `zipCode` = ? where `cpf` = ?");
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream())
+		{			
 			stmt.setString(1, p.getFirstName());
 			stmt.setString(2, p.getLastName());
 			stmt.setString(3, p.getPhoneNumber());
@@ -162,8 +132,7 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 			stmt.setString(5, p.getDate());
 			stmt.setString(6, p.getGender().toString());
 			stmt.setString(7, p.getZipCode());
-			stmt.setBytes(8, buffer.toByteArray());
-			stmt.setString(9, p.getCpf());
+			stmt.setString(8, p.getCpf());
 			
 			stmt.execute();
 			
@@ -178,10 +147,10 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 	}
 
 	@Override
-	public boolean remove(PeopleVO p) 
+	public boolean delete(ClientVO p) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("delete from `people` where `cpf` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("delete from `client` where `cpf` = ?"))
 		{
 			stmt.setString(1, p.getCpf());
 			
@@ -198,12 +167,12 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 	}
 	
 	@Override
-	public List<PeopleVO> list()
+	public List<ClientVO> list()
 	{
-		List<PeopleVO> l = new ArrayList<PeopleVO>();
+		List<ClientVO> l = new ArrayList<ClientVO>();
 		
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select * from `people`"))
+				PreparedStatement stmt = d.con.prepareStatement("select `client`.`cpf`, `client`.`firstName`, `client`.`lastName`, `client`.`phoneNumber`, `client`.`email`, `client`.`dateBorn`, `client`.`gender`, `client`.`zipCode`, `client`.`photo` from `client` where `client`.`cpf` not in (select `cpf` from `user`)"))
 		{			
 			ResultSet rs = stmt.executeQuery();
 			
@@ -217,12 +186,12 @@ public class PeopleDAO implements DataAcess<PeopleVO>
 				String date = rs.getString(6);
 				Gender gender = Gender.valueOf(rs.getString(7));
 				String zipCode = rs.getString(8);
-				byte[] img = rs.getBytes(9);
+				byte[] b = rs.getBytes(9);
 				
-				l.add(new PeopleVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img));
-				
-				return l;
+				l.add(new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, b));				
 			}
+			
+			return l;
 		}
 		catch(SQLException ex)
 		{

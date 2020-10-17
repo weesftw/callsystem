@@ -8,25 +8,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.weesftw.constraint.Category;
-import net.weesftw.constraint.Product;
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Database;
+import net.weesftw.vo.CompanyVO;
+import net.weesftw.vo.ClientVO;
+import net.weesftw.vo.ProductVO;
 import net.weesftw.vo.TicketVO;
+import net.weesftw.vo.UserVO;
 
 public class TicketDAO implements DataAcess<TicketVO>
 {
+	public int getTicketOpen()
+	{
+		try(Database d = new Database();
+				PreparedStatement stmt = d.con.prepareStatement("select count(`id`) from `ticket` where `status` = 'Open'"))
+		{
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next())
+			{
+				return rs.getInt(1);
+			}
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
 	@Override
-	public boolean add(TicketVO e) 
+	public boolean create(TicketVO e) 
 	{
 		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("insert into `ticket` (`title`, `client`, `company`, `user`, `category`, `product`, `description`, `priority`) value (?, ?, ?, ?, ?, ?, ?, ?)"))
 		{
 			stmt.setString(1, e.getTitle());
-			stmt.setString(2, e.getClient());
-			stmt.setString(3, e.getCompany());
-			stmt.setString(4, e.getUser());
+			stmt.setString(2, e.getClient().getCpf());
+			stmt.setString(3, e.getCompany() != null ? e.getCompany().getCnpj() : null);
+			stmt.setString(4, e.getUser().getCpf());
 			stmt.setInt(5, e.getCategory().getId());
-			stmt.setInt(6, e.getProduct().getId());
+			stmt.setString(6, e.getProduct().getId());
 			stmt.setString(7, e.getDescription());
 			stmt.setBoolean(8, e.isPriority());
 			
@@ -43,29 +66,36 @@ public class TicketDAO implements DataAcess<TicketVO>
 	}
 
 	@Override
-	public TicketVO search(TicketVO e) 
+	public TicketVO read(String id) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("select `ticket`.`id`, `ticket`.`title`, `ticket`.`client`, `ticket`.`company`, `ticket`.`user`, `ticket`.`time`, `category`.`name`, `product`.`name`, `ticket`.`description`, `ticket`.`solution`, `ticket`.`priority`, `ticket`.`status` from `ticket` join `category` on `category`.`id` = `ticket`.`id` join `product` on `product`.`id` = `ticket`.`product`"))
+				PreparedStatement stmt = d.con.prepareStatement("select `ticket`.`id`, `ticket`.`title`, `ticket`.`client`, `ticket`.`company`, `ticket`.`user`, `ticket`.`time`, `category`.`name`, `product`.`name`, `ticket`.`description`, `ticket`.`solution`, `ticket`.`priority`, `ticket`.`status` from `ticket` join `category` on `category`.`id` = `ticket`.`id` join `product` on `product`.`id` = `ticket`.`product` where `ticket`.`id` = ?"))
 		{
+			stmt.setString(1, id);
+			
 			ResultSet rs = stmt.executeQuery();
+			
+			CompanyDAO cd = new CompanyDAO();
+			ProductDAO pd = new ProductDAO();
+			ClientDAO pdd = new ClientDAO();
+			UserDAO ud = new UserDAO();
 			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
+				String id1 = rs.getString(1);
 				String title = rs.getString(2);
-				String client = rs.getString(3);
-				String company = rs.getString(4);
-				String user = rs.getString(5);
+				ClientVO client = pdd.read(rs.getString(3));
+				CompanyVO company = cd.read(rs.getString(4));
+				UserVO user = ud.searchByUser(rs.getString(5));
 				Timestamp time = rs.getTimestamp(6);
 				Category category = Category.valueOf(rs.getString(7));
-				Product product = Product.valueOf(rs.getString(8));
+				ProductVO product = pd.searchByName(rs.getString(8));
 				String description = rs.getString(9);
 				String solution = rs.getString(10);
 				boolean priority = rs.getBoolean(11);
 				Status status = Status.valueOf(rs.getString(12));
 				
-				return new TicketVO(id, status, time, product, priority, category, title, description, company, client, user, solution);
+				return new TicketVO(id1, title, client, company, user, description, solution, time, category, product, status, priority);
 			}
 		}
 		catch(SQLException ex)
@@ -85,7 +115,7 @@ public class TicketDAO implements DataAcess<TicketVO>
 			stmt.setString(1, e.getSolution());
 			stmt.setBoolean(2, e.isPriority());
 			stmt.setString(3, e.getStatus().name());
-			stmt.setInt(4, e.getId());
+			stmt.setString(4, e.getId());
 			
 			stmt.execute();
 			
@@ -100,22 +130,8 @@ public class TicketDAO implements DataAcess<TicketVO>
 	}
 
 	@Override
-	public boolean remove(TicketVO e) 
+	public boolean delete(TicketVO e) 
 	{
-		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("delete from `ticket` where `id` = ?"))
-		{
-			stmt.setInt(1, e.getId());
-			
-			stmt.execute();
-			
-			return true;
-		}
-		catch(SQLException ex)
-		{
-			ex.printStackTrace();
-		}
-		
 		return false;
 	}
 
@@ -125,27 +141,31 @@ public class TicketDAO implements DataAcess<TicketVO>
 		List<TicketVO> l = new ArrayList<TicketVO>();
 		
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("\r\n"
-						+ "select `ticket`.`id`, `ticket`.`title`, `people`.`firstName` as `firstName`, `people`.`lastName` as `lastName`, `company`.`name` as `company`, `user`.`username` as `user`, `ticket`.`time`, `category`.`name` as `category`, `product`.`name` as `product`, `ticket`.`description`, `ticket`.`solution`, `ticket`.`priority`, `ticket`.`status` from `ticket` join `category` on `category`.`id` = `ticket`.`category` join `product` on `product`.`id` = `ticket`.`product` join `people` on `people`.`cpf` = `ticket`.`client` join `company` on `company`.`cnpj` = `ticket`.`company` join `user` on `user`.`cpf` = `ticket`.`user`"))
+				PreparedStatement stmt = d.con.prepareStatement("select `ticket`.`id`, `ticket`.`title`, `ticket`.`client`, `ticket`.`company`, `ticket`.`user`, `ticket`.`time`, `category`.`name`, `ticket`.`product`, `ticket`.`description`, `ticket`.`solution`, `ticket`.`priority`, `ticket`.`status` from `ticket` join `category` on `ticket`.`category` = `category`.`id`"))
 		{
 			ResultSet rs = stmt.executeQuery();
 			
+			CompanyDAO cd = new CompanyDAO();
+			ProductDAO pd = new ProductDAO();
+			ClientDAO pdd = new ClientDAO();
+			UserDAO ud = new UserDAO();
+			
 			while(rs.next())
 			{
-				int id = rs.getInt(1);
+				String id = rs.getString(1);
 				String title = rs.getString(2);
-				String client = rs.getString(3) + " " + rs.getString(4);
-				String company = rs.getString(5);
-				String user = rs.getString(6);
-				Timestamp time = rs.getTimestamp(7);				
-				Category category = Category.valueOf(rs.getString(8));
-				Product product = Product.valueOf(rs.getString(9));
-				String description = rs.getString(10);
-				String solution = rs.getString(11);
-				boolean priority = rs.getBoolean(12);
-				Status status = Status.valueOf(rs.getString(13));
+				ClientVO client = pdd.read(rs.getString(3));
+				CompanyVO company = cd.read(rs.getString(4));
+				UserVO user = ud.read(rs.getString(5));
+				Timestamp time = rs.getTimestamp(6);
+				Category category = Category.valueOf(rs.getString(7).toUpperCase());
+				ProductVO product = pd.read(rs.getString(8));
+				String description = rs.getString(9);
+				String solution = rs.getString(10);
+				boolean priority = rs.getBoolean(11);
+				Status status = Status.valueOf(rs.getString(12).toUpperCase());
 				
-				l.add(new TicketVO(id, status, time, product, priority, category, title, description, company, client, user, solution));				
+				l.add(new TicketVO(id, title, client, company, user, description, solution, time, category, product, status, priority));				
 			}
 			
 			return l;

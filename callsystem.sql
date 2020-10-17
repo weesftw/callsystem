@@ -1,69 +1,8 @@
-/* drop database if not exists callSystem; */
+drop database callSystem;
 
 create database `callSystem` default charset utf8mb4 default collate utf8mb4_general_ci;
 
 use `callSystem`;
-
-/* create table if not exists `country`
-(
-	`id` int unsigned not null auto_increment,
-	`name` varchar(120) unique not null,
-	`code` varchar(6) not null,
-    `phoneCode` smallint unsigned not null,
-
-	constraint primary key(`id`)
-)Engine=InnoDB;
-
-/* insert into `country` (`name`, `code`, `phoneCode`) value ('Brazil', 'BR', 55);
-
-create table if not exists `uf`
-(
-	`id` int unsigned not null auto_increment,
-	`name` varchar(120) unique not null,
-	`ddd` varchar(9) not null,
-	`country` int unsigned not null,
-
-	constraint primary key(`id`),
-	constraint foreign key(`country`) references `country`(`id`)
-)Engine=InnoDB;
-
-/* insert into `uf` (`name`, `ddd`, `country`) value ('São Paulo', '011', 1);
-
-create table if not exists `city`
-(
-	`id` int unsigned not null auto_increment,
-	`name` varchar(120) unique not null,
-	`uf` int unsigned not null,
-
-	constraint primary key(`id`),
-	constraint foreign key(`uf`) references `uf`(`id`)
-)Engine=InnoDB;
-
-/* insert into `city` (`name`, `uf`) value ('Guarulhos', 1); 
-
-create table if not exists `neighborhood`
-(
-	`id` int unsigned not null auto_increment,
-	`name` varchar(120) not null,
-	`city` int unsigned not null,
-
-	constraint primary key(`id`),
-	constraint foreign key(`city`) references `city`(`id`)
-)Engine=InnoDB;
-
-/* insert into `neighborhood` (`name`, `city`) value ('Continental III', 1);
-
-create table if not exists `zipCode`
-(
-	`id` varchar(10) not null,
-	`name` varchar(120) not null,
-	`neighborhood` int unsigned not null,
-
-	constraint primary key(`id`),
-	constraint foreign key(`neighborhood`) references `neighborhood`(`id`)
-)Engine=InnoDB; */
-
-/* insert into `zipCode` (`id`, `name`, `neighborhood`) value ('07085410', 'Rua João Carlos Rodrigues', 1); */
 
 create table if not exists `department`
 (
@@ -74,12 +13,12 @@ create table if not exists `department`
     constraint primary key(`id`)
 )Engine=InnoDB;
 
-insert into `department` (`name`, `privilege`) value ('ADMINISTRATOR',  1); 
-insert into `department` (`name`, `privilege`) value ('TI',  1); 
-insert into `department` (`name`, `privilege`) value ('RH',  0); 
-insert into `department` (`name`, `privilege`) value ('ATTENDANCE',  0); 
+insert into `department` (`name`, `privilege`) value ('Administrator',  1);
+insert into `department` (`name`, `privilege`) value ('TI',  1);
+insert into `department` (`name`, `privilege`) value ('RH',  0);
+insert into `department` (`name`, `privilege`) value ('Attendance',  0);
 
-create table if not exists `people`
+create table if not exists `client`
 (
 	`cpf` varchar(14) not null,
 	`firstName` varchar(60) not null,
@@ -89,12 +28,12 @@ create table if not exists `people`
     `dateBorn` char(10) not null,
     `gender` enum('FEMALE', 'MALE'),
 	`zipCode` varchar(10) not null,
-    `photo` blob,
+    `photo` longblob,
 
 	constraint primary key(`cpf`)
 )Engine=InnoDB;
 
- insert into `people` value ('1', 'Admin', '', '', 'admin@admin.com', '', 'MALE', '', null); 
+insert into `client` value ('1', 'Admin', '', '', 'admin@admin.com', '', 'MALE', '', null); 
 
 create table if not exists `user`
 (
@@ -104,7 +43,7 @@ create table if not exists `user`
     `department` tinyint unsigned not null,
 	
 	primary key(`cpf`),
-	constraint foreign key(`cpf`) references `people`(`cpf`),
+	constraint foreign key(`cpf`) references `client`(`cpf`),
 	constraint foreign key(`department`) references `department`(`id`)
 )Engine=InnoDB;
 
@@ -113,15 +52,13 @@ insert into `user` (`cpf`, `username`, `passwd`, `department`) value ('1', 'admi
 create table if not exists `company`
 (
 	`cnpj` varchar(18) not null,
-	`name` varchar(120) not null,
 	`owner` varchar(14) not null,
+	`name` varchar(120) not null,
 	`zipCode` varchar(10) not null,
 
-	constraint primary key(`cnpj`),
-	constraint foreign key(`owner`) references `people`(`cpf`)
+	constraint primary key(`cnpj`, `owner`),
+	constraint foreign key(`owner`) references `client`(`cpf`)
 )Engine=InnoDB;
-
-insert into `company` value ('2', 'Teeeee', '1', '07085410');
 
 create table if not exists `category`
 (
@@ -131,42 +68,82 @@ create table if not exists `category`
     constraint primary key(`id`) 
 )Engine=InnoDB;
 
-insert into `category` (`name`) value ('CANCELAMENT');
-insert into `category` (`name`) value ('FINANCIAL');
-insert into `category` (`name`) value ('SUPPORT');
-insert into `category` (`name`) value ('UPGRADE');
+insert into `category` (`name`) value ('Cancelament');
+insert into `category` (`name`) value ('Financial');
+insert into `category` (`name`) value ('Support');
+
+create table if not exists `provider`
+(
+	`cnpj` varchar(18) not null,
+	`name` varchar(120) not null unique,
+    `category` varchar(120) not null,
+    `freight` varchar(12) not null,
+    `zipCode` varchar(10) not null,
+    `phoneNumber` varchar(15) not null,
+
+	constraint primary key(`cnpj`)
+)Engine=InnoDB;
 
 create table if not exists `product`
 (
 	`id` tinyint unsigned not null auto_increment,
-	`name` varchar(120),
+	`name` varchar(256) not null,
+    `price` varchar(12) not null,
+	`weight` varchar(6) not null,
+	`length` varchar(6) not null,
+	`width` varchar(6) not null,
+	`height` varchar(6) not null,
+	`provider` varchar(18) not null,
+    `photo` longblob,
     
-    constraint primary key(`id`)
+    constraint primary key(`id`),
+	constraint foreign key(`provider`) references `provider`(`cnpj`)
 )Engine=InnoDB;
-
-insert into `product` (`name`) value ('MOVEL');
-insert into `product` (`name`) value ('INTERNET');
-insert into `product` (`name`) value ('TV');
 
 create table if not exists `ticket`
 (
-	`id` int(10) unsigned zerofill auto_increment,
+	`id` int(10) unsigned auto_increment,
 	`title` varchar(120) not null,
-	`client` varchar(14) not null,
-    `company` varchar(18) not null,
+	`client` varchar(14),
+    `company` varchar(18),
     `user` varchar(14) not null,
 	`time` timestamp default current_timestamp,
     `category` tinyint unsigned not null,
     `product` tinyint unsigned not null,
-	`description` text not null default '',
+	`description` text not null,
     `solution` text,
     `priority` boolean not null default false,
-	`status` enum('OPEN', 'PENDENT', 'CLOSED') default 'OPEN',
+	`status` enum('Open', 'Pendent', 'Closed') default 'Open',
 
 	constraint primary key(`id`),
     constraint foreign key(`user`) references `user`(`cpf`),
-	constraint foreign key(`client`) references `people`(`cpf`),
+	constraint foreign key(`client`) references `client`(`cpf`),
     constraint foreign key(`company`) references `company`(`cnpj`),
     constraint foreign key(`category`) references `category`(`id`),
     constraint foreign key(`product`) references `product`(`id`)
+)Engine=InnoDB;
+
+create table if not exists `sell`
+(
+	`id` int unsigned auto_increment,
+    `client` varchar(14) not null,
+	`by` varchar(14) not null,
+    `date` timestamp default current_timestamp,
+	`observation` varchar(256),
+    `status` enum('Pendent', 'Canceled', 'Complete') default 'Pendent',
+	
+	constraint primary key(`id`),
+	constraint foreign key(`client`) references `client`(`cpf`),
+    constraint foreign key(`by`) references `user`(`cpf`)
+)Engine=InnoDB;
+
+create table if not exists `sell cart`
+(
+	`id` int unsigned not null,
+	`product` tinyint unsigned not null,
+	`amount` smallint unsigned default 1,
+    
+	constraint primary key(`id`, `product`),
+    constraint foreign key(`id`) references `sell`(`id`),
+	constraint foreign key(`product`) references `product`(`id`)
 )Engine=InnoDB;

@@ -10,13 +10,11 @@ public class DesktopPane extends JDesktopPane
 {
 	private static final long serialVersionUID = 1L;
 	
-	public DesktopPane()
-	{
-		
-	}
-	
 	public void add(UI<?> ui)
 	{
-		add((Component) ui.getUI());
+		Component c = (InternalFrame) ui.getUI();
+		
+		remove(c);
+		add(c);
 	}
 }
