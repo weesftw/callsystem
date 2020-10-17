@@ -665,6 +665,14 @@ public class Action implements ActionListener
 					}
 				}
 			}
+			else if(action.equals(me.getLogout().getActionCommand()))
+			{
+				Main main = Main.getInstance();
+				
+				main.getUI().dispose();
+				
+				new Login();
+			}
 		}
 		else if(ui instanceof Account)
 		{			

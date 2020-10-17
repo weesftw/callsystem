@@ -9,7 +9,7 @@ import net.weesftw.manager.Authenticate;
 
 public final class Menu extends UI<JMenuBar>
 {
-	private JMenuItem client, company, user;
+	private JMenuItem client, company, user, logout;
 	
 	public Menu()
 	{
@@ -27,6 +27,9 @@ public final class Menu extends UI<JMenuBar>
 		
 		company = new JMenuItem("Company");		
 		company.addActionListener(new Action(this));
+		
+		logout = new JMenuItem("Logout");
+		logout.addActionListener(new Action(this));
 		
 		JMenuItem product = new JMenuItem("Product");
 		product.setEnabled(a.getUser().getDepartment().isPrivilege() ? true : false);
@@ -72,6 +75,7 @@ public final class Menu extends UI<JMenuBar>
 		account.addActionListener(new Action(Account.getInstance()));
 		
 		file.add(fileMenu);
+		file.add(logout);
 		fileMenu.add(client);
 		fileMenu.add(company);
 		fileMenu.add(product);
@@ -108,5 +112,10 @@ public final class Menu extends UI<JMenuBar>
 	public JMenuItem getCompany() 
 	{
 		return company;
+	}
+	
+	public JMenuItem getLogout()
+	{
+		return logout;
 	}
 }
