@@ -27,7 +27,7 @@ public class ProviderTable extends UI<InternalFrame>
 	private TableRowSorter<TableModel> sorter;
 	private ProviderAbstractTable at;
 	private Button search;
-	private TextField id, name, phoneNumber, freight, category;
+	private TextField cnpj, name, phoneNumber, freight, category;
 	
 	private ProviderTable() 
 	{
@@ -36,7 +36,7 @@ public class ProviderTable extends UI<InternalFrame>
 		at = new ProviderAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
 		search = new Button("Search");
-		id = new TextField(15);
+		cnpj = new TextField(15);
 		name = new TextField(15);
 		freight = new TextField(15);
 		category = new TextField(15);
@@ -54,21 +54,22 @@ public class ProviderTable extends UI<InternalFrame>
 		t.addMouseListener(new MouseAction(this));
 		t.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		t.getTableHeader().setReorderingAllowed(false);
-		t.getColumnModel().getColumn(0).setPreferredWidth(90);
+		t.getColumnModel().getColumn(0).setPreferredWidth(130);
 		t.getColumnModel().getColumn(1).setPreferredWidth(180);
-		t.getColumnModel().getColumn(2).setPreferredWidth(90);
-		t.getColumnModel().getColumn(3).setPreferredWidth(120);
+		t.getColumnModel().getColumn(2).setPreferredWidth(85);
+		t.getColumnModel().getColumn(3).setPreferredWidth(85);
+		t.getColumnModel().getColumn(4).setPreferredWidth(120);
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{
-			if(i != 1)
+			if(i != 1 || i != 2)
 			{
 				t.getColumnModel().getColumn(i).setCellRenderer(r);				
 			}
 		}
 		
-		p.setComponent(new Label("ID: "));
-		p.setComponent(id, 1, 0);
+		p.setComponent(new Label("CNPJ: "));
+		p.setComponent(cnpj, 1, 0);
 		
 		p.setComponent(new Label("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
@@ -114,7 +115,7 @@ public class ProviderTable extends UI<InternalFrame>
 
 	public TextField getId() 
 	{
-		return id;
+		return cnpj;
 	}
 
 	public TextField getName()

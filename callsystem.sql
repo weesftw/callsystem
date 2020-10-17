@@ -47,7 +47,7 @@ create table if not exists `user`
 	constraint foreign key(`department`) references `department`(`id`)
 )Engine=InnoDB;
 
-insert into `user` (`cpf`, `username`, `passwd`, `department`) value ('1', 'admin', 'admin', 4);
+insert into `user` (`cpf`, `username`, `passwd`, `department`) value ('1', 'admin', 'admin', 1);
 
 create table if not exists `company`
 (
@@ -87,7 +87,7 @@ create table if not exists `provider`
 create table if not exists `product`
 (
 	`id` tinyint unsigned not null auto_increment,
-	`name` varchar(120) not null,
+	`name` varchar(256) not null,
     `price` varchar(12) not null,
 	`weight` varchar(6) not null,
 	`length` varchar(6) not null,

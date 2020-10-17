@@ -53,10 +53,10 @@ public class CompanyTable extends UI<InternalFrame>
 		t.addMouseListener(new MouseAction(this));
 		t.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		t.getTableHeader().setReorderingAllowed(false);
-		t.getColumnModel().getColumn(0).setPreferredWidth(90);
-		t.getColumnModel().getColumn(1).setPreferredWidth(180);
-		t.getColumnModel().getColumn(2).setPreferredWidth(90);
-		t.getColumnModel().getColumn(3).setPreferredWidth(120);
+		t.getColumnModel().getColumn(0).setPreferredWidth(110);
+		t.getColumnModel().getColumn(1).setPreferredWidth(170);
+		t.getColumnModel().getColumn(2).setPreferredWidth(110);
+		t.getColumnModel().getColumn(3).setPreferredWidth(95);
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{

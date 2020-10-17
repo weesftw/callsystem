@@ -25,7 +25,10 @@ public class Label extends JLabel
 	}
 	
 	public void loadImage(ImagePath path, int width, int height)
-	{				
+	{
+		this.url = null;
+		this.b = null;
+	
 		setIcon(new ImageIcon(new ImageIcon(this.getClass().getResource(path.toString())).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH)));
 	}
 	

@@ -1,52 +1,38 @@
 package net.weesftw.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.util.Vector;
 
 import javax.swing.WindowConstants;
 
 import net.weesftw.constraint.ImagePath;
-import net.weesftw.dao.ProviderDAO;
 import net.weesftw.manager.Action;
 import net.weesftw.model.Button;
-import net.weesftw.model.ComboBox;
 import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
 import net.weesftw.model.TextField;
-import net.weesftw.vo.ProviderVO;
 
 public class Product extends UI<InternalFrame>
 {
 	private static Product instance;
 	
+	private TextField provider, name, price, weight, length, width, height;
 	private Button choose, submit;
-	private ComboBox<?> provider;
 	private Label img;
-	private TextField name, price, weight, length, width, height;
 	
 	private Product() 
 	{
 		super(new InternalFrame("Product", false, true, false, true));
-		
-		ProviderDAO pd = new ProviderDAO();
-		Vector<String> v = new Vector<>();
-		
-		for(ProviderVO pv : pd.list())
-		{
-			v.add(pv.getName());
-		}
 		
 		Panel p = new Panel("Photo", 4, 4, 4, 4);
 		Panel p2 = new Panel("New Product", 4, 4, 4, 4);
 		
 		choose = new Button("Choose");
 		submit = new Button("Submit");
-		provider = new ComboBox<String>(v);
 		img = new Label();
 		name = new TextField(15);
 		price = new TextField(15);
+		provider = new TextField(15);
 		weight = new TextField(5);
 		length = new TextField(5);
 		width = new TextField(5);
@@ -72,7 +58,6 @@ public class Product extends UI<InternalFrame>
 		
 		p2.setComponent(new Label("Fornecedor: "), 0, 2);
 		p2.setComponent(provider, 1, 2);
-		provider.setBackground(Color.WHITE);
 		
 		p2.setComponent(new Label("Largura (cm): "), 2, 2);
 		p2.setComponent(width, 3, 2);
@@ -90,8 +75,8 @@ public class Product extends UI<InternalFrame>
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	
-	public static Product getInstance()
-	{
+	public static synchronized Product getInstance()
+	{		
 		return instance != null ? instance : new Product(); 
 	}
 	
@@ -103,7 +88,7 @@ public class Product extends UI<InternalFrame>
 		length.setText("");
 		width.setText("");
 		height.setText("");
-		provider.setSelectedIndex(0);
+		provider.setText("");
 		img.loadImage(ImagePath.ICON, 120, 120);
 	}
 
@@ -117,7 +102,7 @@ public class Product extends UI<InternalFrame>
 		return submit;
 	}
 
-	public ComboBox<?> getProvider() 
+	public TextField getProvider() 
 	{
 		return provider;
 	}

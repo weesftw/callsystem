@@ -64,13 +64,13 @@ public class TicketTable extends UI<InternalFrame>
 		t.getTableHeader().setReorderingAllowed(false);
 		t.getColumnModel().getColumn(0).setPreferredWidth(50);
 		t.getColumnModel().getColumn(1).setPreferredWidth(120);
-		t.getColumnModel().getColumn(2).setPreferredWidth(90);
-		t.getColumnModel().getColumn(3).setPreferredWidth(90);
-		t.getColumnModel().getColumn(6).setPreferredWidth(50);
+		t.getColumnModel().getColumn(2).setPreferredWidth(100);
+		t.getColumnModel().getColumn(3).setPreferredWidth(100);
+		t.getColumnModel().getColumn(6).setPreferredWidth(70);
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{
-			if(i != 1)
+			if(i != 1 || i != 2 || i != 3 || i != 4)
 			{
 				t.getColumnModel().getColumn(i).setCellRenderer(r);				
 			}

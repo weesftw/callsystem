@@ -5,6 +5,7 @@ import java.util.List;
 
 public class CartVO 
 {
+	public static List<CartVO> listAll = new ArrayList<>();
 	public static List<CartVO> list = new ArrayList<>();
 	
 	private String id, amount;

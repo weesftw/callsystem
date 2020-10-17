@@ -57,14 +57,14 @@ public class SaleTable extends UI<InternalFrame>
 		t.addMouseListener(new MouseAction(this));
 		t.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		t.getTableHeader().setReorderingAllowed(false);
-		t.getColumnModel().getColumn(0).setPreferredWidth(90);
+		t.getColumnModel().getColumn(0).setPreferredWidth(70);
 		t.getColumnModel().getColumn(1).setPreferredWidth(180);
 		t.getColumnModel().getColumn(2).setPreferredWidth(90);
-		t.getColumnModel().getColumn(3).setPreferredWidth(120);
+		t.getColumnModel().getColumn(3).setPreferredWidth(100);
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{
-			if(i != 1)
+			if(i != 1 || i != 3)
 			{
 				t.getColumnModel().getColumn(i).setCellRenderer(r);				
 			}

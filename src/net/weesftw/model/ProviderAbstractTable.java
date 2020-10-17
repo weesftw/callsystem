@@ -8,7 +8,7 @@ public class ProviderAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private String[] columnIndex = {"ID", "Nome", "Categoria", "Frete", "Telefone"};
+	private String[] columnIndex = {"CNPJ", "Nome", "Categoria", "Frete", "Telefone"};
 	
 	@Override
 	public int getRowCount() 

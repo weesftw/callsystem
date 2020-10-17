@@ -59,16 +59,14 @@ public class ClientTable extends UI<InternalFrame>
 		t.addMouseListener(new MouseAction(this));
 		t.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		t.getTableHeader().setReorderingAllowed(false);
-		t.getColumnModel().getColumn(0).setPreferredWidth(120);
-		t.getColumnModel().getColumn(1).setPreferredWidth(180);
-		t.getColumnModel().getColumn(2).setPreferredWidth(120);
-		t.getColumnModel().getColumn(3).setPreferredWidth(220);
-		t.getColumnModel().getColumn(4).setPreferredWidth(120);
-		t.getColumnModel().getColumn(6).setPreferredWidth(120);
+		t.getColumnModel().getColumn(0).setPreferredWidth(100);
+		t.getColumnModel().getColumn(1).setPreferredWidth(170);
+		t.getColumnModel().getColumn(2).setPreferredWidth(110);
+		t.getColumnModel().getColumn(3).setPreferredWidth(90);
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{
-			if(i != 1 || i != 3)
+			if(i != 1)
 			{
 				t.getColumnModel().getColumn(i).setCellRenderer(r);				
 			}
@@ -86,9 +84,9 @@ public class ClientTable extends UI<InternalFrame>
 		p.setComponent(new Label("CEP: "), 2, 1);
 		p.setComponent(zipCode, 3, 1);
 		
-		p.setComponent(new Label("Genero: "), 0, 3);
-		p.setComponent(gender, 1, 3);
-		gender.setBackground(Color.WHITE);
+//		p.setComponent(new Label("Genero: "), 0, 3);
+//		p.setComponent(gender, 1, 3);
+//		gender.setBackground(Color.WHITE);
 		
 		p.setComponent(search, 3, 4);
 		search.addActionListener(new Action(this));

@@ -54,12 +54,13 @@ public class SaleOpen extends UI<Dialog>
 		
 		status = new ComboBox<Status>(Status.values());
 		status.setBackground(Color.WHITE);
+		status.setSelectedItem(s.getStatus());
 		status.setEnabled((status.getSelectedItem() != Status.COMPLETE) ? true : false);
 		
 		observation = new TextArea(1, 1);
-		observation.setText(s.getObservation());
-		observation.setEditable(false);
 		observation.setLineWrap(true);
+		observation.setText(s.getObservation());
+		observation.setEditable((status.getSelectedItem() != Status.COMPLETE) ? true : false);
 		observation.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
 		product = new TextArea(1, 1);		
@@ -113,7 +114,7 @@ public class SaleOpen extends UI<Dialog>
 		float price = 0.00F;
 		float freight = 0.00F;
 		
-		for(CartVO ca : CartVO.list)
+		for(CartVO ca : CartVO.listAll)
 		{
 			
 			if(ca.getId().equals(s.getId()))

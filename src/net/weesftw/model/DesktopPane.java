@@ -1,5 +1,7 @@
 package net.weesftw.model;
 
+import java.awt.Component;
+
 import javax.swing.JDesktopPane;
 
 import net.weesftw.view.UI;
@@ -10,6 +12,9 @@ public class DesktopPane extends JDesktopPane
 	
 	public void add(UI<?> ui)
 	{
-		add((InternalFrame) ui.getUI());							
+		Component c = (InternalFrame) ui.getUI();
+		
+		remove(c);
+		add(c);
 	}
 }

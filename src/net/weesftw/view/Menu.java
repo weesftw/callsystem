@@ -9,7 +9,7 @@ import net.weesftw.manager.Authenticate;
 
 public final class Menu extends UI<JMenuBar>
 {
-	private JMenuItem user;
+	private JMenuItem client, company, user;
 	
 	public Menu()
 	{
@@ -22,11 +22,11 @@ public final class Menu extends UI<JMenuBar>
 		JMenu edit = new JMenu("View");
 		JMenu info = new JMenu("Info");
 		
-		JMenuItem client = new JMenuItem("Client");		
-		client.addActionListener(new Action(Client.getInstance()));
+		client = new JMenuItem("Client");		
+		client.addActionListener(new Action(this));
 		
-		JMenuItem company = new JMenuItem("Company");		
-		company.addActionListener(new Action(Company.getInstance()));
+		company = new JMenuItem("Company");		
+		company.addActionListener(new Action(this));
 		
 		JMenuItem product = new JMenuItem("Product");
 		product.setEnabled(a.getUser().getDepartment().isPrivilege() ? true : false);
@@ -98,5 +98,15 @@ public final class Menu extends UI<JMenuBar>
 	public JMenuItem getUser() 
 	{
 		return user;
+	}
+	
+	public JMenuItem getClient() 
+	{
+		return client;
+	}
+	
+	public JMenuItem getCompany() 
+	{
+		return company;
 	}
 }

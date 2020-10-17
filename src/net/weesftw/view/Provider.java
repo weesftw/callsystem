@@ -70,7 +70,7 @@ public class Provider extends UI<InternalFrame>
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	
-	public static Provider getInstance()
+	public static synchronized Provider getInstance()
 	{
 		return instance != null ? instance : new Provider(); 
 	}

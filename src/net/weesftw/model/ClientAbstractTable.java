@@ -10,7 +10,7 @@ public class ClientAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 		
-	private String[] columnIndex = {"CPF", "Nome", "Telefone", "Email", "Data de Nascimento", "Genero", "CEP"};
+	private String[] columnIndex = {"CPF", "Nome", "Telefone", "CEP"};
 	
 	@Override
 	public int getRowCount() 
@@ -42,12 +42,6 @@ public class ClientAbstractTable extends AbstractTableModel
 		case 2:
 			return ClientVO.list.get(rowIndex).getPhoneNumber();
 		case 3:
-			return ClientVO.list.get(rowIndex).getEmail();
-		case 4:
-			return ClientVO.list.get(rowIndex).getDate();
-		case 5:
-			return ClientVO.list.get(rowIndex).getGender().toString();
-		case 6:
 			return ClientVO.list.get(rowIndex).getZipCode();
 		default:
 			return null;

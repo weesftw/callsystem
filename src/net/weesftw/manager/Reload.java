@@ -38,7 +38,7 @@ public class Reload
 		TicketDAO td = new TicketDAO();
 		UserDAO ud = new UserDAO();
 		
-		CartVO.list = cv.list();
+		CartVO.listAll = cv.list();
 		ClientVO.list = cd.list();
 		CompanyVO.list = cdd.list();
 		ProductVO.list = pd.list();

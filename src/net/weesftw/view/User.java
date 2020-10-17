@@ -157,7 +157,7 @@ public class User extends UI<InternalFrame>
 		img.loadImage(ImagePath.ICON, 120, 120);
 	}
 	
-	public static User getInstance()
+	public static synchronized User getInstance()
 	{
 		return instance != null ? instance : new User(); 
 	}

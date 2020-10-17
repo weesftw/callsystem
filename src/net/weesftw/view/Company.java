@@ -30,6 +30,7 @@ public class Company extends UI<InternalFrame>
 		
 		p2.setComponent(new Label("CNPJ: "));
 		p2.setComponent(cnpj, 1, 0);
+		cnpj.setEditable(false);
 		
 		p2.setComponent(new Label("Nome: "), 0, 1);
 		p2.setComponent(name, 1, 1);
@@ -58,7 +59,7 @@ public class Company extends UI<InternalFrame>
 		zipCode.setText("");
 	}
 	
-	public static Company getInstance()
+	public static synchronized Company getInstance()
 	{
 		return instance != null ? instance : new Company(); 
 	}

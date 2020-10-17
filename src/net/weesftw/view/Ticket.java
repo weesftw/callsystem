@@ -1,6 +1,7 @@
 package net.weesftw.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -74,6 +75,7 @@ public class Ticket extends UI<InternalFrame>
 		
 		p.setComponent(new Label("Produto: "), 0, 4);
 		p.setComponent(product, 0, 5);
+		product.setPreferredSize(new Dimension(50, 13));
 		product.setBackground(Color.WHITE);
 		
 		p.setComponent(new Label("Selecione: "), 1, 4);
@@ -106,7 +108,7 @@ public class Ticket extends UI<InternalFrame>
 		priority.setSelected(false);
 	}
 	
-	public static Ticket getInstance()
+	public static synchronized Ticket getInstance()
 	{
 		return instance != null ? instance : new Ticket(); 
 	}

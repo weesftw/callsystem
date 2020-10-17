@@ -48,6 +48,7 @@ import net.weesftw.view.Provider;
 import net.weesftw.view.ProviderOpen;
 import net.weesftw.view.ProviderTable;
 import net.weesftw.view.Sale;
+import net.weesftw.view.SaleOpen;
 import net.weesftw.view.SaleTable;
 import net.weesftw.view.Ticket;
 import net.weesftw.view.TicketOpen;
@@ -130,7 +131,6 @@ public class Action implements ActionListener
 			String date = c.getDate().getText();
 			Gender gender = Gender.valueOf(c.getGender().getSelectedItem().toString());
 			String zipCode = c.getZipCode().getText();
-			String img = c.getImg().getUrl();
 			
 			if(action.equals(c.getChoose().getActionCommand()))
 			{
@@ -142,42 +142,37 @@ public class Action implements ActionListener
 				}
 			}
 			else if(action.equals(c.getSubmit().getActionCommand()))
-			{				
+			{		
+				String img = c.getImg().getUrl();
+				
 				if(img != null)
 				{
-					if(!(phoneNumber.isEmpty()))
+					ClientDAO pd = new ClientDAO();
+					ClientVO cl = pd.read(cpf);
+					
+					if(cl == null)
 					{
-						ClientDAO pd = new ClientDAO();
-						ClientVO cl = pd.read(cpf);
-						
-						if(cl == null)
+						if(phoneNumber.matches(Regex.PHONE) && cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
 						{
-							if(cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
-							{
-								ClientVO cv = new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img);
-								
-								pd.create(cv);
-								
-								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(firstName));
-								
-								c.clear();
-								c.getUI().dispose();
-								
-								Reload.refresh();
-							}
-							else
-							{
-								JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
-							}
+							ClientVO cv = new ClientVO(cpf, firstName, lastName, phoneNumber, email, date, gender, zipCode, img);
+							
+							pd.create(cv);
+							
+							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get(firstName));							
+							
+							c.clear();
+							c.getUI().dispose();
+							
+							Reload.refresh();							
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, Message.EXISTS.get(firstName));
+							JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 						}
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, Message.FIELDS_EMPTY.get(null));
+						JOptionPane.showMessageDialog(null, Message.EXISTS.get(firstName));
 					}
 				}
 				else
@@ -213,11 +208,10 @@ public class Action implements ActionListener
 				}
 			}
 			else
-			{				
+			{
 				if(!c.getUI().isVisible())
 				{
 					d.add(c);
-					c.clear();
 					c.getUI().setVisible(true);
 				}
 				else
@@ -294,7 +288,6 @@ public class Action implements ActionListener
 				if(!c.getUI().isVisible())
 				{
 					d.add(c);
-					c.clear();
 					c.getUI().setVisible(true);
 				}
 				else
@@ -308,7 +301,7 @@ public class Action implements ActionListener
 			Ticket t = ((Ticket) ui);
 			
 			boolean priority = t.getPriority().isSelected() ? true : false;
-			Category category = Category.valueOf(t.getCategory().getSelectedItem().toString());
+			String category = t.getCategory().getSelectedItem().toString();
 			String product = t.getProduct().getSelectedItem().toString();
 			String client = t.getClient().getText();
 			String title = t.getTitle().getText();
@@ -343,7 +336,7 @@ public class Action implements ActionListener
 							{
 								if(cvv != null)
 								{
-									TicketVO tv = new TicketVO(title, cv, description, category, pv, priority);
+									TicketVO tv = new TicketVO(title, cv, description, Category.valueOf(category), pv, priority);
 									
 									td.create(tv);
 									TicketVO.list.add(tv);
@@ -376,7 +369,7 @@ public class Action implements ActionListener
 						{
 							if(cvv != null)
 							{
-								TicketVO tv = new TicketVO(title, cvv, description, category, pv, priority);
+								TicketVO tv = new TicketVO(title, cvv, description, Category.valueOf(category), pv, priority);
 								
 								td.create(tv);
 								TicketVO.list.add(tv);
@@ -409,7 +402,6 @@ public class Action implements ActionListener
 				if(!t.getUI().isVisible())
 				{
 					d.add(t);
-					t.clear();
 					t.getUI().setVisible(true);
 				}
 				else
@@ -550,7 +542,6 @@ public class Action implements ActionListener
 				if(!u.getUI().isVisible())
 				{
 					d.add(u);
-					u.clear();
 					u.getUI().setVisible(true);
 				}
 				else
@@ -582,6 +573,80 @@ public class Action implements ActionListener
 							{
 								d.add(u);
 								u.getCpf().setText(args);
+								u.getUI().setVisible(true);
+							}
+							else
+							{
+								u.getUI().moveToFront();
+							}
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, Message.EXISTS.get(args));
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, Message.INVALID.get(args));						
+					}
+				}
+			}
+			else if(action.equals(me.getClient().getActionCommand()))
+			{
+				String args = JOptionPane.showInputDialog("CPF: ");
+				
+				if(args != null)
+				{
+					if(args.matches(Regex.CPF))
+					{
+						ClientDAO ud = new ClientDAO();
+						ClientVO c = ud.read(args);
+						
+						if(c == null)
+						{
+							Client u = Client.getInstance();
+							
+							if(!u.getUI().isVisible())
+							{
+								d.add(u);
+								u.getCpf().setText(args);
+								u.getUI().setVisible(true);
+							}
+							else
+							{
+								u.getUI().moveToFront();
+							}
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null, Message.EXISTS.get(args));
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, Message.INVALID.get(args));						
+					}
+				}
+			}
+			else if(action.equals(me.getCompany().getActionCommand()))
+			{
+				String args = JOptionPane.showInputDialog("CNPJ: ");
+				
+				if(args != null)
+				{
+					if(args.matches(Regex.CNPJ))
+					{
+						CompanyDAO ud = new CompanyDAO();
+						CompanyVO c = ud.read(args);
+						
+						if(c == null)
+						{
+							Company u = Company.getInstance();
+							
+							if(!u.getUI().isVisible())
+							{
+								d.add(u);
+								u.getCnpj().setText(args);
 								u.getUI().setVisible(true);
 							}
 							else
@@ -724,8 +789,8 @@ public class Action implements ActionListener
 			Product p = ((Product) ui);
 			
 			String name = p.getName().getText();
+			String provider = p.getProvider().getText();
 			String price = p.getPrice().getText();
-			String path = p.getImg().getUrl();
 			String weight = p.getWeight().getText();
 			String length = p.getLength().getText();
 			String width = p.getWidth().getText();
@@ -742,38 +807,43 @@ public class Action implements ActionListener
 			}
 			else if(action.equals(p.getSubmit().getActionCommand()))
 			{
+				String path = p.getImg().getUrl();
+				
 				if(path != null)
 				{
 					if(!name.isEmpty())
 					{
-						ProviderDAO pd = new ProviderDAO();
-						ProviderVO provider = pd.searchByName(p.getProvider().getSelectedItem().toString());
-						
-						if(provider != null)
+						if(provider.matches(Regex.CNPJ) && price.matches(Regex.PRICE) && weight.matches(Regex.KG) && length.matches(Regex.CM) && width.matches(Regex.CM) && height.matches(Regex.CM))
 						{
-							if(price.matches(Regex.PRICE) && weight.matches(Regex.KG) && length.matches(Regex.CM) && width.matches(Regex.CM) && height.matches(Regex.CM))
+							ProviderDAO pd = new ProviderDAO();
+							ProviderVO pv = pd.read(provider);
+							
+							if(pv != null)
 							{
 								ProductDAO pdd = new ProductDAO();
-								ProductVO pv = new ProductVO(provider, name, price, path, weight, length, width, height);
+								ProductVO pvv = new ProductVO(pv, name, price, path, weight, length, width, height);
 								
-								pdd.create(pv);
-								ProductVO.list.add(pv);
+								pdd.create(pvv);
+								ProductVO.list.add(pvv);
 								
 								JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Produto"));
+								
+								path = null;
 								
 								p.clear();
 								p.getUI().dispose();
 								
 								Reload.refresh();
+
 							}
 							else
 							{
-								JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
+								JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get("Fornecedor"));
 							}
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get("Provedor"));
+							JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 						}
 					}
 					else
@@ -870,11 +940,14 @@ public class Action implements ActionListener
 				String name = t.getName().getText();
 				String phone = t.getPhone().getText();
 				String zipCode = t.getZipCode().getText();
-				String gender = t.getGender().getSelectedItem().toString();
+//				String gender = t.getGender().getSelectedItem().toString();
 				
 				if(!cpf.isEmpty())
-				{					
-					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+				{
+					if(cpf.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));						
+					}
 				}
 				else if(!name.isEmpty())
 				{
@@ -882,16 +955,22 @@ public class Action implements ActionListener
 				}
 				else if(!phone.isEmpty())
 				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + phone, 2));
+					if(phone.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + phone, 2));						
+					}
 				}
 				else if(!zipCode.isEmpty())
 				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + zipCode, 3));
+					if(zipCode.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + zipCode, 6));						
+					}
 				}
-				else if(!gender.isEmpty())
-				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + gender, 5));
-				}
+//				else if(!gender.isEmpty())
+//				{
+//					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + gender, 5));
+//				}
 				else
 				{
 					t.getSorter().setRowFilter(null);
@@ -922,24 +1001,27 @@ public class Action implements ActionListener
 				String provider = t.getProvider().getText();
 				
 				if(!cpf.isEmpty())
-				{					
-					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+				{
+					if(cpf.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+					}
 				}
 				else if(!name.isEmpty())
 				{
+
 					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + name, 1));
 				}
 				else if(!price.isEmpty())
 				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + price, 3));
+					if(price.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + price, 3));
+					}
 				}
 				else if(!provider.isEmpty())
 				{
 					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + provider, 7));
-				}
-				else
-				{
-					t.getSorter().setRowFilter(null);
 				}
 			}
 			else
@@ -967,8 +1049,11 @@ public class Action implements ActionListener
 				String phone = t.getPhone().getText();
 				
 				if(!cpf.isEmpty())
-				{					
-					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+				{		
+					if(cpf.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+					}
 				}
 				else if(!name.isEmpty())
 				{
@@ -976,11 +1061,17 @@ public class Action implements ActionListener
 				}
 				else if(!freight.isEmpty())
 				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + freight, 3));
+					if(cpf.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + freight, 3));
+					}
 				}
 				else if(!phone.isEmpty())
 				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + phone, 7));
+					if(cpf.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + phone, 7));
+					}
 				}
 				else
 				{
@@ -1012,8 +1103,11 @@ public class Action implements ActionListener
 				String zipCode = t.getZipCode().getText();
 				
 				if(!cnpj.isEmpty())
-				{					
-					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cnpj), 0));
+				{	
+					if(cnpj.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cnpj), 0));
+					}
 				}
 				else if(!name.isEmpty())
 				{
@@ -1025,7 +1119,10 @@ public class Action implements ActionListener
 				}
 				else if(!zipCode.isEmpty())
 				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + zipCode, 7));
+					if(zipCode.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + zipCode, 7));
+					}
 				}
 				else
 				{
@@ -1055,8 +1152,11 @@ public class Action implements ActionListener
 			if(action.equals(t.getSearch().getActionCommand()))
 			{					
 				if(!cpf.isEmpty())
-				{					
-					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+				{
+					if(cpf.matches(Regex.NUMBER))
+					{
+						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+					}
 				}
 				else if(!username.isEmpty())
 				{
@@ -1260,7 +1360,6 @@ public class Action implements ActionListener
 				if(!s.getUI().isVisible())
 				{
 					d.add(s);
-					s.clear();
 					s.getUI().setVisible(true);
 				}
 				else
@@ -1314,26 +1413,19 @@ public class Action implements ActionListener
 			{
 				ClientDAO cd = new ClientDAO();
 				
-				if(img != null)
-				{					
-					if(cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
-					{
-						cd.update(new ClientVO(cpf, firstName, lastName, phone, email, date, gender, zipCode, (String) img));							
-						
-						JOptionPane.showMessageDialog(null, Message.UPDATE.get(firstName));
-						
-						c.getUI().dispose();
-						
-						Reload.refresh();
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
-					}
+				if(cpf.matches(Regex.CPF) && firstName.matches(Regex.NAME) && lastName.matches(Regex.NAME) && date.matches(Regex.DATE) && email.matches(Regex.EMAIL) && zipCode.matches(Regex.CEP))
+				{
+					cd.update(new ClientVO(cpf, firstName, lastName, phone, email, date, gender, zipCode, (String) img));							
+					
+					JOptionPane.showMessageDialog(null, Message.UPDATE.get(firstName));
+					
+					c.getUI().dispose();
+					
+					Reload.refresh();
 				}
 				else
 				{
-					cd.update(new ClientVO(cpf, firstName, lastName, phone, email, date, gender, zipCode, (byte[]) img));
+					JOptionPane.showMessageDialog(null, Message.INVALID_ARGUMENTS.get(null));
 				}
 			}
 		}
@@ -1526,15 +1618,79 @@ public class Action implements ActionListener
 		{
 			SaleTable st = ((SaleTable) ui);
 			
-			if(!st.getUI().isVisible())
+			String id = st.getId().getText();
+			String name = st.getName().getText();
+			String by = st.getBy().getText();
+			String observation = st.getObservation().getText();
+			String status = st.getStatus().getSelectedItem().toString();
+			
+			if(action.equals(st.getSearch().getActionCommand()))
 			{
-				d.add(st);
-//				st.clear();
-				st.getUI().setVisible(true);
+				if(!id.isEmpty())
+				{
+					if(id.matches(Regex.NUMBER))
+					{
+						st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + id, 0));
+					}
+				}
+				else if(!name.isEmpty())
+				{
+					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + name, 1));
+				}
+				else if(!by.isEmpty())
+				{
+					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + by, 2));
+				}
+				else if(!observation.isEmpty())
+				{
+					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + id, 3));
+				}
+				else if(!status.isEmpty())
+				{
+					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + status, 4));
+				}
+				else
+				{
+					st.getSorter().setRowFilter(null);
+				}
 			}
 			else
 			{
-				st.getUI().moveToFront();
+				if(!st.getUI().isVisible())
+				{
+					d.add(st);
+					st.getUI().setVisible(true);
+				}
+				else
+				{
+					st.getUI().moveToFront();
+				}
+			}	
+		}
+		else if(ui instanceof SaleOpen)
+		{
+			SaleOpen s = ((SaleOpen) ui);
+			
+			SellVO sv = s.getS();
+			
+			String id = sv.getId();
+			UserVO by = sv.getBy();
+			ClientVO cpf = sv.getPeople();
+			SellVO.Status status = SellVO.Status.valueOf(s.getStatus().getSelectedItem().toString());
+			Timestamp timestamp = sv.getTimestamp();
+			String observation = s.getObservation().getText();
+			
+			if(action.equals(s.getSubmit().getActionCommand()))
+			{
+				SellDAO sd = new SellDAO();
+				
+				sd.update(new SellVO(id, by, cpf, observation, timestamp, status));
+				
+				JOptionPane.showMessageDialog(null, Message.TICKET_UPDATED.get(id));
+				
+				s.getUI().dispose();
+				
+				Reload.refresh();
 			}
 		}
 	}

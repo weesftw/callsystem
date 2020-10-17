@@ -1,4 +1,4 @@
-package net.weesftw.view;
+	package net.weesftw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -136,7 +136,7 @@ public class Sale extends UI<InternalFrame>
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	
-	public static Sale getInstance()
+	public static synchronized Sale getInstance()
 	{
 		return instance != null ? instance : new Sale(); 
 	}

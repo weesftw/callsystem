@@ -90,6 +90,7 @@ public class Client extends UI<InternalFrame>
 		
 		p2.setComponent(new Label("CPF: "), 2, 2);
 		p2.setComponent(cpf, 3, 2);
+		cpf.setEditable(false);
 		
 		p2.setComponent(new Label("Nome: "), 0, 3);
 		p2.setComponent(firstName, 1, 3);
@@ -120,13 +121,13 @@ public class Client extends UI<InternalFrame>
 		ui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	
-	public static Client getInstance()
-	{
+	public static synchronized Client getInstance()
+	{		
 		return instance != null ? instance : new Client(); 
 	}
 	
 	public void clear()
-	{
+	{						
 		neighborhood.setText("");
 		zipCode.setText("");
 		address.setText("");

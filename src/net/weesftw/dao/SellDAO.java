@@ -96,10 +96,11 @@ public class SellDAO implements DataAcess<SellVO>
 	public boolean update(SellVO e) 
 	{
 		try(Database d = new Database();
-				PreparedStatement stmt = d.con.prepareStatement("update `sell` set `status` = ? where `id` = ?"))
+				PreparedStatement stmt = d.con.prepareStatement("update `sell` set `observation` = ?, `status` = ? where `id` = ?"))
 		{
-			stmt.setString(1, e.getStatus().name());
-			stmt.setString(2, e.getId());
+			stmt.setString(1, e.getObservation());
+			stmt.setString(2, e.getStatus().name());
+			stmt.setString(3, e.getId());
 			
 			stmt.execute();
 			
@@ -135,8 +136,8 @@ public class SellDAO implements DataAcess<SellVO>
 			while(rs.next())
 			{
 				String id = rs.getString(1);
-				UserVO by = ud.read(rs.getString(2));
-				ClientVO cpf = pd.read(rs.getString(3));				
+				ClientVO cpf = pd.read(rs.getString(2));				
+				UserVO by = ud.read(rs.getString(3));
 				Timestamp timestamp = rs.getTimestamp(4);
 				String observation = rs.getString(5);
 				Status status = Status.valueOf(rs.getString(6).toUpperCase());
