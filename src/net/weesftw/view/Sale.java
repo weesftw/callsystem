@@ -1,4 +1,4 @@
-	package net.weesftw.view;
+package net.weesftw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

@@ -88,7 +88,7 @@ public class SellVO
 	{
 		String other = (String) obj;
 		
-		if(id.equalsIgnoreCase(other) || (cpf.getFirstName() + " " + cpf.getLastName()).equalsIgnoreCase(other) || observation.equalsIgnoreCase(other) || by.getUsername().equalsIgnoreCase(other) || status.equals(Status.valueOf(other)))
+		if(id.equalsIgnoreCase(other) || (cpf.getFirstName() + " " + cpf.getLastName()).equalsIgnoreCase(other) || observation.equalsIgnoreCase(other) || by.getUsername().equalsIgnoreCase(other))
 		{
 			return true;
 		}

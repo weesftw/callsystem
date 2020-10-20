@@ -27,7 +27,7 @@ public class CompanyTable extends UI<InternalFrame>
 	private TableRowSorter<TableModel> sorter;
 	private CompanyAbstractTable at;
 	private Button search;
-	private TextField id, name, owner, zipCode;
+	private TextField id, name, owner;
 	
 	private CompanyTable() 
 	{
@@ -39,7 +39,6 @@ public class CompanyTable extends UI<InternalFrame>
 		id = new TextField(15);
 		name = new TextField(15);
 		owner = new TextField(15);
-		zipCode = new TextField(15);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
 		Table t = new Table(at);
@@ -72,11 +71,8 @@ public class CompanyTable extends UI<InternalFrame>
 		p.setComponent(new Label("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
 		
-		p.setComponent(new Label("Responsavel: "), 0, 1);
+		p.setComponent(new Label("Responsável: "), 0, 1);
 		p.setComponent(owner, 1, 1);
-		
-		p.setComponent(new Label("CEP: "), 2, 1);
-		p.setComponent(zipCode, 3, 1);
 		
 		p.setComponent(search, 3, 2);
 		search.addActionListener(new Action(this));
@@ -122,12 +118,7 @@ public class CompanyTable extends UI<InternalFrame>
 	{
 		return owner;
 	}
-
-	public TextField getZipCode() 
-	{
-		return zipCode;
-	}
-
+	
 	public TextField getId() 
 	{
 		return id;

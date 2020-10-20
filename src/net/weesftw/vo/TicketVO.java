@@ -125,7 +125,7 @@ public class TicketVO
 	{
 		String other = (String) obj;
 		
-		if(id.equalsIgnoreCase(other) || title.equalsIgnoreCase(other) || (client.getFirstName() + " " + client.getLastName()).equalsIgnoreCase(other) || company.getName().equalsIgnoreCase(other) || user.getUsername().equalsIgnoreCase(other) || time.equals(Timestamp.valueOf(other)) || status.equals(Status.valueOf(other)))
+		if(id.equalsIgnoreCase(other) || title.equalsIgnoreCase(other) || (client.getFirstName() + " " + client.getLastName()).equalsIgnoreCase(other) || user.getUsername().equalsIgnoreCase(other))
 		{
 			return true;
 		}
