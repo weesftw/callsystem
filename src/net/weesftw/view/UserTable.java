@@ -32,11 +32,11 @@ public class UserTable extends UI<InternalFrame>
 	{
 		super(new InternalFrame("User", false, true, false, true));
 		
-		at = new UserAbstractTable();
-		sorter = new TableRowSorter<TableModel>(at);
-		search = new Button("Search");
 		cpf = new TextField(15);
+		at = new UserAbstractTable();
+		search = new Button("Search");
 		username = new TextField(15);
+		sorter = new TableRowSorter<TableModel>(at);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
 		Table t = new Table(at);
@@ -52,7 +52,7 @@ public class UserTable extends UI<InternalFrame>
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{
-			if(i != 1)
+			if(i != 1 || i != 3)
 			{
 				t.getColumnModel().getColumn(i).setCellRenderer(r);				
 			}

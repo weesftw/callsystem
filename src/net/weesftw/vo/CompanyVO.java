@@ -37,4 +37,17 @@ public class CompanyVO
 	{
 		return zipCode;
 	}
+	
+	@Override
+	public boolean equals(Object obj) 
+	{
+		String other = (String) obj;
+		
+		if(cnpj.equalsIgnoreCase(other) || name.equalsIgnoreCase(other) || (owner.getFirstName() + " " + owner.getLastName()).equalsIgnoreCase(other) || zipCode.equalsIgnoreCase(other))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 }

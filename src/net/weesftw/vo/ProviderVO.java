@@ -48,4 +48,17 @@ public class ProviderVO
 	{
 		return category;
 	}
+	
+	@Override
+	public boolean equals(Object obj) 
+	{
+		String other = (String) obj;
+		
+		if(cnpj.equalsIgnoreCase(other) || name.equalsIgnoreCase(other) || category.equalsIgnoreCase(other) || freight.equalsIgnoreCase(other) || category.equalsIgnoreCase(other) || phoneNumber.equalsIgnoreCase(other))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 }

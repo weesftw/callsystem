@@ -82,4 +82,17 @@ public class SellVO
 	{
 		return status;
 	}
+	
+	@Override
+	public boolean equals(Object obj) 
+	{
+		String other = (String) obj;
+		
+		if(id.equalsIgnoreCase(other) || (cpf.getFirstName() + " " + cpf.getLastName()).equalsIgnoreCase(other) || observation.equalsIgnoreCase(other) || by.getUsername().equalsIgnoreCase(other) || status.equals(Status.valueOf(other)))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 }

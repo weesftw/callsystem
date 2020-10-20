@@ -53,4 +53,17 @@ public class UserVO
 	{
 		return client;
 	}
+	
+	@Override
+	public boolean equals(Object obj) 
+	{
+		String other = (String) obj;
+		
+		if(cpf.equalsIgnoreCase(other) || username.equalsIgnoreCase(other))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 }

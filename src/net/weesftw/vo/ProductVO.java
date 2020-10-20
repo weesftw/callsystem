@@ -97,4 +97,17 @@ public class ProductVO
 	{
 		return height;
 	}
+	
+	@Override
+	public boolean equals(Object obj) 
+	{
+		String other = (String) obj;
+		
+		if(id.equalsIgnoreCase(other) || name.equalsIgnoreCase(other) || price.equalsIgnoreCase(other) || provider.getName().equalsIgnoreCase(other))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 }

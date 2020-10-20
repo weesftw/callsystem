@@ -117,7 +117,19 @@ public class TicketVO
 	
 	public boolean isPriority() 
 	{
-		
 		return priority;
-	}	
+	}
+	
+	@Override
+	public boolean equals(Object obj) 
+	{
+		String other = (String) obj;
+		
+		if(id.equalsIgnoreCase(other) || title.equalsIgnoreCase(other) || (client.getFirstName() + " " + client.getLastName()).equalsIgnoreCase(other) || company.getName().equalsIgnoreCase(other) || user.getUsername().equalsIgnoreCase(other) || time.equals(Timestamp.valueOf(other)) || status.equals(Status.valueOf(other)))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 }
