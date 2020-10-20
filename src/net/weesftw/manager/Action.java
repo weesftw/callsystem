@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
-import javax.swing.RowFilter.ComparisonType;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -708,7 +707,7 @@ public class Action implements ActionListener
 			{				
 				if(!id.isEmpty())
 				{					
-					t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(id), 0));
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + id, 0));
 				}
 				else if(!title.isEmpty())
 				{
@@ -966,7 +965,7 @@ public class Action implements ActionListener
 				{
 					if(cpf.matches(Regex.NUMBER))
 					{
-						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));						
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));						
 					}
 				}
 				else if(!name.isEmpty())
@@ -1005,7 +1004,7 @@ public class Action implements ActionListener
 				{
 					if(cpf.matches(Regex.CPF))
 					{
-						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));
 					}
 				}
 				else if(!name.isEmpty())
@@ -1043,9 +1042,9 @@ public class Action implements ActionListener
 				
 				if(!cpf.isEmpty())
 				{		
-					if(cpf.matches(Regex.CPF))
+					if(cpf.matches(Regex.NUMBER))
 					{
-						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));
 					}
 				}
 				else if(!name.isEmpty())
@@ -1088,7 +1087,7 @@ public class Action implements ActionListener
 				{	
 					if(cnpj.matches(Regex.NUMBER))
 					{
-						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cnpj), 0));
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cnpj, 0));
 					}
 				}
 				else if(!name.isEmpty())
@@ -1130,7 +1129,7 @@ public class Action implements ActionListener
 				{
 					if(cpf.matches(Regex.NUMBER))
 					{
-						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
+						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));
 					}
 				}
 				else if(!username.isEmpty())
@@ -1614,15 +1613,15 @@ public class Action implements ActionListener
 				}
 				else if(!by.isEmpty())
 				{
-					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + by, 2));
+					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + by, 3));
 				}
 				else if(!observation.isEmpty())
 				{
-					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + id, 3));
+					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + id, 4));
 				}
 				else if(!status.isEmpty())
 				{
-					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + status, 4));
+					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + status, 5));
 				}
 				else
 				{

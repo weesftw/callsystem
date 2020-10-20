@@ -10,7 +10,7 @@ public class SellAbstractTable extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private String[] columnIndex = {"ID", "Cliente", "Data", "Por", "Status"};
+	private String[] columnIndex = {"ID", "Cliente", "Data", "Por", "Observacão", "Status"};
 	
 	@Override
 	public int getRowCount() 
@@ -46,6 +46,8 @@ public class SellAbstractTable extends AbstractTableModel
 		case 3:
 			return SellVO.list.get(rowIndex).getBy().getUsername();
 		case 4:
+			return SellVO.list.get(rowIndex).getObservation();
+		case 5:
 			return SellVO.list.get(rowIndex).getStatus();
 		default:
 			return null;
