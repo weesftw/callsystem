@@ -961,8 +961,6 @@ public class Action implements ActionListener
 			{				
 				String cpf = t.getCpf().getText();
 				String name = t.getName().getText();
-				String phone = t.getPhone().getText();
-				String zipCode = t.getZipCode().getText();
 				
 				if(!cpf.isEmpty())
 				{
@@ -974,20 +972,6 @@ public class Action implements ActionListener
 				else if(!name.isEmpty())
 				{
 					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + name, 1));
-				}
-				else if(!phone.isEmpty())
-				{
-					if(phone.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + phone, 2));						
-					}
-				}
-				else if(!zipCode.isEmpty())
-				{
-					if(zipCode.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + zipCode, 6));						
-					}
 				}
 				else
 				{
@@ -1015,12 +999,11 @@ public class Action implements ActionListener
 			{				
 				String cpf = t.getCpf().getText();
 				String name = t.getName().getText();
-				String price = t.getPrice().getText();
 				String provider = t.getProvider().getText();
 				
 				if(!cpf.isEmpty())
 				{
-					if(cpf.matches(Regex.NUMBER))
+					if(cpf.matches(Regex.CPF))
 					{
 						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
 					}
@@ -1030,16 +1013,9 @@ public class Action implements ActionListener
 
 					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + name, 1));
 				}
-				else if(!price.isEmpty())
-				{
-					if(price.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + price, 3));
-					}
-				}
 				else if(!provider.isEmpty())
 				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + provider, 7));
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + provider, 3));
 				}
 			}
 			else
@@ -1063,12 +1039,11 @@ public class Action implements ActionListener
 			{				
 				String cpf = t.getId().getText();
 				String name = t.getName().getText();
-				String freight = t.getFreight().getText();
-				String phone = t.getPhone().getText();
+				String category = t.getCategory().getText();
 				
 				if(!cpf.isEmpty())
 				{		
-					if(cpf.matches(Regex.NUMBER))
+					if(cpf.matches(Regex.CPF))
 					{
 						t.getSorter().setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, Integer.valueOf(cpf), 0));
 					}
@@ -1077,19 +1052,9 @@ public class Action implements ActionListener
 				{
 					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + name, 1));
 				}
-				else if(!freight.isEmpty())
+				else if(!category.isEmpty())
 				{
-					if(cpf.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + freight, 3));
-					}
-				}
-				else if(!phone.isEmpty())
-				{
-					if(cpf.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + phone, 7));
-					}
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + category, 2));
 				}
 				else
 				{
@@ -1118,7 +1083,6 @@ public class Action implements ActionListener
 				String cnpj = t.getId().getText();
 				String name = t.getName().getText();
 				String owner = t.getOwner().getText();
-				String zipCode = t.getZipCode().getText();
 				
 				if(!cnpj.isEmpty())
 				{	
@@ -1133,14 +1097,7 @@ public class Action implements ActionListener
 				}
 				else if(!owner.isEmpty())
 				{
-					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + owner, 3));
-				}
-				else if(!zipCode.isEmpty())
-				{
-					if(zipCode.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + zipCode, 7));
-					}
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + owner, 2));
 				}
 				else
 				{

@@ -38,9 +38,7 @@ public class ProviderTable extends UI<InternalFrame>
 		search = new Button("Search");
 		cnpj = new TextField(15);
 		name = new TextField(15);
-		freight = new TextField(15);
 		category = new TextField(15);
-		phoneNumber = new TextField(15);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
 		Table t = new Table(at);
@@ -76,12 +74,6 @@ public class ProviderTable extends UI<InternalFrame>
 		
 		p.setComponent(new Label("Categoria: "), 0, 1);
 		p.setComponent(category, 1, 1);
-		
-		p.setComponent(new Label("Frete: "), 2, 1);
-		p.setComponent(freight, 3, 1);
-		
-		p.setComponent(new Label("Fornecedor: "), 0, 4);
-		p.setComponent(phoneNumber, 1, 4);
 		
 		p.setComponent(search, 3, 5);
 		search.addActionListener(new Action(this));

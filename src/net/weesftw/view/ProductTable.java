@@ -27,7 +27,7 @@ public class ProductTable extends UI<InternalFrame>
 	private TableRowSorter<TableModel> sorter;
 	private ProductAbstractTable at;
 	private Button search;
-	private TextField id, name, price, provider;
+	private TextField id, name, provider;
 	
 	private ProductTable() 
 	{
@@ -38,7 +38,6 @@ public class ProductTable extends UI<InternalFrame>
 		search = new Button("Search");
 		id = new TextField(15);
 		name = new TextField(15);
-		price = new TextField(15);
 		provider = new TextField(15);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
@@ -72,11 +71,8 @@ public class ProductTable extends UI<InternalFrame>
 		p.setComponent(new Label("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
 		
-		p.setComponent(new Label("Preco: "), 0, 1);
-		p.setComponent(price, 1, 1);
-		
-		p.setComponent(new Label("Fornecedor: "), 2, 1);
-		p.setComponent(provider, 3, 1);
+		p.setComponent(new Label("Fornecedor: "), 0, 1);
+		p.setComponent(provider, 1, 1);
 		
 		p.setComponent(search, 3, 2);
 		search.addActionListener(new Action(this));
@@ -116,11 +112,6 @@ public class ProductTable extends UI<InternalFrame>
 	public TextField getName()
 	{
 		return name;
-	}
-
-	public TextField getPrice() 
-	{
-		return price;
 	}
 
 	public TextField getProvider() 

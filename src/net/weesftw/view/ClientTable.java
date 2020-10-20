@@ -31,7 +31,7 @@ public class ClientTable extends UI<InternalFrame>
 	private ClientAbstractTable at;
 	private Button search;
 	private ComboBox<?> gender;
-	private TextField cpf, name, phone, zipCode;
+	private TextField cpf, name;
 	private JCheckBox priority;
 	
 	private ClientTable() 
@@ -44,8 +44,6 @@ public class ClientTable extends UI<InternalFrame>
 		search = new Button("Search");
 		cpf = new TextField(15);
 		name = new TextField(15);
-		phone = new TextField(15);
-		zipCode = new TextField(15);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
 		Table t = new Table(at);
@@ -77,16 +75,6 @@ public class ClientTable extends UI<InternalFrame>
 		
 		p.setComponent(new Label("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
-		
-		p.setComponent(new Label("Telefone: "), 0, 1);
-		p.setComponent(phone, 1, 1);
-		
-		p.setComponent(new Label("CEP: "), 2, 1);
-		p.setComponent(zipCode, 3, 1);
-		
-//		p.setComponent(new Label("Genero: "), 0, 3);
-//		p.setComponent(gender, 1, 3);
-//		gender.setBackground(Color.WHITE);
 		
 		p.setComponent(search, 3, 4);
 		search.addActionListener(new Action(this));
@@ -131,16 +119,6 @@ public class ClientTable extends UI<InternalFrame>
 	public TextField getName()
 	{
 		return name;
-	}
-
-	public TextField getPhone() 
-	{
-		return phone;
-	}
-
-	public TextField getZipCode() 
-	{
-		return zipCode;
 	}
 
 	public JCheckBox getPriority() 
