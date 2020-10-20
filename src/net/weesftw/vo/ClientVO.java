@@ -88,4 +88,17 @@ public class ClientVO
 	{
 		return b;
 	}
+
+	@Override
+	public boolean equals(Object obj) 
+	{
+		String other = (String) obj;
+		
+		if(cpf.equalsIgnoreCase(other) || (firstName + " " + lastName).equalsIgnoreCase(other) || phoneNumber.equalsIgnoreCase(other) || zipCode.equalsIgnoreCase(other))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 }

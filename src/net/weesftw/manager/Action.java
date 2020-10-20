@@ -1,6 +1,5 @@
 package net.weesftw.manager;
 
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -15,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import net.weesftw.Control;
 import net.weesftw.constraint.Category;
 import net.weesftw.constraint.Department;
 import net.weesftw.constraint.Gender;
@@ -86,7 +86,10 @@ public class Action implements ActionListener
 		{
 			Login l = ((Login) ui);
 			UserDAO ud = new UserDAO();
-			Window c = (Window) ui.getUI();
+			
+			Control.host = l.getHost().getText();
+			Control.root = l.getRoot().getText();
+			Control.pass = l.getPass().getText();
 			
 			String user = l.getUser().getText();
 			String passwd = l.getPasswd().getText();
@@ -96,7 +99,7 @@ public class Action implements ActionListener
 				UserVO us = ud.searchByUser(user);
 				
 				if(us != null)
-				{
+				{					
 					if(ud.isValid(user, passwd))
 					{
 						ClientDAO pd = new ClientDAO();
@@ -106,7 +109,7 @@ public class Action implements ActionListener
 						
 						new Main(p, us);
 						
-						c.dispose();
+						l.getUI().dispose();
 					}
 					else
 					{
@@ -896,23 +899,35 @@ public class Action implements ActionListener
 				{
 					if(cnpj.matches(Regex.CNPJ) && freight.matches(Regex.PRICE) && zipCode.matches(Regex.CEP) && phoneNumber.matches(Regex.PHONE))
 					{
-						if(pd.read(cnpj) == null)
+						try
 						{
-							ProviderVO pv = new ProviderVO(cnpj, name, zipCode, phoneNumber, freight, category);
+							CepAPI cep = new CepAPI(zipCode);
 							
-							pd.create(pv);
-							ProviderVO.list.add(pv);
-							
-							JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Fornecedor"));
-							
-							p.clear();
-							p.getUI().dispose();						
-							
-							Reload.refresh();
+							if(cep != null)
+							{
+								if(pd.read(cnpj) == null)
+								{
+									ProviderVO pv = new ProviderVO(cnpj, name, zipCode, phoneNumber, freight, category);
+									
+									pd.create(pv);
+									ProviderVO.list.add(pv);
+									
+									JOptionPane.showMessageDialog(null, Message.SUCCESSFULLY.get("Fornecedor"));
+									
+									p.clear();
+									p.getUI().dispose();						
+									
+									Reload.refresh();
+								}
+								else
+								{
+									JOptionPane.showMessageDialog(null, Message.EXISTS.get("Fornecedor"));
+								}
+							}
 						}
-						else
+						catch(ParserConfigurationException | SAXException | IOException | CepNotFoundException ex)
 						{
-							JOptionPane.showMessageDialog(null, Message.EXISTS.get("Fornecedor"));
+							JOptionPane.showMessageDialog(null, Message.NOT_EXISTS.get(zipCode));
 						}
 					}
 					else
@@ -948,7 +963,6 @@ public class Action implements ActionListener
 				String name = t.getName().getText();
 				String phone = t.getPhone().getText();
 				String zipCode = t.getZipCode().getText();
-//				String gender = t.getGender().getSelectedItem().toString();
 				
 				if(!cpf.isEmpty())
 				{
@@ -975,10 +989,6 @@ public class Action implements ActionListener
 						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + zipCode, 6));						
 					}
 				}
-//				else if(!gender.isEmpty())
-//				{
-//					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + gender, 5));
-//				}
 				else
 				{
 					t.getSorter().setRowFilter(null);

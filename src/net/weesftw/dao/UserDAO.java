@@ -6,7 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import net.weesftw.constraint.Department;
+import net.weesftw.constraint.Message;
 import net.weesftw.manager.Database;
 import net.weesftw.vo.UserVO;
 
@@ -14,7 +17,7 @@ public class UserDAO implements DataAcess<UserVO>
 {
 	public UserVO searchByUser(String username) 
 	{
-		try(Database d = new Database(); 
+		try(Database d = new Database();
 				PreparedStatement stmt = d.con.prepareStatement("select `user`.`cpf`, `user`.`username`, `user`.`passwd`, `department`.`name` from `user` join `department` on `user`.`department` = `department`.`id` where `username` = ?"))
 		{	
 			stmt.setString(1, username);
@@ -34,6 +37,8 @@ public class UserDAO implements DataAcess<UserVO>
 		catch(SQLException ex)
 		{
 			ex.printStackTrace();
+			
+			JOptionPane.showMessageDialog(null, Message.ERROR.get(null));
 		}
 		
 		return null;
@@ -119,6 +124,7 @@ public class UserDAO implements DataAcess<UserVO>
 			stmt.setString(1, u.getUsername());
 			stmt.setString(2, u.getPasswd());
 			stmt.setInt(3, u.getDepartment().getId());
+			stmt.setString(4, u.getCpf());
 			
 			stmt.execute();
 			

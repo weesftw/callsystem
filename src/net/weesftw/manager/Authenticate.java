@@ -23,7 +23,7 @@ public class Authenticate
 	{
 		return u;
 	}
-	
+
 	public boolean isPrivilege()
 	{
 		return u.getDepartment().isPrivilege();

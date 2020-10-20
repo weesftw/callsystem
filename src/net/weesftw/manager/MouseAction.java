@@ -49,56 +49,86 @@ public class MouseAction extends MouseAdapter
 				if(ui instanceof TicketTable)
 				{
 					Table ta = (Table) e.getSource();
+
+					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
-					int value = ta.getSelectedRow();
-					TicketVO tv = TicketVO.list.get(value);
-					
-					new TicketOpen(tv);
+					for(TicketVO c : TicketVO.list)
+					{						
+						if(c.equals(value))
+						{
+							new TicketOpen(c);
+						}
+					}
 				}
 				else if(ui instanceof ClientTable)
 				{			
 					Table ta = (Table) e.getSource();
 					
-					int value = ta.getSelectedRow();
-					ClientVO p = ClientVO.list.get(value);
+					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
-					new ClientOpen(p);
+					for(ClientVO c : ClientVO.list)
+					{						
+						if(c.equals(value))
+						{
+							new ClientOpen(c);
+						}
+					}					
 				}
 				else if(ui instanceof ProviderTable)
 				{			
 					Table ta = (Table) e.getSource();
 					
-					int value = ta.getSelectedRow();
-					ProviderVO p = ProviderVO.list.get(value);
+					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
-					new ProviderOpen(p);
+					for(ProviderVO c : ProviderVO.list)
+					{						
+						if(c.equals(value))
+						{
+							new ProviderOpen(c);
+						}
+					}
 				}
 				else if(ui instanceof CompanyTable)
 				{	
 					Table ta = (Table) e.getSource();
 					
-					int value = ta.getSelectedRow();
-					CompanyVO p = CompanyVO.list.get(value);
+					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
-					new CompanyOpen(p);
+					for(CompanyVO c : CompanyVO.list)
+					{						
+						if(c.equals(value))
+						{
+							new CompanyOpen(c);
+						}
+					}
 				}
 				else if(ui instanceof ProductTable)
 				{	
 					Table ta = (Table) e.getSource();
 					
-					int value = ta.getSelectedRow();
-					ProductVO p = ProductVO.list.get(value);
+					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
-					new ProductOpen(p);
+					for(ProductVO c : ProductVO.list)
+					{						
+						if(c.equals(value))
+						{
+							new ProductOpen(c);
+						}
+					}
 				}
 				else if(ui instanceof SaleTable)
 				{
 					Table ta = (Table) e.getSource();
 					
-					int value = ta.getSelectedRow();
-					SellVO p = SellVO.list.get(value);
+					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
-					new SaleOpen(p);
+					for(SellVO c : SellVO.list)
+					{						
+						if(c.equals(value))
+						{
+							new SaleOpen(c);
+						}
+					}
 				}
 			}
 			else
