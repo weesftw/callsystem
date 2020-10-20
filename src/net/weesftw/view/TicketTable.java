@@ -30,7 +30,7 @@ public class TicketTable extends UI<InternalFrame>
 	private TableRowSorter<TableModel> sorter;
 	private TicketAbstractTable at;
 	private Button btn;
-	private ComboBox<?> status;
+	private ComboBox<String> status;
 	private TextField id, title, client, company, user, date;
 	private JCheckBox priority;
 	
@@ -40,7 +40,7 @@ public class TicketTable extends UI<InternalFrame>
 		
 		at = new TicketAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
-		status = new ComboBox<Status>(Status.values());
+		status = new ComboBox<String>();
 		btn = new Button("Search");
 		id = new TextField(15);
 		title = new TextField(15);
@@ -49,6 +49,13 @@ public class TicketTable extends UI<InternalFrame>
 		user = new TextField(15);
 		date = new TextField(15);
 		priority = new JCheckBox("Priority");
+		
+		status.addItem("");
+		
+		for(Status s : Status.values())
+		{
+			status.addItem(s.name());
+		}
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
 		Table t = new Table(at);

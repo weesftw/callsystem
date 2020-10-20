@@ -9,18 +9,18 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import net.weesftw.constraint.Status;
 import net.weesftw.manager.Action;
 import net.weesftw.manager.MouseAction;
 import net.weesftw.model.Button;
 import net.weesftw.model.ComboBox;
-import net.weesftw.model.SellAbstractTable;
 import net.weesftw.model.InternalFrame;
 import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
 import net.weesftw.model.ScrollPane;
+import net.weesftw.model.SellAbstractTable;
 import net.weesftw.model.Table;
 import net.weesftw.model.TextField;
+import net.weesftw.vo.SellVO;
 
 public class SaleTable extends UI<InternalFrame>
 {
@@ -30,7 +30,7 @@ public class SaleTable extends UI<InternalFrame>
 	private SellAbstractTable at;
 	private Button search;
 	private TextField id, name, by, observation;
-	private ComboBox<?> status;
+	private ComboBox<String> status;
 	
 	private SaleTable() 
 	{
@@ -38,12 +38,19 @@ public class SaleTable extends UI<InternalFrame>
 		
 		at = new SellAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
-		status = new ComboBox<Status>(Status.values());
+		status = new ComboBox<String>();
 		search = new Button("Search");
 		id = new TextField(15);
 		by = new TextField(15);
 		name = new TextField(15);
 		observation = new TextField(15);
+		
+		status.addItem("");
+		
+		for(SellVO.Status s : SellVO.Status.values())
+		{
+			status.addItem(s.name());
+		}
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
 		Table t = new Table(at);
@@ -61,6 +68,7 @@ public class SaleTable extends UI<InternalFrame>
 		t.getColumnModel().getColumn(1).setPreferredWidth(180);
 		t.getColumnModel().getColumn(2).setPreferredWidth(90);
 		t.getColumnModel().getColumn(3).setPreferredWidth(100);
+		t.getColumnModel().getColumn(3).setPreferredWidth(120);
 		
 		for(int i = 0; i < t.getColumnCount(); i++)
 		{

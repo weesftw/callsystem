@@ -18,4 +18,9 @@ public class ComboBox<T> extends JComboBox<T>
 	{
 		super(items);
 	}
+	
+	public ComboBox()
+	{
+		super();
+	}
 }
