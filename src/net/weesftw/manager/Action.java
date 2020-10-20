@@ -963,10 +963,7 @@ public class Action implements ActionListener
 				
 				if(!cpf.isEmpty())
 				{
-					if(cpf.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));						
-					}
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));						
 				}
 				else if(!name.isEmpty())
 				{
@@ -1002,10 +999,7 @@ public class Action implements ActionListener
 				
 				if(!cpf.isEmpty())
 				{
-					if(cpf.matches(Regex.CPF))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));
-					}
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));
 				}
 				else if(!name.isEmpty())
 				{
@@ -1042,10 +1036,7 @@ public class Action implements ActionListener
 				
 				if(!cpf.isEmpty())
 				{		
-					if(cpf.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));
-					}
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));
 				}
 				else if(!name.isEmpty())
 				{
@@ -1085,10 +1076,7 @@ public class Action implements ActionListener
 				
 				if(!cnpj.isEmpty())
 				{	
-					if(cnpj.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cnpj, 0));
-					}
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cnpj, 0));
 				}
 				else if(!name.isEmpty())
 				{
@@ -1127,10 +1115,7 @@ public class Action implements ActionListener
 			{					
 				if(!cpf.isEmpty())
 				{
-					if(cpf.matches(Regex.NUMBER))
-					{
-						t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));
-					}
+					t.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + cpf, 0));
 				}
 				else if(!username.isEmpty())
 				{
@@ -1602,10 +1587,7 @@ public class Action implements ActionListener
 			{
 				if(!id.isEmpty())
 				{
-					if(id.matches(Regex.NUMBER))
-					{
-						st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + id, 0));
-					}
+					st.getSorter().setRowFilter(RowFilter.regexFilter("^(?i)" + id, 0));
 				}
 				else if(!name.isEmpty())
 				{
