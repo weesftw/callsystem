@@ -1,32 +1,33 @@
 package net.weesftw.view;
 
+import java.awt.Label;
+
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import net.weesftw.manager.Action;
-import net.weesftw.model.Button;
-import net.weesftw.model.InternalFrame;
-import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.TextField;
 
-public class Company extends UI<InternalFrame>
+public class Company extends UI<JInternalFrame>
 {
 	private static Company instance;
 	
-	private Button submit;
-	private TextField cnpj, name, owner, zipCode;
+	private JButton submit;
+	private JTextField cnpj, name, owner, zipCode;
 	
 	private Company()
 	{
-		super(new InternalFrame("Company", false, true, false, true));
+		super(new JInternalFrame("Company", false, true, false, true));
 		
 		Panel p2 = new Panel("New Company", 4, 4, 4, 4);
 		
-		cnpj = new TextField(15);
-		name = new TextField(15);
-		owner = new TextField(15);
-		zipCode = new TextField(15);
-		submit = new Button("Submit");
+		cnpj = new JTextField(15);
+		name = new JTextField(15);
+		owner = new JTextField(15);
+		zipCode = new JTextField(15);
+		submit = new JButton("Submit");
 		
 		p2.setComponent(new Label("CNPJ: "));
 		p2.setComponent(cnpj, 1, 0);
@@ -64,27 +65,27 @@ public class Company extends UI<InternalFrame>
 		return instance != null ? instance : new Company(); 
 	}
 	
-	public Button getSubmit() 
+	public JButton getSubmit() 
 	{
 		return submit;
 	}
 
-	public TextField getCnpj() 
+	public JTextField getCnpj() 
 	{
 		return cnpj;
 	}
 
-	public TextField getName() 
+	public JTextField getName() 
 	{
 		return name;
 	}
 
-	public TextField getOwner() 
+	public JTextField getOwner() 
 	{
 		return owner;
 	}
 
-	public TextField getZipCode() 
+	public JTextField getZipCode() 
 	{
 		return zipCode;
 	}

@@ -5,35 +5,35 @@ import java.awt.Dimension;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import net.weesftw.constraint.Category;
 import net.weesftw.dao.ProductDAO;
 import net.weesftw.manager.Action;
-import net.weesftw.model.Button;
-import net.weesftw.model.ComboBox;
-import net.weesftw.model.InternalFrame;
-import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.ScrollPane;
-import net.weesftw.model.TextArea;
-import net.weesftw.model.TextField;
 import net.weesftw.vo.ProductVO;
 
-public class Ticket extends UI<InternalFrame>
+public class Ticket extends UI<JInternalFrame>
 {
 	private static Ticket instance;
 	
-	private Button submit;
-	private ComboBox<?> category, product;
+	private JButton submit;
+	private JComboBox<?> category, product;
 	private JCheckBox priority, pj;
-	private TextArea description;
-	private TextField client, title, company;
+	private JTextArea description;
+	private JTextField client, title, company;
 	
 	private Ticket()
 	{
-		super(new InternalFrame("Ticket", false, true, false, true));
+		super(new JInternalFrame("Ticket", false, true, false, true));
 		
 		ProductDAO pd = new ProductDAO();
 		Vector<String> v = new Vector<String>();
@@ -43,46 +43,46 @@ public class Ticket extends UI<InternalFrame>
 			v.add(pv.getName());
 		}
 		
-		submit = new Button("Submit");
-		category = new ComboBox<Category>(Category.values());
-		product = new ComboBox<String>(v);
+		submit = new JButton("Submit");
+		category = new JComboBox<Category>(Category.values());
+		product = new JComboBox<String>(v);
 		priority = new JCheckBox("Prioridade");
 		pj = new JCheckBox("PJ");
-		client = new TextField(15);
-		title = new TextField(15);
-		company = new TextField(15);
-		description = new TextArea(1, 1);
-		ScrollPane s = new ScrollPane(description);
+		client = new JTextField(15);
+		title = new JTextField(15);
+		company = new JTextField(15);
+		description = new JTextArea(1, 1);
+		JScrollPane s = new JScrollPane(description);
 		
 		description.setLineWrap(true);
 //		description.setWrapStyleWord(true);
 		
 		Panel p = new Panel("New Ticket", 4, 4, 2, 4);
 		
-		p.setComponent(new Label("CPF: "), 0, 0);
+		p.setComponent(new JLabel("CPF: "), 0, 0);
 		p.setComponent(client, 0, 1);
 		
-		p.setComponent(new Label("Empresa: "), 1, 0);
+		p.setComponent(new JLabel("Empresa: "), 1, 0);
 		p.setComponent(company, 1, 1);
 		company.setEditable(false);
 		
-		p.setComponent(new Label("Titulo: "), 0, 2);
+		p.setComponent(new JLabel("Titulo: "), 0, 2);
 		p.setComponent(title, 0, 3);
 		
-		p.setComponent(new Label("Categoria: "), 1, 2);
+		p.setComponent(new JLabel("Categoria: "), 1, 2);
 		p.setComponent(category, 1, 3);
 		category.setBackground(Color.WHITE);
 		
-		p.setComponent(new Label("Produto: "), 0, 4);
+		p.setComponent(new JLabel("Produto: "), 0, 4);
 		p.setComponent(product, 0, 5);
 		product.setPreferredSize(new Dimension(50, 13));
 		product.setBackground(Color.WHITE);
 		
-		p.setComponent(new Label("Selecione: "), 1, 4);
+		p.setComponent(new JLabel("Selecione: "), 1, 4);
 		p.setComponent(pj, 1, 5);
 		pj.addActionListener(new Action(this));
 		
-		p.setComponent(new Label("Descricão: "), 0, 6);
+		p.setComponent(new JLabel("Descricão: "), 0, 6);
 		p.setComponent(s, 0, 7, 100, 150, 2);
 		description.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
@@ -118,17 +118,17 @@ public class Ticket extends UI<InternalFrame>
 		return pj;
 	}
 
-	public Button getSubmit() 
+	public JButton getSubmit() 
 	{
 		return submit;
 	}
 
-	public ComboBox<?> getCategory() 
+	public JComboBox<?> getCategory() 
 	{
 		return category;
 	}
 
-	public ComboBox<?> getProduct() 
+	public JComboBox<?> getProduct() 
 	{
 		return product;
 	}
@@ -138,22 +138,22 @@ public class Ticket extends UI<InternalFrame>
 		return priority;
 	}
 
-	public TextArea getDescription() 
+	public JTextArea getDescription() 
 	{
 		return description;
 	}
 
-	public TextField getClient() 
+	public JTextField getClient() 
 	{
 		return client;
 	}
 
-	public TextField getTitle() 
+	public JTextField getTitle() 
 	{
 		return title;
 	}
 
-	public TextField getCompany() 
+	public JTextField getCompany() 
 	{
 		return company;
 	}

@@ -3,6 +3,12 @@ package net.weesftw.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
@@ -10,38 +16,32 @@ import javax.swing.table.TableRowSorter;
 
 import net.weesftw.manager.Action;
 import net.weesftw.manager.MouseAction;
-import net.weesftw.model.Button;
-import net.weesftw.model.InternalFrame;
-import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.ScrollPane;
-import net.weesftw.model.Table;
-import net.weesftw.model.TextField;
 import net.weesftw.model.UserAbstractTable;
 
-public class UserTable extends UI<InternalFrame>
+public class UserTable extends UI<JInternalFrame>
 {
 	private static UserTable instance;
 	
 	private TableRowSorter<TableModel> sorter;
 	private UserAbstractTable at;
-	private Button search;
-	private TextField cpf, username;
+	private JButton search;
+	private JTextField cpf, username;
 	
 	private UserTable() 
 	{
-		super(new InternalFrame("User", false, true, false, true));
+		super(new JInternalFrame("User", false, true, false, true));
 		
-		cpf = new TextField(15);
+		cpf = new JTextField(15);
 		at = new UserAbstractTable();
-		search = new Button("Search");
-		username = new TextField(15);
+		search = new JButton("Search");
+		username = new JTextField(15);
 		sorter = new TableRowSorter<TableModel>(at);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
-		Table t = new Table(at);
+		JTable t = new JTable(at);
 		Panel p = new Panel("Filter", 4, 4, 4, 4);
-		ScrollPane s = new ScrollPane(t);
+		JScrollPane s = new JScrollPane(t);
 		
 		r.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		
@@ -58,10 +58,10 @@ public class UserTable extends UI<InternalFrame>
 			}
 		}
 		
-		p.setComponent(new Label("CPF: "));
+		p.setComponent(new JLabel("CPF: "));
 		p.setComponent(cpf, 1, 0);
 		
-		p.setComponent(new Label("Usuario: "), 2, 0);
+		p.setComponent(new JLabel("Usuario: "), 2, 0);
 		p.setComponent(username, 3, 0);
 		
 		p.setComponent(search, 3, 1);
@@ -89,17 +89,17 @@ public class UserTable extends UI<InternalFrame>
 		return at;
 	}
 
-	public Button getSearch() 
+	public JButton getSearch() 
 	{
 		return search;
 	}
 
-	public TextField getCpf() 
+	public JTextField getCpf() 
 	{
 		return cpf;
 	}
 
-	public TextField getUsername() 
+	public JTextField getUsername() 
 	{
 		return username;
 	}

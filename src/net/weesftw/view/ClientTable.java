@@ -3,8 +3,14 @@ package net.weesftw.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
@@ -13,42 +19,35 @@ import javax.swing.table.TableRowSorter;
 import net.weesftw.constraint.Gender;
 import net.weesftw.manager.Action;
 import net.weesftw.manager.MouseAction;
-import net.weesftw.model.Button;
 import net.weesftw.model.ClientAbstractTable;
-import net.weesftw.model.ComboBox;
-import net.weesftw.model.InternalFrame;
-import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.ScrollPane;
-import net.weesftw.model.Table;
-import net.weesftw.model.TextField;
 
-public class ClientTable extends UI<InternalFrame>
+public class ClientTable extends UI<JInternalFrame>
 {
 	private static ClientTable instance;
 	
 	private TableRowSorter<TableModel> sorter;
 	private ClientAbstractTable at;
-	private Button search;
-	private ComboBox<?> gender;
-	private TextField cpf, name;
+	private JButton search;
+	private JComboBox<?> gender;
+	private JTextField cpf, name;
 	private JCheckBox priority;
 	
 	private ClientTable() 
 	{
-		super(new InternalFrame("Client", false, true, false, true));
+		super(new JInternalFrame("Client", false, true, false, true));
 		
 		at = new ClientAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
-		gender = new ComboBox<Gender>(Gender.values());
-		search = new Button("Search");
-		cpf = new TextField(15);
-		name = new TextField(15);
+		gender = new JComboBox<Gender>(Gender.values());
+		search = new JButton("Search");
+		cpf = new JTextField(15);
+		name = new JTextField(15);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
-		Table t = new Table(at);
+		JTable t = new JTable(at);
 		Panel p = new Panel("Filter", 4, 4, 4, 4);
-		ScrollPane s = new ScrollPane(t);
+		JScrollPane s = new JScrollPane(t);
 		
 		r.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		
@@ -70,10 +69,10 @@ public class ClientTable extends UI<InternalFrame>
 			}
 		}
 		
-		p.setComponent(new Label("CPF: "));
+		p.setComponent(new JLabel("CPF: "));
 		p.setComponent(cpf, 1, 0);
 		
-		p.setComponent(new Label("Nome: "), 2, 0);
+		p.setComponent(new JLabel("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
 		
 		p.setComponent(search, 3, 4);
@@ -101,22 +100,22 @@ public class ClientTable extends UI<InternalFrame>
 		return at;
 	}
 
-	public Button getSearch() 
+	public JButton getSearch() 
 	{
 		return search;
 	}
 
-	public ComboBox<?> getGender() 
+	public JComboBox<?> getGender() 
 	{
 		return gender;
 	}
 
-	public TextField getCpf() 
+	public JTextField getCpf() 
 	{
 		return cpf;
 	}
 
-	public TextField getName()
+	public JTextField getName()
 	{
 		return name;
 	}

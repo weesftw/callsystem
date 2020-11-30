@@ -3,7 +3,13 @@ package net.weesftw.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
@@ -11,39 +17,32 @@ import javax.swing.table.TableRowSorter;
 
 import net.weesftw.manager.Action;
 import net.weesftw.manager.MouseAction;
-import net.weesftw.model.Button;
-import net.weesftw.model.ComboBox;
-import net.weesftw.model.InternalFrame;
-import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.ScrollPane;
 import net.weesftw.model.SellAbstractTable;
-import net.weesftw.model.Table;
-import net.weesftw.model.TextField;
 import net.weesftw.vo.SellVO;
 
-public class SaleTable extends UI<InternalFrame>
+public class SaleTable extends UI<JInternalFrame>
 {
 	private static SaleTable instance;
 	
 	private TableRowSorter<TableModel> sorter;
 	private SellAbstractTable at;
-	private Button search;
-	private TextField id, name, by, observation;
-	private ComboBox<String> status;
+	private JButton search;
+	private JTextField id, name, by, observation;
+	private JComboBox<String> status;
 	
 	private SaleTable() 
 	{
-		super(new InternalFrame("Sale", false, true, false, true));
+		super(new JInternalFrame("Sale", false, true, false, true));
 		
 		at = new SellAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
-		status = new ComboBox<String>();
-		search = new Button("Search");
-		id = new TextField(15);
-		by = new TextField(15);
-		name = new TextField(15);
-		observation = new TextField(15);
+		status = new JComboBox<String>();
+		search = new JButton("Search");
+		id = new JTextField(15);
+		by = new JTextField(15);
+		name = new JTextField(15);
+		observation = new JTextField(15);
 		
 		status.addItem("");
 		
@@ -53,9 +52,9 @@ public class SaleTable extends UI<InternalFrame>
 		}
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
-		Table t = new Table(at);
+		JTable t = new JTable(at);
 		Panel p = new Panel("Filter", 4, 4, 4, 4);
-		ScrollPane s = new ScrollPane(t);
+		JScrollPane s = new JScrollPane(t);
 		
 		r.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		
@@ -78,19 +77,19 @@ public class SaleTable extends UI<InternalFrame>
 			}
 		}
 		
-		p.setComponent(new Label("ID: "));
+		p.setComponent(new JLabel("ID: "));
 		p.setComponent(id, 1, 0);
 		
-		p.setComponent(new Label("Nome: "), 2, 0);
+		p.setComponent(new JLabel("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
 		
-		p.setComponent(new Label("Por: "), 0, 1);
+		p.setComponent(new JLabel("Por: "), 0, 1);
 		p.setComponent(by, 1, 1);
 		
-		p.setComponent(new Label("Observacão: "), 2, 1);
+		p.setComponent(new JLabel("Observacão: "), 2, 1);
 		p.setComponent(observation, 3, 1);
 		
-		p.setComponent(new Label("Status: "), 0, 4);
+		p.setComponent(new JLabel("Status: "), 0, 4);
 		p.setComponent(status, 1, 4);
 		status.setBackground(Color.WHITE);
 		
@@ -128,32 +127,32 @@ public class SaleTable extends UI<InternalFrame>
 		return at;
 	}
 
-	public Button getSearch() 
+	public JButton getSearch() 
 	{
 		return search;
 	}
 
-	public TextField getId()
+	public JTextField getId()
 	{
 		return id;
 	}
 
-	public TextField getName()
+	public JTextField getName()
 	{
 		return name;
 	}
 
-	public TextField getBy() 
+	public JTextField getBy() 
 	{
 		return by;
 	}
 
-	public TextField getObservation() 
+	public JTextField getObservation() 
 	{
 		return observation;
 	}
 
-	public ComboBox<?> getStatus() 
+	public JComboBox<?> getStatus() 
 	{
 		return status;
 	}	

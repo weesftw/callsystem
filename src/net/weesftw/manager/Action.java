@@ -140,12 +140,12 @@ public class Action implements ActionListener
 				
 				if(f.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 				{
-					c.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
+					c.getImg().setPath(f.getSelectedFile().getPath());
 				}
 			}
 			else if(action.equals(c.getSubmit().getActionCommand()))
 			{		
-				String img = c.getImg().getUrl();
+				String img = c.getImg().getPath().toString();
 				
 				if(img != null)
 				{
@@ -423,7 +423,7 @@ public class Action implements ActionListener
 			String email = u.getEmail().getText();
 			String date = u.getDate().getText();
 			String zipCode = u.getZipCode().getText();
-			String img = u.getImg().getUrl();
+			String img = u.getImg().getPath().toString();
 			String username = u.getUser().getText();
 			String passwd = u.getPasswd().getText();
 			Gender gender = Gender.valueOf(u.getGender().getSelectedItem().toString());
@@ -435,7 +435,7 @@ public class Action implements ActionListener
 				
 				if(f.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 				{
-					u.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
+					u.getImg().setPath(f.getSelectedFile().getPath());
 				}
 			}
 			else if(action.equals(u.getCpf().getText()))
@@ -450,7 +450,7 @@ public class Action implements ActionListener
 					u.getPhoneNumber().setText(cl.getPhoneNumber());
 					u.getEmail().setText(cl.getEmail());
 					u.getDate().setText(cl.getDate());
-					u.getImg().loadImage(cl.getByte(), 120, 120);
+					u.getImg().setPath(cl.getByte());
 				}
 			}
 			else if(action.equals(u.getSubmit().getActionCommand()))
@@ -812,12 +812,13 @@ public class Action implements ActionListener
 				
 				if(f.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 				{
-					p.getImg().loadImage(f.getSelectedFile().getPath(), 120, 120);
+					p.getImg().setPath(f.getSelectedFile().getPath());
 				}
 			}
 			else if(action.equals(p.getSubmit().getActionCommand()))
 			{
-				String path = p.getImg().getUrl();
+				String path = p.getImg().getPath().toString();
+				System.out.println(path);
 				
 				if(path != null)
 				{
@@ -1235,7 +1236,7 @@ public class Action implements ActionListener
 			{				
 				if(product != null)
 				{
-					s.getImg().loadImage(product.getPhoto(), 100, 100);
+					s.getImg().setPath(product.getPhoto());
 					s.getProduct().setText(product.getName());
 					s.getPrice().setText(product.getPrice());
 				}

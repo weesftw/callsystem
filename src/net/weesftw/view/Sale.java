@@ -4,59 +4,61 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import net.weesftw.constraint.ImagePath;
 import net.weesftw.manager.Action;
-import net.weesftw.model.Button;
-import net.weesftw.model.InternalFrame;
-import net.weesftw.model.Label;
-import net.weesftw.model.Panel;
 import net.weesftw.model.CartAbstractTable;
-import net.weesftw.model.Table;
-import net.weesftw.model.TextArea;
-import net.weesftw.model.TextField;
+import net.weesftw.model.Icon;
+import net.weesftw.model.Panel;
 import net.weesftw.vo.CartVO;
 
-public class Sale extends UI<InternalFrame>
+public class Sale extends UI<JInternalFrame>
 {
 	private static Sale instance;
 	
 	private CartAbstractTable at;
-	private Button add, submit;
+	private JButton add, submit;
 	private JCheckBox c;
-	private Label cnpj, img, phoneNumber;
-	private TextField cpf, name, phone, zipCode, address, neighborhood, city, state, id, amount, product, price;
-	private TextArea observation;
+	private JLabel cnpj, phoneNumber;
+	private JTextField cpf, name, phone, zipCode, address, neighborhood, city, state, id, amount, product, price;
+	private JTextArea observation;
+	private Icon img;
 	
 	private Sale() 
 	{
-		super(new InternalFrame("Sale", false, true, false, true));
+		super(new JInternalFrame("Sale", false, true, false, true));
 		
 		at = new CartAbstractTable();
-		add = new Button("Insert");
-		submit = new Button("Checkout");
+		add = new JButton("Insert");
+		submit = new JButton("Checkout");
 		c = new JCheckBox("CNPJ");
-		phoneNumber = new Label("Phone: ");
-		cnpj = new Label("CPF: ");
-		img = new Label();
-		observation = new TextArea();
-		cpf = new TextField(12);
-		name = new TextField(12);
-		zipCode = new TextField(12);
-		address = new TextField(12);
-		city = new TextField(12);
-		state = new TextField(12);
-		id = new TextField(12);
-		amount = new TextField(5);
-		product = new TextField(12);
-		price = new TextField(5);
-		phone = new TextField(12);
-		neighborhood = new TextField(12);
+		phoneNumber = new JLabel("Phone: ");
+		cnpj = new JLabel("CPF: ");
+		img = new Icon();
+		observation = new JTextArea();
+		cpf = new JTextField(12);
+		name = new JTextField(12);
+		zipCode = new JTextField(12);
+		address = new JTextField(12);
+		city = new JTextField(12);
+		state = new JTextField(12);
+		id = new JTextField(12);
+		amount = new JTextField(5);
+		product = new JTextField(12);
+		price = new JTextField(5);
+		phone = new JTextField(12);
+		neighborhood = new JTextField(12);
 		
-		Table t = new Table(at);
+		JTable t = new JTable(at);
 		JScrollPane s = new JScrollPane(t);
 		Panel p = new Panel("Photo", 4, 4, 4, 4);
 		Panel p2 = new Panel("Client", 4, 4, 4, 4);
@@ -64,8 +66,8 @@ public class Sale extends UI<InternalFrame>
 		
 		s.setPreferredSize(new Dimension(0, 180));
 		
+		img.setPath(ImagePath.ICON);
 		p.setComponent(img);
-		img.loadImage(ImagePath.ICON, 120, 120);
 		
 		p2.setComponent(cnpj);
 		p2.setComponent(cpf, 1, 0);
@@ -75,7 +77,7 @@ public class Sale extends UI<InternalFrame>
 		c.setEnabled(false);
 		c.addActionListener(new Action(this));
 		
-		p2.setComponent(new Label("Nome: "), 0, 1);
+		p2.setComponent(new JLabel("Nome: "), 0, 1);
 		p2.setComponent(name, 1, 1);
 		name.setEditable(false);
 		
@@ -83,40 +85,40 @@ public class Sale extends UI<InternalFrame>
 		p2.setComponent(phone, 3, 1);
 		phone.setEditable(false);
 		
-		p2.setComponent(new Label("CEP: "), 0, 2);
+		p2.setComponent(new JLabel("CEP: "), 0, 2);
 		p2.setComponent(zipCode, 1, 2);
 		zipCode.setEditable(false);
 		
-		p2.setComponent(new Label("Rua: "), 2, 2);
+		p2.setComponent(new JLabel("Rua: "), 2, 2);
 		p2.setComponent(address, 3, 2);
 		address.setEditable(false);
 		
-		p2.setComponent(new Label("Bairro: "), 0, 3);
+		p2.setComponent(new JLabel("Bairro: "), 0, 3);
 		p2.setComponent(neighborhood, 1, 3);
 		neighborhood.setEditable(false);
 		
-		p2.setComponent(new Label("Cidade: "), 2, 3);
+		p2.setComponent(new JLabel("Cidade: "), 2, 3);
 		p2.setComponent(city, 3, 3);
 		city.setEditable(false);
 		
-		p2.setComponent(new Label("Estado: "), 0, 4);
+		p2.setComponent(new JLabel("Estado: "), 0, 4);
 		p2.setComponent(state, 1, 4);
 		state.setEditable(false);
 		
-		p3.setComponent(new Label("ID: "), 0, 0);
+		p3.setComponent(new JLabel("ID: "), 0, 0);
 		p3.setComponent(id, 1, 0);
 		id.addActionListener(new Action(this));
 		
-		p3.setComponent(new Label("Produto: "), 0, 1);
+		p3.setComponent(new JLabel("Produto: "), 0, 1);
 		p3.setComponent(product, 1, 1);
 		product.setBackground(Color.WHITE);
 		product.setEditable(false);
 		
-		p3.setComponent(new Label("Quantidade: "), 2, 0);
+		p3.setComponent(new JLabel("Quantidade: "), 2, 0);
 		p3.setComponent(amount, 3, 0);
 		amount.setText("1");
 		
-		p3.setComponent(new Label("Preco: "), 2, 1);
+		p3.setComponent(new JLabel("Preco: "), 2, 1);
 		p3.setComponent(price, 3, 1);
 		price.setBackground(Color.WHITE);
 		price.setEditable(false);
@@ -167,7 +169,7 @@ public class Sale extends UI<InternalFrame>
 		amount.setText("1");
 		product.setText("");
 		price.setText("R$: ");
-		img.loadImage(ImagePath.ICON, 100, 100);
+		img.setPath(ImagePath.ICON);
 	}
 
 	public CartAbstractTable getAt() 
@@ -175,12 +177,12 @@ public class Sale extends UI<InternalFrame>
 		return at;
 	}
 
-	public Button getAdd() 
+	public JButton getAdd() 
 	{
 		return add;
 	}
 
-	public Button getSubmit() 
+	public JButton getSubmit() 
 	{
 		return submit;
 	}
@@ -190,83 +192,83 @@ public class Sale extends UI<InternalFrame>
 		return c;
 	}
 
-	public Label getCnpj() 
+	public JLabel getCnpj() 
 	{
 		return cnpj;
 	}
 
-	public Label getImg() 
+	public Icon getImg() 
 	{
 		return img;
 	}
 
-	public TextField getCpf() 
+	public JTextField getCpf() 
 	{
 		return cpf;
 	}
 
-	public TextField getName()
+	public JTextField getName()
 	{
 		return name;
 	}
 
-	public TextField getPhone() 
+	public JTextField getPhone() 
 	{
 		return phone;
 	}
 
-	public TextField getZipCode() 
+	public JTextField getZipCode() 
 	{
 		return zipCode;
 	}
 
-	public TextField getAddress() 
+	public JTextField getAddress() 
 	{
 		return address;
 	}
 
-	public TextField getCity() 
+	public JTextField getCity() 
 	{
 		return city;
 	}
 
-	public TextField getState() 
+	public JTextField getState() 
 	{
 		return state;
 	}
 
-	public TextField getId() 
+	public JTextField getId() 
 	{
 		return id;
 	}
 
-	public TextField getAmount() 
+	public JTextField getAmount() 
 	{
 		return amount;
 	}
 
-	public TextField getProduct() 
+	public JTextField getProduct() 
 	
 	{
 		return product;
 	}
 
-	public TextField getPrice() 
+	public JTextField getPrice() 
 	{
 		return price;
 	}
 
-	public TextField getNeighborhood() 
+	public JTextField getNeighborhood() 
 	{
 		return neighborhood;
 	}
 
-	public Label getPhoneNumber() 
+	public JLabel getPhoneNumber() 
 	{
 		return phoneNumber;
 	}
 
-	public TextArea getObservation() 
+	public JTextArea getObservation() 
 	{
 		return observation;
 	}

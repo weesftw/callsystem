@@ -3,7 +3,12 @@ package net.weesftw.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
@@ -11,39 +16,33 @@ import javax.swing.table.TableRowSorter;
 
 import net.weesftw.manager.Action;
 import net.weesftw.manager.MouseAction;
-import net.weesftw.model.Button;
 import net.weesftw.model.CompanyAbstractTable;
-import net.weesftw.model.InternalFrame;
-import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.ScrollPane;
-import net.weesftw.model.Table;
-import net.weesftw.model.TextField;
 
-public class CompanyTable extends UI<InternalFrame>
+public class CompanyTable extends UI<JInternalFrame>
 {
 	private static CompanyTable instance;
 	
 	private TableRowSorter<TableModel> sorter;
 	private CompanyAbstractTable at;
-	private Button search;
-	private TextField id, name, owner;
+	private JButton search;
+	private JTextField id, name, owner;
 	
 	private CompanyTable() 
 	{
-		super(new InternalFrame("Company", false, true, false, true));
+		super(new JInternalFrame("Company", false, true, false, true));
 		
 		at = new CompanyAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
-		search = new Button("Search");
-		id = new TextField(15);
-		name = new TextField(15);
-		owner = new TextField(15);
+		search = new JButton("Search");
+		id = new JTextField(15);
+		name = new JTextField(15);
+		owner = new JTextField(15);
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
-		Table t = new Table(at);
+		JTable t = new JTable(at);
 		Panel p = new Panel("Filter", 4, 4, 4, 4);
-		ScrollPane s = new ScrollPane(t);
+		JScrollPane s = new JScrollPane(t);
 		
 		r.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		
@@ -65,13 +64,13 @@ public class CompanyTable extends UI<InternalFrame>
 			}
 		}
 		
-		p.setComponent(new Label("CNPJ: "));
+		p.setComponent(new JLabel("CNPJ: "));
 		p.setComponent(id, 1, 0);
 		
-		p.setComponent(new Label("Nome: "), 2, 0);
+		p.setComponent(new JLabel("Nome: "), 2, 0);
 		p.setComponent(name, 3, 0);
 		
-		p.setComponent(new Label("Responsável: "), 0, 1);
+		p.setComponent(new JLabel("Responsável: "), 0, 1);
 		p.setComponent(owner, 1, 1);
 		
 		p.setComponent(search, 3, 2);
@@ -99,27 +98,27 @@ public class CompanyTable extends UI<InternalFrame>
 		return at;
 	}
 
-	public Button getSearch() 
+	public JButton getSearch() 
 	{
 		return search;
 	}
 	
-	public TextField getCpf() 
+	public JTextField getCpf() 
 	{
 		return id;
 	}
 
-	public TextField getName()
+	public JTextField getName()
 	{
 		return name;
 	}
 
-	public TextField getOwner() 
+	public JTextField getOwner() 
 	{
 		return owner;
 	}
 	
-	public TextField getId() 
+	public JTextField getId() 
 	{
 		return id;
 	}

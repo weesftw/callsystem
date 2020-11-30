@@ -4,9 +4,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import net.weesftw.constraint.Message;
-import net.weesftw.model.Table;
 import net.weesftw.view.ClientOpen;
 import net.weesftw.view.ClientTable;
 import net.weesftw.view.CompanyOpen;
@@ -46,10 +46,10 @@ public class MouseAction extends MouseAdapter
 		{
 			if(a.getUser().getDepartment().isPrivilege())
 			{
+				JTable ta = (JTable) e.getSource();
+				
 				if(ui instanceof TicketTable)
 				{
-					Table ta = (Table) e.getSource();
-
 					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
 					for(TicketVO c : TicketVO.list)
@@ -62,8 +62,6 @@ public class MouseAction extends MouseAdapter
 				}
 				else if(ui instanceof ClientTable)
 				{			
-					Table ta = (Table) e.getSource();
-					
 					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
 					for(ClientVO c : ClientVO.list)
@@ -76,8 +74,6 @@ public class MouseAction extends MouseAdapter
 				}
 				else if(ui instanceof ProviderTable)
 				{			
-					Table ta = (Table) e.getSource();
-					
 					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
 					for(ProviderVO c : ProviderVO.list)
@@ -90,8 +86,6 @@ public class MouseAction extends MouseAdapter
 				}
 				else if(ui instanceof CompanyTable)
 				{	
-					Table ta = (Table) e.getSource();
-					
 					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
 					for(CompanyVO c : CompanyVO.list)
@@ -104,8 +98,6 @@ public class MouseAction extends MouseAdapter
 				}
 				else if(ui instanceof ProductTable)
 				{	
-					Table ta = (Table) e.getSource();
-					
 					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
 					for(ProductVO c : ProductVO.list)
@@ -118,8 +110,6 @@ public class MouseAction extends MouseAdapter
 				}
 				else if(ui instanceof SaleTable)
 				{
-					Table ta = (Table) e.getSource();
-					
 					Object value = ta.getValueAt(ta.getSelectedRow(), ta.getSelectedColumn());					
 					
 					for(SellVO c : SellVO.list)

@@ -3,8 +3,14 @@ package net.weesftw.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
@@ -13,41 +19,34 @@ import javax.swing.table.TableRowSorter;
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Action;
 import net.weesftw.manager.MouseAction;
-import net.weesftw.model.TicketAbstractTable;
-import net.weesftw.model.Button;
-import net.weesftw.model.ComboBox;
-import net.weesftw.model.InternalFrame;
-import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.ScrollPane;
-import net.weesftw.model.Table;
-import net.weesftw.model.TextField;
+import net.weesftw.model.TicketAbstractTable;
 
-public class TicketTable extends UI<InternalFrame>
+public class TicketTable extends UI<JInternalFrame>
 {
 	private static TicketTable instance;
 	
 	private TableRowSorter<TableModel> sorter;
 	private TicketAbstractTable at;
-	private Button btn;
-	private ComboBox<String> status;
-	private TextField id, title, client, company, user, date;
+	private JButton btn;
+	private JComboBox<String> status;
+	private JTextField id, title, client, company, user, date;
 	private JCheckBox priority;
 	
 	private TicketTable() 
 	{
-		super(new InternalFrame("Ticket", false, true, false, true));
+		super(new JInternalFrame("Ticket", false, true, false, true));
 		
 		at = new TicketAbstractTable();
 		sorter = new TableRowSorter<TableModel>(at);
-		status = new ComboBox<String>();
-		btn = new Button("Search");
-		id = new TextField(15);
-		title = new TextField(15);
-		client = new TextField(15);
-		company = new TextField(15);
-		user = new TextField(15);
-		date = new TextField(15);
+		status = new JComboBox<String>();
+		btn = new JButton("Search");
+		id = new JTextField(15);
+		title = new JTextField(15);
+		client = new JTextField(15);
+		company = new JTextField(15);
+		user = new JTextField(15);
+		date = new JTextField(15);
 		priority = new JCheckBox("Priority");
 		
 		status.addItem("");
@@ -58,9 +57,9 @@ public class TicketTable extends UI<InternalFrame>
 		}
 		
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
-		Table t = new Table(at);
+		JTable t = new JTable(at);
 		Panel p = new Panel("Filter", 4, 4, 4, 4);
-		ScrollPane s = new ScrollPane(t);
+		JScrollPane s = new JScrollPane(t);
 		
 		r.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		
@@ -83,25 +82,25 @@ public class TicketTable extends UI<InternalFrame>
 			}
 		}
 		
-		p.setComponent(new Label("ID: "));
+		p.setComponent(new JLabel("ID: "));
 		p.setComponent(id, 1, 0);
 		
-		p.setComponent(new Label("Titulo: "), 2, 0);
+		p.setComponent(new JLabel("Titulo: "), 2, 0);
 		p.setComponent(title, 3, 0);
 		
-		p.setComponent(new Label("Cliente: "), 0, 1);
+		p.setComponent(new JLabel("Cliente: "), 0, 1);
 		p.setComponent(client, 1, 1);
 		
-		p.setComponent(new Label("Empresa: "), 2, 1);
+		p.setComponent(new JLabel("Empresa: "), 2, 1);
 		p.setComponent(company, 3, 1);
 		
-		p.setComponent(new Label("Usuario: "), 0, 2);
+		p.setComponent(new JLabel("Usuario: "), 0, 2);
 		p.setComponent(user, 1, 2);
 		
-		p.setComponent(new Label("Data: "), 2, 2);
+		p.setComponent(new JLabel("Data: "), 2, 2);
 		p.setComponent(date, 3, 2);
 		
-		p.setComponent(new Label("Status: "), 0, 3);
+		p.setComponent(new JLabel("Status: "), 0, 3);
 		p.setComponent(status, 1, 3);
 		status.setBackground(Color.WHITE);
 		
@@ -127,42 +126,42 @@ public class TicketTable extends UI<InternalFrame>
 		return at;
 	}
 
-	public Button getBtn() 
+	public JButton getBtn() 
 	{
 		return btn;
 	}
 
-	public ComboBox<?> getStatus() 
+	public JComboBox<?> getStatus() 
 	{
 		return status;
 	}
 
-	public TextField getId() 
+	public JTextField getId() 
 	{
 		return id;
 	}
 
-	public TextField getTitle() 
+	public JTextField getTitle() 
 	{
 		return title;
 	}
 
-	public TextField getClient() 
+	public JTextField getClient() 
 	{
 		return client;
 	}
 
-	public TextField getCompany() 
+	public JTextField getCompany() 
 	{
 		return company;
 	}
 
-	public TextField getUser() 
+	public JTextField getUser() 
 	{
 		return user;
 	}
 
-	public TextField getDate() 
+	public JTextField getDate() 
 	{
 		return date;
 	}

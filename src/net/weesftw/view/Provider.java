@@ -2,37 +2,37 @@ package net.weesftw.view;
 
 import java.text.ParseException;
 
+import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.text.MaskFormatter;
 
 import net.weesftw.manager.Action;
-import net.weesftw.model.Button;
-import net.weesftw.model.InternalFrame;
-import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.TextField;
 
-public class Provider extends UI<InternalFrame> 
+public class Provider extends UI<JInternalFrame> 
 {
 	private static Provider instance;
 	
-	private Button submit;
-	private TextField cnpj, name, freight, zipCode, category;
+	private JButton submit;
+	private JTextField cnpj, name, freight, zipCode, category;
 	private JFormattedTextField phoneNumber;
 	
 	private Provider() 
 	{
-		super(new InternalFrame("Provider", false, true, false, true));
+		super(new JInternalFrame("Provider", false, true, false, true));
 		
 		Panel p = new Panel("New Provider", 4, 4, 4, 4);
 		
-		submit = new Button("Submit");
-		cnpj = new TextField(15);
-		name = new TextField(15);
-		freight = new TextField(15);
-		zipCode = new TextField(15);
-		category = new TextField(15);
+		submit = new JButton("Submit");
+		cnpj = new JTextField(15);
+		name = new JTextField(15);
+		freight = new JTextField(15);
+		zipCode = new JTextField(15);
+		category = new JTextField(15);
 		
 		try 
 		{
@@ -43,22 +43,22 @@ public class Provider extends UI<InternalFrame>
 			e.printStackTrace();
 		}
 		
-		p.setComponent(new Label("CNPJ: "));
+		p.setComponent(new JLabel("CNPJ: "));
 		p.setComponent(cnpj, 1, 0);
 		
-		p.setComponent(new Label("Nome: "), 0, 1);
+		p.setComponent(new JLabel("Nome: "), 0, 1);
 		p.setComponent(name, 1, 1);
 		
-		p.setComponent(new Label("Frete: "), 0, 2);
+		p.setComponent(new JLabel("Frete: "), 0, 2);
 		p.setComponent(freight, 1, 2);
 		
-		p.setComponent(new Label("Categoria: "), 0, 3);
+		p.setComponent(new JLabel("Categoria: "), 0, 3);
 		p.setComponent(category, 1, 3);
 		
-		p.setComponent(new Label("CEP: "), 0, 4);
+		p.setComponent(new JLabel("CEP: "), 0, 4);
 		p.setComponent(zipCode, 1, 4);
 		
-		p.setComponent(new Label("Telefone:"), 0, 5);
+		p.setComponent(new JLabel("Telefone:"), 0, 5);
 		p.setComponent(phoneNumber, 1, 5);
 		
 		p.setComponent(submit, 1, 6);
@@ -85,32 +85,32 @@ public class Provider extends UI<InternalFrame>
 		phoneNumber.setText("");
 	}
 
-	public Button getSubmit() 
+	public JButton getSubmit() 
 	{
 		return submit;
 	}	
 
-	public TextField getCnpj() 
+	public JTextField getCnpj() 
 	{
 		return cnpj;
 	}
 
-	public TextField getName() 
+	public JTextField getName() 
 	{
 		return name;
 	}
 
-	public TextField getFreight() 
+	public JTextField getFreight() 
 	{
 		return freight;
 	}
 
-	public TextField getZipCode() 
+	public JTextField getZipCode() 
 	{
 		return zipCode;
 	}
 	
-	public TextField getCategory()
+	public JTextField getCategory()
 	{
 		return category;
 	}

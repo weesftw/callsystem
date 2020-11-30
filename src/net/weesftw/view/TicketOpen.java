@@ -5,27 +5,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import net.weesftw.constraint.Status;
 import net.weesftw.manager.Action;
-import net.weesftw.model.Button;
-import net.weesftw.model.ComboBox;
 import net.weesftw.model.Dialog;
-import net.weesftw.model.Label;
 import net.weesftw.model.Panel;
-import net.weesftw.model.ScrollPane;
-import net.weesftw.model.TextArea;
-import net.weesftw.model.TextField;
 import net.weesftw.vo.TicketVO;
 
-public class TicketOpen extends UI<Dialog> 
+public class TicketOpen extends UI<JDialog> 
 {	
-	private Button submit;
-	private ComboBox<?> status;
-	private TextArea description, solution;
-	private TextField id, timestamp, product, category, title, company, client, user;
+	private JButton submit;
+	private JComboBox<?> status;
+	private JTextArea description, solution;
+	private JTextField id, timestamp, product, category, title, company, client, user;
 	private JCheckBox priority;
 	private TicketVO t;
 	
@@ -39,45 +40,45 @@ public class TicketOpen extends UI<Dialog>
 		SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
 		Panel p = new Panel("Ticket Detail", 4, 4, 4, 4);
 		
-		id = new TextField(15);
+		id = new JTextField(15);
 		id.setText(String.valueOf(t.getId()));
 		id.setEditable(false);
 		
-		status = new ComboBox<Status>(Status.values());
+		status = new JComboBox<Status>(Status.values());
 		status.setSelectedItem(t.getStatus());
 		status.setEnabled((status.getSelectedItem() != Status.CLOSED && privilege) ? true : false);
 		
-		timestamp = new TextField(15);
+		timestamp = new JTextField(15);
 		timestamp.setText(d.format(new Date(t.getTimestamp().getTime())));
 		timestamp.setEditable(false);
 		
-		product = new TextField(15);
+		product = new JTextField(15);
 		product.setText(t.getProduct().getName());
 		product.setEditable(false);
 		
-		category = new TextField(15);
+		category = new JTextField(15);
 		category.setText(t.getCategory().name());
 		category.setEditable(false);
 		
-		title = new TextField(15);
+		title = new JTextField(15);
 		title.setText(t.getTitle());
 		title.setEditable(false);
 		
-		description = new TextArea(1, 1);
+		description = new JTextArea(1, 1);
 		description.setText(t.getDescription());
 		description.setEditable(false);
 		description.setLineWrap(true);
 		description.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
-		company = new TextField(15);
+		company = new JTextField(15);
 		company.setText(t.getCompany() != null ? t.getCompany().getName() : "");
 		company.setEditable(false);
 		
-		client = new TextField(15);
+		client = new JTextField(15);
 		client.setText(t.getClient().getFirstName() + " " + t.getClient().getLastName());
 		client.setEditable(false);
 		
-		user = new TextField(15);
+		user = new JTextField(15);
 		user.setText(t.getUser().getUsername());
 		user.setEditable(false);
 		
@@ -85,55 +86,55 @@ public class TicketOpen extends UI<Dialog>
 		priority.setSelected(t.isPriority());
 		priority.setEnabled((status.getSelectedItem() != Status.CLOSED && privilege) ? true : false);
 		
-		solution = new TextArea(1, 1);
+		solution = new JTextArea(1, 1);
 		solution.setText(t.getSolution());
 		solution.setEditable(status.getSelectedItem() != Status.CLOSED ? true : false);
 		solution.setLineWrap(true);
 		solution.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
-		submit = new Button("Submit");
+		submit = new JButton("Submit");
 		submit.setEnabled(status.getSelectedItem() != Status.CLOSED ? true : false);
 		submit.addActionListener(new Action(this));
 		
-		ScrollPane s = new ScrollPane(description);
-		ScrollPane s2 = new ScrollPane(solution);
+		JScrollPane s = new JScrollPane(description);
+		JScrollPane s2 = new JScrollPane(solution);
 		
-		p.setComponent(new Label("ID: "));
+		p.setComponent(new JLabel("ID: "));
 		p.setComponent(id, 1, 0);
 		
-		p.setComponent(new Label("Title: "), 2, 0);
+		p.setComponent(new JLabel("Title: "), 2, 0);
 		p.setComponent(title, 3, 0);
 		
-		p.setComponent(new Label("Date: "), 0, 1);
+		p.setComponent(new JLabel("Date: "), 0, 1);
 		p.setComponent(timestamp, 1, 1);
 		
-		p.setComponent(new Label("Open by: "), 2, 1);
+		p.setComponent(new JLabel("Open by: "), 2, 1);
 		p.setComponent(user, 3, 1);
 		
-		p.setComponent(new Label("Category: "), 0, 2);
+		p.setComponent(new JLabel("Category: "), 0, 2);
 		p.setComponent(category, 1, 2);
 		
-		p.setComponent(new Label("Product: "), 2, 2);
+		p.setComponent(new JLabel("Product: "), 2, 2);
 		p.setComponent(product, 3, 2);
 		
-		p.setComponent(new Label("Client: "), 0, 3);
+		p.setComponent(new JLabel("Client: "), 0, 3);
 		p.setComponent(client, 1, 3);
 		
-		p.setComponent(new Label("Company: "), 2, 3);
+		p.setComponent(new JLabel("Company: "), 2, 3);
 		p.setComponent(company, 3, 3);
 		
-		p.setComponent(new Label("Status: "), 0, 4);
+		p.setComponent(new JLabel("Status: "), 0, 4);
 		p.setComponent(status, 1, 4);
 		status.setBackground(Color.WHITE);
 		
 		p.setComponent(priority, 2, 4);
 		
-		p.setComponent(new Label("Description: "), 0, 5);
+		p.setComponent(new JLabel("Description: "), 0, 5);
 		p.setComponent(s, 0, 6, 100, 150, 2);
 		
 		if(privilege)
 		{
-			p.setComponent(new Label("Solution: "), 3, 5);
+			p.setComponent(new JLabel("Solution: "), 3, 5);
 			p.setComponent(s2, 3, 6, 100, 150);			
 		}
 		
@@ -148,62 +149,62 @@ public class TicketOpen extends UI<Dialog>
 		ui.setVisible(true);
 	}
 	
-	public Button getSubmit() 
+	public JButton getSubmit() 
 	{
 		return submit;
 	}
 
-	public TextField getId() 
+	public JTextField getId() 
 	{
 		return id;
 	}
 
-	public ComboBox<?> getStatus() 
+	public JComboBox<?> getStatus() 
 	{
 		return status;
 	}
 
-	public TextField getTimestamp() 
+	public JTextField getTimestamp() 
 	{
 		return timestamp;
 	}
 
-	public TextField getProduct() 
+	public JTextField getProduct() 
 	{
 		return product;
 	}
 
-	public TextField getCategory() 
+	public JTextField getCategory() 
 	{
 		return category;
 	}
 
-	public TextField getTitle() 
+	public JTextField getTitle() 
 	{
 		return title;
 	}
 
-	public TextArea getDescription() 
+	public JTextArea getDescription() 
 	{
 		return description;
 	}
 	
-	public TextArea getSolution()
+	public JTextArea getSolution()
 	{
 		return solution;
 	}
 
-	public TextField getCompany() 
+	public JTextField getCompany() 
 	{
 		return company;
 	}
 
-	public TextField getClient() 
+	public JTextField getClient() 
 	{
 		return client;
 	}
 
-	public TextField getUser() 
+	public JTextField getUser() 
 	{
 		return user;
 	}
